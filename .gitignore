@@ -1,0 +1,11 @@
+.vscode
+node_modules
+
+package-lock.json
+.DS_Store
+.jest-test-results.json
+
+example/build
+build
+.firebase
+dist

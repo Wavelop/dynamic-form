@@ -1,0 +1,17 @@
+{
+  "application": {
+    "debug": true
+  },
+  "i18n": {
+    "language": "en",
+    "fallBacklanguage": "en",
+    "languages": [
+      "it",
+      "en"
+    ]
+  },
+  "cryptoUtils": {
+    "publicKey": "-----BEGIN PUBLIC KEY-----\nMIGeMA0GCSqGSIb3DQEBAQUAA4GMADCBiAKBgG7ZAHwSXLCEa8/xPNkZ59eDS1UR\nAWVy+x/LjdVZooF6g4do5ajVl8QC480xwd2vRVZ51XSskZ6tvCiLOqz+tRC/80L/\njL+s0i+A28NhTUUzDzqjw+x7Xii5tjk2hxhR9XAUW93iy9NtRTQQVcYHSdPJTlN8\nXadMaG+tpXdWPt0jAgMBAAE=\n-----END PUBLIC KEY-----"
+  }
+  
+}
