@@ -21,7 +21,7 @@ import { form as formConfig } from "./config.js";
 const { application } = CONFIG;
 const { debug } = application;
 
-function Signup(props) {
+function Signup() {
 
   const { language } = useTranslateState();
   const stateFromService = useDynamicForm("state", "model");

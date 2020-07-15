@@ -135,11 +135,11 @@ var deafultTheme = {
   colorPrimary: 'green'
 };
 
-var DynamicFormModelStateContext = React.createContext();
-var DynamicFormModelDispatchContext = React.createContext();
-var DynamicFormErrorStateContext = React.createContext();
-var DynamicFormErrorDispatchContext = React.createContext();
-var DynamicFormStyleContext = React.createContext();
+var DynamicFormModelStateContext = /*#__PURE__*/React.createContext();
+var DynamicFormModelDispatchContext = /*#__PURE__*/React.createContext();
+var DynamicFormErrorStateContext = /*#__PURE__*/React.createContext();
+var DynamicFormErrorDispatchContext = /*#__PURE__*/React.createContext();
+var DynamicFormStyleContext = /*#__PURE__*/React.createContext();
 
 var encryptionLocal = function encryptionLocal(value) {
   return value;
@@ -153,7 +153,7 @@ function dynamicFormModelReducer(state, action) {
   switch (type) {
     case "UPDATE_MODEL":
       {
-        return _extends({}, state, {}, newState, {
+        return _extends({}, state, newState, {
           _metadata: metadata
         });
       }
@@ -174,7 +174,7 @@ function dynamicFormErrorReducer(state, action) {
       {
         var _globalErrors = 0;
 
-        var errorSummary = _extends({}, state, {}, newState);
+        var errorSummary = _extends({}, state, newState);
 
         var showError = errorSummary._showError;
         delete errorSummary._globalErrors;
@@ -226,7 +226,7 @@ var DynamicFormProvider = function DynamicFormProvider(props) {
 
   var children = props.children;
   return /*#__PURE__*/React__default.createElement(DynamicFormStyleContext.Provider, {
-    value: _extends({}, deafultTheme, {}, customTheme)
+    value: _extends({}, deafultTheme, customTheme)
   }, /*#__PURE__*/React__default.createElement(DynamicFormModelStateContext.Provider, {
     value: stateModel
   }, /*#__PURE__*/React__default.createElement(DynamicFormModelDispatchContext.Provider, {
@@ -1504,7 +1504,7 @@ var setupModel = function setupModel(config, dispatchModel) {
   });
 };
 
-var DynamicForm = React.forwardRef(function (props, ref) {
+var DynamicForm = /*#__PURE__*/React.forwardRef(function (props, ref) {
   var config = props.config,
       updateModelAtBlur = props.updateModelAtBlur,
       debug = props.debug;
