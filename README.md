@@ -17,7 +17,7 @@
 <!-- PROJECT LOGO -->
 <br />
 <p align="center">
-  <a href="https://github.com/Blundert/dynamic-form">
+  <a href="https://github.com/Wavelop/dynamic-form">
     <img src="images/logo.png" alt="Logo" width="160" height="160">
   </a>
 
@@ -26,14 +26,14 @@
   <p align="center">
     Build forms 📄 with React 🚀
     <br />
-    <a href="https://dynamic-form-blundert.firebaseapp.com/"><strong>Explore the docs »</strong></a>
+    <a href="https://dynamic-form-wavelop.firebaseapp.com/"><strong>Explore the docs »</strong></a>
     <br />
     <br />
-    <a href="https://dynamic-form-blundert-example.firebaseapp.com/">View Demo</a>
+    <a href="https://dynamic-form-wavelop-example.firebaseapp.com/">View Demo</a>
     ·
-    <a href="https://github.com/Blundert/dynamic-form/issues">Open an Issue</a>
+    <a href="https://github.com/Wavelop/dynamic-form/issues">Open an Issue</a>
     ·
-    <a href="https://github.com/Blundert/dynamic-form/issues">Request Feature</a>
+    <a href="https://github.com/Wavelop/dynamic-form/issues">Request Feature</a>
   </p>
 </p>
 
@@ -42,16 +42,17 @@
 <!-- TABLE OF CONTENTS -->
 ## Table of Contents
 
-* [About the Project](#about-the-project)
-  * [Built With](#built-with)
-* [Getting Started](#getting-started)
-  * [Prerequisites](#prerequisites)
-  * [Installation](#installation)
-* [Usage](#usage)
-* [Roadmap](#roadmap)
-* [Contributing](#contributing)
-* [License](#license)
-* [Contact](#contact)
+- [Table of Contents](#table-of-contents)
+- [About The Project](#about-the-project)
+  - [Built With](#built-with)
+- [Getting Started](#getting-started)
+  - [Prerequisites](#prerequisites)
+  - [Installation](#installation)
+- [Usage](#usage)
+- [Roadmap](#roadmap)
+- [Contributing](#contributing)
+- [License](#license)
+- [Contact](#contact)
 
 
 <!-- ABOUT THE PROJECT -->
@@ -68,7 +69,7 @@ This project implements a form generator with React. Using mainly React Hooks.
 <!-- GETTING STARTED -->
 ## Getting Started
 
-To start to use the library, follow these semple steps. 
+To start to use the library, follow these simple steps. 
 
 ### Prerequisites
 
@@ -81,7 +82,7 @@ npm i react react-dom react-jss
 ### Installation
  
 ```bash
-npm i dynamic-form-blundert
+npm i dynamic-form-wavelop
 ```
 
 
@@ -180,12 +181,12 @@ Example.propTypes = {
 export default Example;
 ```
 
-_For more examples, please refer to the [Documentation](https://dynamic-form-blundert.firebaseapp.com/)_
+_For more examples, please refer to the [Documentation](https://dynamic-form-wavelop.firebaseapp.com/)_
 
 <!-- ROADMAP -->
 ## Roadmap
 
-See the [open issues](https://github.com/Blundert/dynamic-form/issues) for a list of proposed features (and known issues).
+See the [open issues](https://github.com/Wavelop/dynamic-form/issues) for a list of proposed features (and known issues).
 
 <!-- CONTRIBUTING -->
 ## Contributing
@@ -206,25 +207,25 @@ Distributed under the MIT License. See `LICENSE` for more information.
 <!-- CONTACT -->
 ## Contact
 
-Matteo Granzotto - [@blundert](https://twitter.com/blundert) - [matteo.granzotto@wavelop.com](mailto:matteo.granzotto@wavelop.com)
+Matteo Granzotto - [@wavelop](https://twitter.com/blundert) - [matteo.granzotto@wavelop.com](mailto:matteo.granzotto@wavelop.com)
 
 [Wavelop](wavelop.com) - [info@wavelop.com](mailto:info@wavelop.com)
 
-Project Link: [https://github.com/Blundert/dynamic-form](https://github.com/Blundert/dynamic-form)
+Project Link: [https://github.com/Wavelop/dynamic-form](https://github.com/Wavelop/dynamic-form)
 
 <!-- MARKDOWN LINKS & IMAGES -->
 <!-- https://www.markdownguide.org/basic-syntax/#reference-style-links -->
-[node-package-shield]: https://img.shields.io/npm/v/dynamic-form-blundert.svg
-[node-package-url]: https://www.npmjs.com/package/dynamic-form-blundert
-[contributors-shield]: https://img.shields.io/github/contributors/Blundert/dynamic-form.svg?style=flat-square
-[contributors-url]: https://github.com/Blundert/dynamic-form/graphs/contributors
-[forks-shield]: https://img.shields.io/github/forks/Blundert/dynamic-form.svg?style=flat-square
-[forks-url]: https://github.com/Blundert/dynamic-form/network/members
-[stars-shield]: https://img.shields.io/github/stars/Blundert/dynamic-form.svg?style=flat-square
-[stars-url]: https://github.com/Blundert/dynamic-form/stargazers
-[issues-shield]: https://img.shields.io/github/issues/Blundert/dynamic-form.svg?style=flat-square
-[issues-url]: https://github.com/Blundert/dynamic-form/issues
-[license-shield]: https://img.shields.io/github/license/Blundert/dynamic-form.svg?style=flat-square
-[license-url]: https://github.com/Blundert/dynamic-form/blob/master/LICENSE
+[node-package-shield]: https://img.shields.io/npm/v/dynamic-form-wavelop.svg
+[node-package-url]: https://www.npmjs.com/package/dynamic-form-wavelop
+[contributors-shield]: https://img.shields.io/github/contributors/Wavelop/dynamic-form.svg?style=flat-square
+[contributors-url]: https://github.com/Wavelop/dynamic-form/graphs/contributors
+[forks-shield]: https://img.shields.io/github/forks/Wavelop/dynamic-form.svg?style=flat-square
+[forks-url]: https://github.com/Wavelop/dynamic-form/network/members
+[stars-shield]: https://img.shields.io/github/stars/Wavelop/dynamic-form.svg?style=flat-square
+[stars-url]: https://github.com/Wavelop/dynamic-form/stargazers
+[issues-shield]: https://img.shields.io/github/issues/Wavelop/dynamic-form.svg?style=flat-square
+[issues-url]: https://github.com/Wavelop/dynamic-form/issues
+[license-shield]: https://img.shields.io/github/license/Wavelop/dynamic-form.svg?style=flat-square
+[license-url]: https://github.com/Wavelop/dynamic-form/blob/master/LICENSE
 [linkedin-shield]: https://img.shields.io/badge/-LinkedIn-black.svg?style=flat-square&logo=linkedin&colorB=555
-[linkedin-url]: https://www.linkedin.com/in/matteogranzotto/
+[linkedin-url]: https://www.linkedin.com/company/wavelop
