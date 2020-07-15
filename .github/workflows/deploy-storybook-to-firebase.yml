@@ -1,6 +1,10 @@
-name: Build and Deploy
+name: Build and Deploy Storybook
 
-on: [push]
+on:
+  push:
+    branches:
+      - master
+      - develop
 
 jobs:
   build:
