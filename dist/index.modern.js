@@ -1,4 +1,4 @@
-import React, { createContext, useReducer, useContext, forwardRef, useImperativeHandle, useCallback, useEffect, useMemo } from 'react';
+import React, { useReducer, useContext, createContext, forwardRef, useImperativeHandle, useCallback, useEffect, useMemo } from 'react';
 import { createUseStyles } from 'react-jss';
 
 var validate = function validate(validation, data) {
@@ -132,11 +132,11 @@ var deafultTheme = {
   colorPrimary: 'green'
 };
 
-var DynamicFormModelStateContext = createContext();
-var DynamicFormModelDispatchContext = createContext();
-var DynamicFormErrorStateContext = createContext();
-var DynamicFormErrorDispatchContext = createContext();
-var DynamicFormStyleContext = createContext();
+var DynamicFormModelStateContext = /*#__PURE__*/createContext();
+var DynamicFormModelDispatchContext = /*#__PURE__*/createContext();
+var DynamicFormErrorStateContext = /*#__PURE__*/createContext();
+var DynamicFormErrorDispatchContext = /*#__PURE__*/createContext();
+var DynamicFormStyleContext = /*#__PURE__*/createContext();
 
 var encryptionLocal = function encryptionLocal(value) {
   return value;
@@ -150,7 +150,7 @@ function dynamicFormModelReducer(state, action) {
   switch (type) {
     case "UPDATE_MODEL":
       {
-        return _extends({}, state, {}, newState, {
+        return _extends({}, state, newState, {
           _metadata: metadata
         });
       }
@@ -171,7 +171,7 @@ function dynamicFormErrorReducer(state, action) {
       {
         var _globalErrors = 0;
 
-        var errorSummary = _extends({}, state, {}, newState);
+        var errorSummary = _extends({}, state, newState);
 
         var showError = errorSummary._showError;
         delete errorSummary._globalErrors;
@@ -223,7 +223,7 @@ var DynamicFormProvider = function DynamicFormProvider(props) {
 
   var children = props.children;
   return /*#__PURE__*/React.createElement(DynamicFormStyleContext.Provider, {
-    value: _extends({}, deafultTheme, {}, customTheme)
+    value: _extends({}, deafultTheme, customTheme)
   }, /*#__PURE__*/React.createElement(DynamicFormModelStateContext.Provider, {
     value: stateModel
   }, /*#__PURE__*/React.createElement(DynamicFormModelDispatchContext.Provider, {
@@ -1501,7 +1501,7 @@ var setupModel = function setupModel(config, dispatchModel) {
   });
 };
 
-var DynamicForm = forwardRef(function (props, ref) {
+var DynamicForm = /*#__PURE__*/forwardRef(function (props, ref) {
   var config = props.config,
       updateModelAtBlur = props.updateModelAtBlur,
       debug = props.debug;
