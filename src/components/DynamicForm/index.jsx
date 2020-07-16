@@ -7,7 +7,7 @@ import React, {
 import PropTypes from "prop-types";
 
 // Application dependencies
-import { useDynamicForm, useTheme } from "../../services"; 
+import { useDynamicForm, useTheme, saveConfig } from "../../services";
 import { useStyles } from "./style";
 import { handleChange } from "./utils/handleChange";
 import { htmlToRender } from "./utils/htmlToRender";
@@ -46,6 +46,7 @@ const DynamicForm = forwardRef((props, ref) => {
 
   const init = () => {
     setupModel(config, dispatchModel);
+    saveConfig(config, ref);
   };
 
   const initFunc = useCallback(init, []);

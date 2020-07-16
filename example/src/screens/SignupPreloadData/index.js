@@ -7,13 +7,13 @@ import camelCase from "camelcase";
 // import from application dependency
 import { Button, ErrorMessage } from "Components";
 import { useTranslate, useTranslateState } from "Translate";
-import { withProvider, useError, withRouter, encryption } from "Services";
+import { useError, withRouter, encryption } from "Services";
 
 import {
   DynamicForm,
   applyCrypt2State,
   useDynamicForm,
-  DynamicFormProvider,
+  withDynamicForm
 } from "dynamic-form";
 
 import { form as formConfig } from "./config.js";
@@ -24,6 +24,7 @@ const { debug } = application;
 function Signup() {
 
   const { language } = useTranslateState();
+  const dynamicForm = useDynamicForm();
   const stateFromService = useDynamicForm("state", "model");
   const errorFromService = useDynamicForm("state", "error");
   const dispatchModel = useDynamicForm("dispatch", "model");
@@ -37,6 +38,9 @@ function Signup() {
   const { getError } = useError();
 
   const onSubmit = (event) => {
+    
+    console.log(dynamicForm.submit());
+
     const { _globalErrors } = errorFromService;
 
     if (_globalErrors > 0) {
@@ -123,6 +127,4 @@ Signup.propTypes = {
   classes: PropTypes.object
 };
 
-export default withProvider(DynamicFormProvider, { encryption, customTheme: {colorPrimary: "red"} })(
-  withRouter()((Signup))
-);
+export default withDynamicForm ({ encryption, customTheme: {colorPrimary: "red"} }) ( withRouter()((Signup)) );

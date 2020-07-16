@@ -7,13 +7,13 @@ import camelCase from "camelcase";
 // import from application dependency
 import { Button, ErrorMessage } from "Components";
 import { useTranslate, useTranslateState } from "Translate";
-import { withProvider, useError, withRouter } from "Services";
+import { useError, withRouter } from "Services";
 
 import {
   DynamicForm,
   applyCrypt2State,
   useDynamicForm,
-  DynamicFormProvider
+  withDynamicForm,
 } from "dynamic-form";
 
 import { form as formConfig } from "./config.js";
@@ -23,7 +23,9 @@ const { debug } = application;
 
 function Signup(props) {
 
-  const { language } = useTranslateState();
+  const { language } = useTranslateState()
+
+  const dynamicForm = useDynamicForm();
   const stateFromService = useDynamicForm("state", "model");
   const errorFromService = useDynamicForm("state", "error");
 
@@ -34,15 +36,25 @@ function Signup(props) {
   const [error ] = useState("");
   const { getError } = useError();
 
-  const onSubmit = event => {
+  const onSubmit = async event => {
+
+    event.persist();  
+
+    console.log(dynamicForm.submit());
+     
+
+    // idea, quando faccio submit devo chiamare una funzione del form che mi ritorna si, puoi fare submit oppure no
+
+    // al posto di una varibile, avere una funzione che ritorna il numero di errori globali nel form
     const { _globalErrors } = errorFromService;
 
     if (_globalErrors > 0) {
-      childRef.current.validateAll();
+      childRef.current.validateAll(); // deve fare parte della funzione submit del form
     } else {
 
-      let userObject = { ...stateFromService, locale: language };
+      let userObject = { ...stateFromService, locale: language }; // possibilità di gestire oggetti fuori modello del form
 
+      // al submit devo applicare anche il criptaggio
       applyCrypt2State(
         userObject,
         formConfig({
@@ -53,13 +65,30 @@ function Signup(props) {
         })
       );
 
-      delete userObject._showError;
+      delete userObject._showError; // non devo tornare valori di appggio all'utente
 
       console.log(userObject);
     }
 
     event.preventDefault();
   };
+
+  // Desiderato: 
+
+  // const onSubmit = async event => {
+
+  //   event.persist();  
+  //   event.preventDefault();
+
+  //   try {
+  //     const { state, stateCrypted, stateFull } = await dynamicForm.submit();
+
+  //     console.log(state, stateCrypted, stateFull);
+
+  //   } catch ({globalErrors, errors}) {
+  //     console.log(globalErrors, errors);
+  //   }
+  // };
 
   const childRef = useRef();
 
@@ -103,4 +132,6 @@ Signup.propTypes = {
   classes: PropTypes.object
 };
 
-export default withProvider(DynamicFormProvider)(withRouter()(Signup));
+export default withDynamicForm({ encryption: (value) => {
+  return window.btoa(value);
+}})(withRouter()(Signup));

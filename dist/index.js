@@ -131,6 +131,12 @@ function _extends() {
   return _extends.apply(this, arguments);
 }
 
+function _inheritsLoose(subClass, superClass) {
+  subClass.prototype = Object.create(superClass.prototype);
+  subClass.prototype.constructor = subClass;
+  subClass.__proto__ = superClass;
+}
+
 var deafultTheme = {
   colorPrimary: 'green'
 };
@@ -140,9 +146,56 @@ var DynamicFormModelDispatchContext = /*#__PURE__*/React.createContext();
 var DynamicFormErrorStateContext = /*#__PURE__*/React.createContext();
 var DynamicFormErrorDispatchContext = /*#__PURE__*/React.createContext();
 var DynamicFormStyleContext = /*#__PURE__*/React.createContext();
+var DynamicFormHelperContext = /*#__PURE__*/React.createContext();
+var modelState = {};
+var errorState = {};
 
 var encryptionLocal = function encryptionLocal(value) {
   return value;
+};
+
+var helpers = {
+  submit: function submit() {
+    var _modelState = modelState,
+        _touched = _modelState._touched;
+
+    var copyOfModelState = _extends({}, modelState);
+
+    var copyOfErrorState = _extends({}, errorState);
+
+    delete copyOfModelState._metadata;
+    delete copyOfModelState._touched;
+    delete copyOfErrorState._globalErrors;
+    delete copyOfErrorState._showError;
+    console.log(modelState);
+    console.log(errorState);
+
+    if (!_touched) {
+      console.log("devo popolare errorstate");
+      copyOfErrorState = updateErrors(getConfig())(copyOfModelState);
+      getDomElement().current.validateAll();
+    } else {
+      console.log("error state è già popolato correttamente!");
+    }
+
+    var result = {};
+
+    if (Object.keys(copyOfErrorState).length === 0) {
+      result = {
+        state: copyOfModelState,
+        stateCrypted: applyCrypt2State(copyOfModelState, getConfig()),
+        stateFull: modelState
+      };
+    } else {
+      result = {
+        globalErrors: errorState._globalErrors,
+        errors: copyOfErrorState
+      };
+    }
+
+    console.log(result);
+    return result;
+  }
 };
 
 function dynamicFormModelReducer(state, action) {
@@ -153,9 +206,23 @@ function dynamicFormModelReducer(state, action) {
   switch (type) {
     case "UPDATE_MODEL":
       {
-        return _extends({}, state, newState, {
+        var newStateLocal = _extends({}, state, newState, {
+          _metadata: metadata,
+          _touched: true
+        });
+
+        modelState = newStateLocal;
+        return newStateLocal;
+      }
+
+    case "SETUP_MODEL":
+      {
+        var _newStateLocal = _extends({}, state, newState, {
           _metadata: metadata
         });
+
+        modelState = _newStateLocal;
+        return _newStateLocal;
       }
 
     default:
@@ -184,6 +251,7 @@ function dynamicFormErrorReducer(state, action) {
         });
         errorSummary["_globalErrors"] = _globalErrors;
         errorSummary["_showError"] = showError;
+        errorState = errorSummary;
         return errorSummary;
       }
 
@@ -205,12 +273,14 @@ var initialStateError = {
   _showError: false
 };
 var initialStateModel = {
-  _metadata: false
+  _metadata: false,
+  _touched: false
 };
 var DynamicFormProvider = function DynamicFormProvider(props) {
   var _ref = props || {},
       encryption = _ref.encryption,
-      customTheme = _ref.customTheme;
+      customTheme = _ref.customTheme,
+      children = _ref.children;
 
   if (encryption && typeof encryption === "function") {
     encryptionLocal = encryption;
@@ -224,8 +294,9 @@ var DynamicFormProvider = function DynamicFormProvider(props) {
       stateError = _useReducer2[0],
       dispatchError = _useReducer2[1];
 
-  var children = props.children;
-  return /*#__PURE__*/React__default.createElement(DynamicFormStyleContext.Provider, {
+  return /*#__PURE__*/React__default.createElement(DynamicFormHelperContext.Provider, {
+    value: helpers
+  }, /*#__PURE__*/React__default.createElement(DynamicFormStyleContext.Provider, {
     value: _extends({}, deafultTheme, customTheme)
   }, /*#__PURE__*/React__default.createElement(DynamicFormModelStateContext.Provider, {
     value: stateModel
@@ -235,7 +306,7 @@ var DynamicFormProvider = function DynamicFormProvider(props) {
     value: stateError
   }, /*#__PURE__*/React__default.createElement(DynamicFormErrorDispatchContext.Provider, {
     value: dispatchError
-  }, children)))));
+  }, children))))));
 };
 var useDynamicForm = function useDynamicForm(type, version) {
   var contextDynamic = null;
@@ -260,7 +331,12 @@ var useDynamicForm = function useDynamicForm(type, version) {
       break;
 
     default:
-      throw new Error("Your combination of type and version is not allowed.");
+      if (!type && !version) {
+        contextDynamic = DynamicFormHelperContext;
+      } else {
+        throw new Error("Your combination of type and version is not allowed.");
+      }
+
   }
 
   if (contextDynamic === null) {
@@ -285,11 +361,69 @@ var useTheme = function useTheme() {
   return context;
 };
 var applyCrypt2State = function applyCrypt2State(state, config) {
+  var copyState = _extends({}, state);
+
   config && Array.isArray(config) && config.length > 0 && config.forEach(function (configObj) {
     if (configObj.crypt !== undefined && configObj.crypt === true) {
-      state[configObj.name] = encryptionLocal(state[configObj.name]);
+      copyState[configObj.name] = encryptionLocal(copyState[configObj.name]);
     }
   });
+  return copyState;
+};
+
+var updateErrors = function updateErrors(config) {
+  return function (stateFromService) {
+    var errorsObj = {};
+    config.forEach(function (componentConfig) {
+      var name = componentConfig.name,
+          validations = componentConfig.validations;
+      var data = stateFromService[name];
+      errorsObj[name] = [];
+      validations && validations.forEach(function (validation) {
+        var validationResult = validate(validation, data || "");
+
+        if (validationResult) {
+          errorsObj[name].push(validation);
+        }
+      });
+    });
+    return errorsObj;
+  };
+};
+
+var withProvider = function withProvider(attributes) {
+  return function (WrappedComponent) {
+    var WithProvider = /*#__PURE__*/function (_React$Component) {
+      _inheritsLoose(WithProvider, _React$Component);
+
+      function WithProvider() {
+        return _React$Component.apply(this, arguments) || this;
+      }
+
+      var _proto = WithProvider.prototype;
+
+      _proto.render = function render() {
+        return /*#__PURE__*/React__default.createElement(DynamicFormProvider, attributes, /*#__PURE__*/React__default.createElement(WrappedComponent, null));
+      };
+
+      return WithProvider;
+    }(React__default.Component);
+
+    return WithProvider;
+  };
+};
+
+var configGlobal = {};
+var domelement = null;
+var saveConfig = function saveConfig(config, ref) {
+  configGlobal = config;
+  domelement = ref;
+};
+var getConfig = function getConfig() {
+  return configGlobal;
+};
+var getDomElement = function getDomElement() {
+  return domelement;
 };
 
 function createCommonjsModule(fn, module) {
@@ -1499,7 +1633,7 @@ var setupModel = function setupModel(config, dispatchModel) {
     modelObj[name] = defaultValue !== undefined && defaultValue !== null ? defaultValue : null;
   });
   dispatchModel({
-    type: "UPDATE_MODEL",
+    type: "SETUP_MODEL",
     newState: modelObj
   });
 };
@@ -1537,6 +1671,7 @@ var DynamicForm = /*#__PURE__*/React.forwardRef(function (props, ref) {
 
   var init = function init() {
     setupModel(config, dispatchModel);
+    saveConfig(config, ref);
   };
 
   var initFunc = React.useCallback(init, []);
@@ -1591,7 +1726,6 @@ function DebugDynamicForm() {
 
   var renderComponent = function renderComponent() {
     printCounter();
-    debugger;
     return /*#__PURE__*/React__default.createElement("span", null, /*#__PURE__*/React__default.createElement("pre", {
       className: backgroundStyle
     }, /*#__PURE__*/React__default.createElement("span", null, "stateFromService"), JSON.stringify(stateFromService, undefined, 2)), /*#__PURE__*/React__default.createElement("pre", {
@@ -1847,4 +1981,5 @@ exports.Input = InputComponent;
 exports.applyCrypt2State = applyCrypt2State;
 exports.useDynamicForm = useDynamicForm;
 exports.validate = validate;
+exports.withDynamicForm = withProvider;
 //# sourceMappingURL=index.js.map
