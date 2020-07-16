@@ -12,6 +12,7 @@ import { useStyles } from "./style";
 import { handleChange } from "./utils/handleChange";
 import { htmlToRender } from "./utils/htmlToRender";
 import { updateError } from "./utils/updateError";
+import { updateErrorOnSubmit } from "./utils/updateErrorOnSubmit";
 import { setupModel } from "./utils/setupModel";
 import { DebugDynamicForm } from "../";
 
@@ -29,11 +30,21 @@ const DynamicForm = forwardRef((props, ref) => {
   useImperativeHandle(ref, () => ({
     validateAll() {
       return errorFromService;
+    },
+    upadareErrorService(errorFromDynamicFormValidationOnSubmit) {
+      debugger;
+      updateErrorOnSubmit(dispatchError)(
+        errorFromDynamicFormValidationOnSubmit
+      );
     }
   }));
 
   const updateGlobalErrors = () => {
-    updateError(config, updateModelAtBlur, dispatchError)(stateFromService);
+    updateError(
+      config,
+      updateModelAtBlur,
+      dispatchError
+    )(stateFromService, errorFromService);
   };
 
   const memoizeDispatchFunc = useCallback(updateGlobalErrors, [

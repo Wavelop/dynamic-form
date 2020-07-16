@@ -1,6 +1,6 @@
 /* global CONFIG */
 // import from 3rd party
-import React, { useState, useRef } from "react";
+import React, { useState } from "react";
 import PropTypes from "prop-types";
 import camelCase from "camelcase";
 
@@ -11,7 +11,6 @@ import { useError, withRouter } from "Services";
 
 import {
   DynamicForm,
-  applyCrypt2State,
   useDynamicForm,
   withDynamicForm,
 } from "dynamic-form";
@@ -21,13 +20,11 @@ import { form as formConfig } from "./config.js";
 const { application } = CONFIG;
 const { debug } = application;
 
-function Signup(props) {
+function Signup() {
 
   const { language } = useTranslateState()
 
   const dynamicForm = useDynamicForm();
-  const stateFromService = useDynamicForm("state", "model");
-  const errorFromService = useDynamicForm("state", "error");
 
   // Custom Hooks
   const i18n = useTranslate();
@@ -36,61 +33,19 @@ function Signup(props) {
   const [error ] = useState("");
   const { getError } = useError();
 
-  const onSubmit = async event => {
-
-    event.persist();  
-
-    console.log(dynamicForm.submit());
-     
-
-    // idea, quando faccio submit devo chiamare una funzione del form che mi ritorna si, puoi fare submit oppure no
-
-    // al posto di una varibile, avere una funzione che ritorna il numero di errori globali nel form
-    const { _globalErrors } = errorFromService;
-
-    if (_globalErrors > 0) {
-      childRef.current.validateAll(); // deve fare parte della funzione submit del form
-    } else {
-
-      let userObject = { ...stateFromService, locale: language }; // possibilità di gestire oggetti fuori modello del form
-
-      // al submit devo applicare anche il criptaggio
-      applyCrypt2State(
-        userObject,
-        formConfig({
-          t,
-          dynamics: {
-            locale: language
-          }
-        })
-      );
-
-      delete userObject._showError; // non devo tornare valori di appggio all'utente
-
-      console.log(userObject);
-    }
+  const onSubmit = event => {
 
     event.preventDefault();
+
+    try {
+      const { state, stateCrypted, stateFull } = dynamicForm.submit();
+
+      console.log(state, stateCrypted, stateFull);
+
+    } catch ({globalErrors, errors}) {
+      console.log(globalErrors, errors);
+    }
   };
-
-  // Desiderato: 
-
-  // const onSubmit = async event => {
-
-  //   event.persist();  
-  //   event.preventDefault();
-
-  //   try {
-  //     const { state, stateCrypted, stateFull } = await dynamicForm.submit();
-
-  //     console.log(state, stateCrypted, stateFull);
-
-  //   } catch ({globalErrors, errors}) {
-  //     console.log(globalErrors, errors);
-  //   }
-  // };
-
-  const childRef = useRef();
 
   // Render
   return (
@@ -109,7 +64,6 @@ function Signup(props) {
               locale: language
             }
           })}
-          ref={childRef}
           updateModelAtBlur={true}
           debug={debug}
         />

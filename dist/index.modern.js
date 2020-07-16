@@ -127,45 +127,37 @@ let encryptionLocal = value => value;
 
 const helpers = {
   submit: () => {
-    const {
-      _touched
-    } = modelState;
     const copyOfModelState = { ...modelState
     };
     let copyOfErrorState = { ...errorState
     };
+    let _globalErrors = 0;
     delete copyOfModelState._metadata;
     delete copyOfModelState._touched;
     delete copyOfErrorState._globalErrors;
     delete copyOfErrorState._showError;
     console.log(modelState);
     console.log(errorState);
-
-    if (!_touched) {
-      console.log("devo popolare errorstate");
-      copyOfErrorState = updateErrors(getConfig())(copyOfModelState);
-      getDomElement().current.validateAll();
-    } else {
-      console.log("error state è già popolato correttamente!");
-    }
-
-    let result = {};
+    console.log("devo popolare errorstate");
+    copyOfErrorState = updateErrors(getConfig())(copyOfModelState);
+    console.log(copyOfErrorState);
+    getDomElement().current.upadareErrorService(copyOfErrorState);
+    Object.keys(copyOfErrorState).forEach(element => {
+      _globalErrors += copyOfErrorState[element].length;
+    });
 
     if (Object.keys(copyOfErrorState).length === 0) {
-      result = {
+      return {
         state: copyOfModelState,
         stateCrypted: applyCrypt2State(copyOfModelState, getConfig()),
         stateFull: modelState
       };
     } else {
-      result = {
-        globalErrors: errorState._globalErrors,
+      throw {
+        globalErrors: _globalErrors,
         errors: copyOfErrorState
       };
     }
-
-    console.log(result);
-    return result;
   }
 };
 
@@ -226,6 +218,23 @@ function dynamicFormErrorReducer(state, action) {
         });
         errorSummary["_globalErrors"] = _globalErrors;
         errorSummary["_showError"] = showError;
+        errorState = errorSummary;
+        return errorSummary;
+      }
+
+    case "UPDATE_ERROR_ON_SUBMIT":
+      {
+        let _globalErrors = 0;
+        let errorSummary = { ...state,
+          ...newState
+        };
+        delete errorSummary._globalErrors;
+        delete errorSummary._showError;
+        Object.keys(errorSummary).forEach(element => {
+          _globalErrors += errorSummary[element].length;
+        });
+        errorSummary["_globalErrors"] = _globalErrors;
+        errorSummary["_showError"] = true;
         errorState = errorSummary;
         return errorSummary;
       }
@@ -1555,21 +1564,26 @@ const htmlToRender = ({
   };
 };
 
-const updateError = (config, updateModelAtBlur, dispatchError) => stateFromService => {
+const updateError = (config, updateModelAtBlur, dispatchError) => (stateFromService, errorFromService) => {
   const {
     _metadata: metadata
   } = stateFromService || {};
   const {
     lastEvent
   } = metadata || {};
-  let errorsObj = {};
+  let errorsObj = { ...errorFromService
+  };
   config.forEach(componentConfig => {
     const {
       name,
       validations
     } = componentConfig;
     const data = stateFromService[name];
-    errorsObj[name] = [];
+
+    if (data || data === "") {
+      errorsObj[name] = [];
+    }
+
     (data || data === "") && validations && validations.forEach(validation => {
       let validationResult = validate(validation, data);
 
@@ -1585,6 +1599,14 @@ const updateError = (config, updateModelAtBlur, dispatchError) => stateFromServi
       newState: errorsObj
     });
   }
+};
+
+const updateErrorOnSubmit = dispatchError => errorFromDynamicFormValidationOnSubmit => {
+  debugger;
+  dispatchError({
+    type: "UPDATE_ERROR_ON_SUBMIT",
+    newState: errorFromDynamicFormValidationOnSubmit
+  });
 };
 
 const setupModel = (config, dispatchModel) => {
@@ -1620,12 +1642,17 @@ const DynamicForm = /*#__PURE__*/forwardRef((props, ref) => {
   useImperativeHandle(ref, () => ({
     validateAll() {
       return errorFromService;
+    },
+
+    upadareErrorService(errorFromDynamicFormValidationOnSubmit) {
+      debugger;
+      updateErrorOnSubmit(dispatchError)(errorFromDynamicFormValidationOnSubmit);
     }
 
   }));
 
   const updateGlobalErrors = () => {
-    updateError(config, updateModelAtBlur, dispatchError)(stateFromService);
+    updateError(config, updateModelAtBlur, dispatchError)(stateFromService, errorFromService);
   };
 
   const memoizeDispatchFunc = useCallback(updateGlobalErrors, [stateFromService]);

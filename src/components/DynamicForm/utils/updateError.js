@@ -1,38 +1,40 @@
-import { validate } from "../../../services"; 
+import { validate } from "../../../services";
 
-export const updateError = (config, updateModelAtBlur, dispatchError) => (stateFromService) => {
+export const updateError = (config, updateModelAtBlur, dispatchError) => (
+  stateFromService,
+  errorFromService
+) => {
+  const { _metadata: metadata } = stateFromService || {};
+  const { lastEvent } = metadata || {};
 
-  const { _metadata: metadata} = stateFromService || {};
-  const {lastEvent} = metadata || {};
+  let errorsObj = { ...errorFromService };
 
-  let errorsObj = {};
-
-  config.forEach((componentConfig) => {
-    const {name, validations} = componentConfig;
+  config.forEach(componentConfig => {
+    const { name, validations } = componentConfig;
     const data = stateFromService[name];
 
-    errorsObj[name] = [];
+    if (data || data === "") {
+      errorsObj[name] = [];
+    }
 
-    (data || data === "") && validations &&
-    validations.forEach(validation => {
-      let validationResult = validate(validation, data);
-      if (validationResult) {
-        errorsObj[name].push(validation);
-      }
-    });
-
-  }); 
+    (data || data === "") &&
+      validations &&
+      validations.forEach(validation => {
+        let validationResult = validate(validation, data);
+        if (validationResult) {
+          errorsObj[name].push(validation);
+        }
+      });
+  });
 
   if (
     (lastEvent === "onChange" &&
-      (!updateModelAtBlur || updateModelAtBlur === undefined)
-    ) ||
+      (!updateModelAtBlur || updateModelAtBlur === undefined)) ||
     lastEvent === "onBlur"
   ) {
     dispatchError({
       type: "UPDATE_ERROR",
-      newState: errorsObj,
+      newState: errorsObj
     });
   }
-  
 };

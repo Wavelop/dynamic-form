@@ -1,6 +1,6 @@
 /* global CONFIG */
 // import from 3rd party
-import React, { useState, useRef, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import PropTypes from "prop-types";
 import camelCase from "camelcase";
 
@@ -11,7 +11,6 @@ import { useError, withRouter, encryption } from "Services";
 
 import {
   DynamicForm,
-  applyCrypt2State,
   useDynamicForm,
   withDynamicForm
 } from "dynamic-form";
@@ -25,10 +24,7 @@ function Signup() {
 
   const { language } = useTranslateState();
   const dynamicForm = useDynamicForm();
-  const stateFromService = useDynamicForm("state", "model");
-  const errorFromService = useDynamicForm("state", "error");
   const dispatchModel = useDynamicForm("dispatch", "model");
-  const dispatchError = useDynamicForm("dispatch", "error");
 
   // Custom Hooks
   const i18n = useTranslate();
@@ -38,40 +34,19 @@ function Signup() {
   const { getError } = useError();
 
   const onSubmit = (event) => {
-    
-    console.log(dynamicForm.submit());
-
-    const { _globalErrors } = errorFromService;
-
-    if (_globalErrors > 0) {
-      childRef.current.validateAll();
-      setError("form-invalid");
-      dispatchError({
-        type: "SHOW_ERROR",
-      });
-    } else {
-      // TODO: locale: language is a workaround
-      let userObject = { ...stateFromService, locale: language };
-
-      applyCrypt2State(
-        userObject,
-        formConfig({
-          t,
-          dynamics: {
-            locale: language,
-          },
-        })
-      );
-
-      delete userObject._showError; // utils variable
-
-      console.log(userObject);
-    }
 
     event.preventDefault();
-  };
 
-  const childRef = useRef();
+    try {
+      const { state, stateCrypted, stateFull } = dynamicForm.submit();
+
+      console.log(state, stateCrypted, stateFull);
+
+    } catch ({globalErrors, errors}) {
+      console.log(globalErrors, errors);
+      setError("form-invalid");
+    }
+  };
 
   // ---------------------------
   // Way to prepopolate the form
@@ -86,6 +61,8 @@ function Signup() {
     });
   }, [dispatchModel]);
   // ---------------------------
+
+  const childRef = useRef();
 
   // Render
   return (

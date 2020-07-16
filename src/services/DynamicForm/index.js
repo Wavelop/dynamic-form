@@ -22,6 +22,8 @@ const helpers = {
     const copyOfModelState = { ...modelState };
     let copyOfErrorState = { ...errorState };
 
+    let _globalErrors = 0;
+
     delete copyOfModelState._metadata;
     delete copyOfModelState._touched;
     delete copyOfErrorState._globalErrors;
@@ -31,34 +33,34 @@ const helpers = {
     // aggiornare l'error state ora sdds
     console.log(errorState);
 
-    if (!_touched) {
-      // TODO: validare lo stato
-      console.log("devo popolare errorstate");
-      copyOfErrorState = updateErrors(getConfig())(copyOfModelState); // Necessario se ho l'elemento nel DOM?
+    // if (!_touched) {
+    // TODO: validare lo stato
+    console.log("devo popolare errorstate");
+    copyOfErrorState = updateErrors(getConfig())(copyOfModelState); // Necessario se ho l'elemento nel DOM?
 
-      getDomElement().current.validateAll();
-    } else {
-      console.log("error state è già popolato correttamente!");
-    }
+    console.log(copyOfErrorState);
 
-    let result = {};
+    getDomElement().current.upadareErrorService(copyOfErrorState);
+    // } else {
+    //   console.log("error state è già popolato correttamente!");
+    // }
+
+    Object.keys(copyOfErrorState).forEach(element => {
+      _globalErrors += copyOfErrorState[element].length;
+    });
 
     if (Object.keys(copyOfErrorState).length === 0) {
-      result = {
+      return {
         state: copyOfModelState,
         stateCrypted: applyCrypt2State(copyOfModelState, getConfig()), // TODO: cryptare
         stateFull: modelState
       };
     } else {
-      result = {
-        globalErrors: errorState._globalErrors,
+      throw {
+        globalErrors: _globalErrors,
         errors: copyOfErrorState
       };
     }
-
-    console.log(result);
-
-    return result;
   }
 };
 
@@ -123,6 +125,31 @@ function dynamicFormErrorReducer(state, action) {
 
       errorSummary["_globalErrors"] = _globalErrors;
       errorSummary["_showError"] = showError;
+
+      errorState = errorSummary; // TODO:
+
+      return errorSummary;
+    }
+    case "UPDATE_ERROR_ON_SUBMIT": {
+      let _globalErrors = 0;
+
+      let errorSummary = {
+        ...state,
+        ...newState
+        // something
+      };
+
+      // let showError = errorSummary._showError;
+
+      delete errorSummary._globalErrors;
+      delete errorSummary._showError;
+
+      Object.keys(errorSummary).forEach(element => {
+        _globalErrors += errorSummary[element].length;
+      });
+
+      errorSummary["_globalErrors"] = _globalErrors;
+      errorSummary["_showError"] = true;
 
       errorState = errorSummary; // TODO:
 

@@ -156,45 +156,38 @@ var encryptionLocal = function encryptionLocal(value) {
 
 var helpers = {
   submit: function submit() {
-    var _modelState = modelState,
-        _touched = _modelState._touched;
 
     var copyOfModelState = _extends({}, modelState);
 
     var copyOfErrorState = _extends({}, errorState);
 
+    var _globalErrors = 0;
     delete copyOfModelState._metadata;
     delete copyOfModelState._touched;
     delete copyOfErrorState._globalErrors;
     delete copyOfErrorState._showError;
     console.log(modelState);
     console.log(errorState);
-
-    if (!_touched) {
-      console.log("devo popolare errorstate");
-      copyOfErrorState = updateErrors(getConfig())(copyOfModelState);
-      getDomElement().current.validateAll();
-    } else {
-      console.log("error state è già popolato correttamente!");
-    }
-
-    var result = {};
+    console.log("devo popolare errorstate");
+    copyOfErrorState = updateErrors(getConfig())(copyOfModelState);
+    console.log(copyOfErrorState);
+    getDomElement().current.upadareErrorService(copyOfErrorState);
+    Object.keys(copyOfErrorState).forEach(function (element) {
+      _globalErrors += copyOfErrorState[element].length;
+    });
 
     if (Object.keys(copyOfErrorState).length === 0) {
-      result = {
+      return {
         state: copyOfModelState,
         stateCrypted: applyCrypt2State(copyOfModelState, getConfig()),
         stateFull: modelState
       };
     } else {
-      result = {
-        globalErrors: errorState._globalErrors,
+      throw {
+        globalErrors: _globalErrors,
         errors: copyOfErrorState
       };
     }
-
-    console.log(result);
-    return result;
   }
 };
 
@@ -253,6 +246,23 @@ function dynamicFormErrorReducer(state, action) {
         errorSummary["_showError"] = showError;
         errorState = errorSummary;
         return errorSummary;
+      }
+
+    case "UPDATE_ERROR_ON_SUBMIT":
+      {
+        var _globalErrors2 = 0;
+
+        var _errorSummary = _extends({}, state, newState);
+
+        delete _errorSummary._globalErrors;
+        delete _errorSummary._showError;
+        Object.keys(_errorSummary).forEach(function (element) {
+          _globalErrors2 += _errorSummary[element].length;
+        });
+        _errorSummary["_globalErrors"] = _globalErrors2;
+        _errorSummary["_showError"] = true;
+        errorState = _errorSummary;
+        return _errorSummary;
       }
 
     case "SHOW_ERROR":
@@ -1594,19 +1604,24 @@ var htmlToRender = function htmlToRender(_ref) {
 };
 
 var updateError = function updateError(config, updateModelAtBlur, dispatchError) {
-  return function (stateFromService) {
+  return function (stateFromService, errorFromService) {
     var _ref = stateFromService || {},
         metadata = _ref._metadata;
 
     var _ref2 = metadata || {},
         lastEvent = _ref2.lastEvent;
 
-    var errorsObj = {};
+    var errorsObj = _extends({}, errorFromService);
+
     config.forEach(function (componentConfig) {
       var name = componentConfig.name,
           validations = componentConfig.validations;
       var data = stateFromService[name];
-      errorsObj[name] = [];
+
+      if (data || data === "") {
+        errorsObj[name] = [];
+      }
+
       (data || data === "") && validations && validations.forEach(function (validation) {
         var validationResult = validate(validation, data);
 
@@ -1622,6 +1637,16 @@ var updateError = function updateError(config, updateModelAtBlur, dispatchError)
         newState: errorsObj
       });
     }
+  };
+};
+
+var updateErrorOnSubmit = function updateErrorOnSubmit(dispatchError) {
+  return function (errorFromDynamicFormValidationOnSubmit) {
+    debugger;
+    dispatchError({
+      type: "UPDATE_ERROR_ON_SUBMIT",
+      newState: errorFromDynamicFormValidationOnSubmit
+    });
   };
 };
 
@@ -1656,12 +1681,16 @@ var DynamicForm = /*#__PURE__*/React.forwardRef(function (props, ref) {
     return {
       validateAll: function validateAll() {
         return errorFromService;
+      },
+      upadareErrorService: function upadareErrorService(errorFromDynamicFormValidationOnSubmit) {
+        debugger;
+        updateErrorOnSubmit(dispatchError)(errorFromDynamicFormValidationOnSubmit);
       }
     };
   });
 
   var updateGlobalErrors = function updateGlobalErrors() {
-    updateError(config, updateModelAtBlur, dispatchError)(stateFromService);
+    updateError(config, updateModelAtBlur, dispatchError)(stateFromService, errorFromService);
   };
 
   var memoizeDispatchFunc = React.useCallback(updateGlobalErrors, [stateFromService]);
