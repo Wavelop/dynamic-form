@@ -26,6 +26,7 @@ const helpers = {
 
     delete copyOfModelState._metadata;
     delete copyOfModelState._touched;
+    delete copyOfModelState._lasteElementTouched;
     delete copyOfErrorState._globalErrors;
     delete copyOfErrorState._showError;
 
@@ -70,11 +71,21 @@ function dynamicFormModelReducer(state, action) {
 
   switch (type) {
     case "UPDATE_MODEL": {
+      const keys = Object.keys(newState || {});
+      const numberOfChanges = keys.length;
+
+      let lasteElementTouched = null;
+
+      if (numberOfChanges === 1) {
+        lasteElementTouched = keys[0];
+      }
+
       const newStateLocal = {
         ...state,
         ...newState,
         _metadata: metadata,
-        _touched: true
+        _touched: true,
+        _lasteElementTouched: lasteElementTouched
       };
 
       // Aggiornare provider di stato
@@ -106,6 +117,8 @@ function dynamicFormErrorReducer(state, action) {
   const { type, newState } = action;
   switch (type) {
     case "UPDATE_ERROR": {
+      console.log("REDUCER", "UPDATE_ERROR");
+
       let _globalErrors = 0;
 
       let errorSummary = {
@@ -130,7 +143,9 @@ function dynamicFormErrorReducer(state, action) {
 
       return errorSummary;
     }
+
     case "UPDATE_ERROR_ON_SUBMIT": {
+      console.log("REDUCER", "UPDATE_ERROR_ON_SUBMIT");
       let _globalErrors = 0;
 
       let errorSummary = {

@@ -4,7 +4,8 @@ export const updateError = (config, updateModelAtBlur, dispatchError) => (
   stateFromService,
   errorFromService
 ) => {
-  const { _metadata: metadata } = stateFromService || {};
+  const { _metadata: metadata, _lasteElementTouched: lasteElementTouched } =
+    stateFromService || {};
   const { lastEvent } = metadata || {};
 
   let errorsObj = { ...errorFromService };
@@ -13,11 +14,15 @@ export const updateError = (config, updateModelAtBlur, dispatchError) => (
     const { name, validations } = componentConfig;
     const data = stateFromService[name];
 
-    if (data || data === "") {
+    if (
+      (lasteElementTouched === name || lasteElementTouched === null) &&
+      (data || data === "")
+    ) {
       errorsObj[name] = [];
     }
 
-    (data || data === "") &&
+    (lasteElementTouched === name || lasteElementTouched === null) &&
+      (data || data === "") &&
       validations &&
       validations.forEach(validation => {
         let validationResult = validate(validation, data);
@@ -27,6 +32,7 @@ export const updateError = (config, updateModelAtBlur, dispatchError) => (
       });
   });
 
+  debugger;
   if (
     (lastEvent === "onChange" &&
       (!updateModelAtBlur || updateModelAtBlur === undefined)) ||
