@@ -40,7 +40,7 @@ const helpers = {
 
     console.log(copyOfErrorState);
 
-    getDomElement().current.upadareErrorService(copyOfErrorState);
+    getDomElement()(copyOfErrorState);
     // } else {
     //   console.log("error state è già popolato correttamente!");
     // }

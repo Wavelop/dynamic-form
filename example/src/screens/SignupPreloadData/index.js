@@ -1,6 +1,6 @@
 /* global CONFIG */
 // import from 3rd party
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect } from "react";
 import PropTypes from "prop-types";
 import camelCase from "camelcase";
 
@@ -62,9 +62,6 @@ function Signup() {
   }, [dispatchModel]);
   // ---------------------------
 
-  const childRef = useRef();
-
-  // Render
   return (
     <section>
       {error && getError(error) ? (
@@ -81,7 +78,6 @@ function Signup() {
               locale: language,
             },
           })}
-          ref={childRef}
           updateModelAtBlur={true}
           debug={debug}
         />

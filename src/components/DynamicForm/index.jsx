@@ -1,6 +1,8 @@
 import React, {
   useEffect,
   forwardRef,
+  useRef,
+  useState,
   useImperativeHandle,
   useCallback
 } from "react";
@@ -26,6 +28,7 @@ const DynamicForm = forwardRef((props, ref) => {
   const theme = useTheme();
   const classes = useStyles(theme)();
   const { wrapper: wrapperStyle } = classes || {};
+  const childRef = useRef();
 
   useImperativeHandle(ref, () => ({
     validateAll() {
@@ -57,7 +60,12 @@ const DynamicForm = forwardRef((props, ref) => {
 
   const init = () => {
     setupModel(config, dispatchModel);
-    saveConfig(config, ref);
+    saveConfig(config, errorFromDynamicFormValidationOnSubmit => {
+      debugger;
+      updateErrorOnSubmit(dispatchError)(
+        errorFromDynamicFormValidationOnSubmit
+      );
+    });
   };
 
   const initFunc = useCallback(init, []);
@@ -67,7 +75,7 @@ const DynamicForm = forwardRef((props, ref) => {
   }, [initFunc]);
 
   return (
-    <section className={wrapperStyle}>
+    <section className={wrapperStyle} ref={childRef}>
       {htmlToRender({
         stateFromService,
         errorFromService,

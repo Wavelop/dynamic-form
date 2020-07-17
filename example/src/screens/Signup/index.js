@@ -47,7 +47,6 @@ function Signup() {
     }
   };
 
-  // Render
   return (
     <section>
       {error && getError(error) ? (
