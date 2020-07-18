@@ -42,8 +42,8 @@ function Signup() {
 
       console.log(state, stateCrypted, stateFull);
 
-    } catch ({globalErrors, errors}) {
-      console.log(globalErrors, errors);
+    } catch ({numberOfErrors, errors}) {
+      console.log(numberOfErrors, errors);
     }
   };
 

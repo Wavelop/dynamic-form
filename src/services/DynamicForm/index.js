@@ -21,37 +21,28 @@ const helpers = {
     const copyOfModelState = { ...modelState };
     let copyOfErrorState = { ...errorState };
 
-    let _globalErrors = 0;
+    let numberOfErrors = 0;
 
     delete copyOfModelState._metadata;
-    delete copyOfErrorState._globalErrors;
-    delete copyOfErrorState._showError;
+    delete copyOfErrorState._metadata;
 
-    console.log(modelState);
-    // aggiornare l'error state ora sdds
-    console.log(errorState);
+    copyOfErrorState = updateErrors(getConfig())(copyOfModelState);
 
-    // TODO: validare lo stato
-    console.log("devo popolare errorstate");
-    copyOfErrorState = updateErrors(getConfig())(copyOfModelState); // Necessario se ho l'elemento nel DOM?
-
-    console.log(copyOfErrorState);
-
-    getDomElement()(copyOfErrorState);
+    getDomElement()(copyOfErrorState); // TODO: cambiare nome in qualcosa altro
 
     Object.keys(copyOfErrorState).forEach(element => {
-      _globalErrors += copyOfErrorState[element].length;
+      numberOfErrors += copyOfErrorState[element].length;
     });
 
-    if (Object.keys(copyOfErrorState).length === 0) {
+    if (numberOfErrors === 0) {
       return {
         state: copyOfModelState,
-        stateCrypted: applyCrypt2State(copyOfModelState, getConfig()), // TODO: cryptare
+        stateCrypted: applyCrypt2State(copyOfModelState, getConfig()),
         stateFull: modelState
       };
     } else {
       throw {
-        globalErrors: _globalErrors,
+        numberOfErrors,
         errors: copyOfErrorState
       };
     }
@@ -82,9 +73,7 @@ function dynamicFormModelReducer(state, action) {
         }
       };
 
-      // Aggiornare provider di stato
-
-      modelState = newStateLocal; // TODO:
+      modelState = newStateLocal; // TODO: creare un sistema che sia non globale in questo modo
 
       return newStateLocal;
     }
@@ -95,9 +84,7 @@ function dynamicFormModelReducer(state, action) {
         _metadata: metadata
       };
 
-      // Aggiornare provider di stato
-
-      modelState = newStateLocal; // TODO:
+      modelState = newStateLocal; // TODO: creare un sistema che sia non globale in questo modo
 
       return newStateLocal;
     }
@@ -110,66 +97,30 @@ function dynamicFormModelReducer(state, action) {
 function dynamicFormErrorReducer(state, action) {
   const { type, newState } = action;
   switch (type) {
-    case "UPDATE_ERROR": {
-      console.log("REDUCER", "UPDATE_ERROR");
-
-      let _globalErrors = 0;
-
-      let errorSummary = {
-        ...state,
-        ...newState
-        // something
-      };
-
-      let showError = errorSummary._showError;
-
-      delete errorSummary._globalErrors;
-      delete errorSummary._showError;
-
-      Object.keys(errorSummary).forEach(element => {
-        _globalErrors += errorSummary[element].length;
-      });
-
-      errorSummary["_globalErrors"] = _globalErrors;
-      errorSummary["_showError"] = showError;
-
-      errorState = errorSummary; // TODO:
-
-      return errorSummary;
-    }
-
+    case "UPDATE_ERROR":
     case "UPDATE_ERROR_ON_SUBMIT": {
-      console.log("REDUCER", "UPDATE_ERROR_ON_SUBMIT");
-      let _globalErrors = 0;
+      let numberOfErrors = 0;
 
       let errorSummary = {
         ...state,
         ...newState
-        // something
       };
 
-      // let showError = errorSummary._showError;
-
-      delete errorSummary._globalErrors;
-      delete errorSummary._showError;
+      delete errorSummary._metadata;
 
       Object.keys(errorSummary).forEach(element => {
-        _globalErrors += errorSummary[element].length;
+        numberOfErrors += errorSummary[element].length;
       });
 
-      errorSummary["_globalErrors"] = _globalErrors;
-      errorSummary["_showError"] = true;
+      errorSummary._metadata = {
+        numberOfErrors
+      };
 
-      errorState = errorSummary; // TODO:
+      errorState = errorSummary; // TODO: creare un sistema che sia non globale in questo modo
 
       return errorSummary;
     }
-    case "SHOW_ERROR": {
-      return {
-        ...state,
-        _showError: !state._showError
-      };
-    }
+
     default: {
       throw new Error(`Unhandled action type: ${action.type}`);
     }
@@ -178,7 +129,7 @@ function dynamicFormErrorReducer(state, action) {
 
 // Initial states
 const initialStateError = {
-  _showError: false
+  _metadata: {}
 };
 
 const initialStateModel = {

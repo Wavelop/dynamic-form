@@ -145,9 +145,9 @@ function Example(props) {
       // Do something with you valid state...
       console.log(state, stateCrypted, stateFull);
 
-    } catch ({globalErrors, errors}) {
+    } catch ({numberOfErrors, errors}) {
       // Do something in case of error...
-      console.log(globalErrors, errors);
+      console.log(numberOfErrors, errors);
     }
   };
 
