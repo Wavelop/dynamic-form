@@ -18,15 +18,12 @@ let encryptionLocal = value => value;
 
 const helpers = {
   submit: () => {
-    const { _touched } = modelState;
     const copyOfModelState = { ...modelState };
     let copyOfErrorState = { ...errorState };
 
     let _globalErrors = 0;
 
     delete copyOfModelState._metadata;
-    delete copyOfModelState._touched;
-    delete copyOfModelState._lasteElementTouched;
     delete copyOfErrorState._globalErrors;
     delete copyOfErrorState._showError;
 
@@ -34,7 +31,6 @@ const helpers = {
     // aggiornare l'error state ora sdds
     console.log(errorState);
 
-    // if (!_touched) {
     // TODO: validare lo stato
     console.log("devo popolare errorstate");
     copyOfErrorState = updateErrors(getConfig())(copyOfModelState); // Necessario se ho l'elemento nel DOM?
@@ -42,9 +38,6 @@ const helpers = {
     console.log(copyOfErrorState);
 
     getDomElement()(copyOfErrorState);
-    // } else {
-    //   console.log("error state è già popolato correttamente!");
-    // }
 
     Object.keys(copyOfErrorState).forEach(element => {
       _globalErrors += copyOfErrorState[element].length;
@@ -83,9 +76,10 @@ function dynamicFormModelReducer(state, action) {
       const newStateLocal = {
         ...state,
         ...newState,
-        _metadata: metadata,
-        _touched: true,
-        _lasteElementTouched: lasteElementTouched
+        _metadata: {
+          ...metadata,
+          lasteElementTouched
+        }
       };
 
       // Aggiornare provider di stato
@@ -188,8 +182,7 @@ const initialStateError = {
 };
 
 const initialStateModel = {
-  _metadata: false,
-  _touched: false
+  _metadata: false
 };
 
 export const DynamicFormProvider = props => {

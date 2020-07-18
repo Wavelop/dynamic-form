@@ -4,9 +4,8 @@ export const updateError = (config, updateModelAtBlur, dispatchError) => (
   stateFromService,
   errorFromService
 ) => {
-  const { _metadata: metadata, _lasteElementTouched: lasteElementTouched } =
-    stateFromService || {};
-  const { lastEvent } = metadata || {};
+  const { _metadata: metadata } = stateFromService || {};
+  const { lastEvent, lasteElementTouched } = metadata || {};
 
   let errorsObj = { ...errorFromService };
 
