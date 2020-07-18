@@ -35,7 +35,6 @@ const DynamicForm = forwardRef((props, ref) => {
       return errorFromService;
     },
     upadareErrorService(errorFromDynamicFormValidationOnSubmit) {
-      debugger;
       updateErrorOnSubmit(dispatchError)(
         errorFromDynamicFormValidationOnSubmit
       );
@@ -61,7 +60,6 @@ const DynamicForm = forwardRef((props, ref) => {
   const init = () => {
     setupModel(config, dispatchModel);
     saveConfig(config, errorFromDynamicFormValidationOnSubmit => {
-      debugger;
       updateErrorOnSubmit(dispatchError)(
         errorFromDynamicFormValidationOnSubmit
       );

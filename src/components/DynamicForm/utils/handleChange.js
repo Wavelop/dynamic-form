@@ -17,11 +17,5 @@ export const handleChange = (dispatch, type) => (
   }
   newState[name] = newValue;
 
-  console.log("MODEL", {
-    type,
-    newState,
-    metadata: { lastEvent: actionOfTheEvent }
-  });
-
   dispatch({ type, newState, metadata: { lastEvent: actionOfTheEvent } });
 };

@@ -31,7 +31,6 @@ export const updateError = (config, updateModelAtBlur, dispatchError) => (
       });
   });
 
-  debugger;
   if (
     (lastEvent === "onChange" &&
       (!updateModelAtBlur || updateModelAtBlur === undefined)) ||
