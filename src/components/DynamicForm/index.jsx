@@ -1,17 +1,25 @@
 import React, {
   useEffect,
   forwardRef,
+  useRef,
+  useState,
   useImperativeHandle,
   useCallback
 } from "react";
 import PropTypes from "prop-types";
 
 // Application dependencies
-import { useDynamicForm, useTheme } from "../../services"; 
+import {
+  useDynamicForm,
+  useTheme,
+  saveConfig,
+  saveUpdateError
+} from "../../services";
 import { useStyles } from "./style";
 import { handleChange } from "./utils/handleChange";
 import { htmlToRender } from "./utils/htmlToRender";
 import { updateError } from "./utils/updateError";
+import { updateErrorOnSubmit } from "./utils/updateErrorOnSubmit";
 import { setupModel } from "./utils/setupModel";
 import { DebugDynamicForm } from "../";
 
@@ -25,15 +33,25 @@ const DynamicForm = forwardRef((props, ref) => {
   const theme = useTheme();
   const classes = useStyles(theme)();
   const { wrapper: wrapperStyle } = classes || {};
+  const childRef = useRef();
 
   useImperativeHandle(ref, () => ({
     validateAll() {
       return errorFromService;
+    },
+    upadareErrorService(errorFromDynamicFormValidationOnSubmit) {
+      updateErrorOnSubmit(dispatchError)(
+        errorFromDynamicFormValidationOnSubmit
+      );
     }
   }));
 
   const updateGlobalErrors = () => {
-    updateError(config, updateModelAtBlur, dispatchError)(stateFromService);
+    updateError(
+      config,
+      updateModelAtBlur,
+      dispatchError
+    )(stateFromService, errorFromService);
   };
 
   const memoizeDispatchFunc = useCallback(updateGlobalErrors, [
@@ -46,6 +64,13 @@ const DynamicForm = forwardRef((props, ref) => {
 
   const init = () => {
     setupModel(config, dispatchModel);
+    saveConfig(config);
+
+    saveUpdateError(errorFromDynamicFormValidationOnSubmit => {
+      updateErrorOnSubmit(dispatchError)(
+        errorFromDynamicFormValidationOnSubmit
+      );
+    });
   };
 
   const initFunc = useCallback(init, []);
@@ -55,7 +80,7 @@ const DynamicForm = forwardRef((props, ref) => {
   }, [initFunc]);
 
   return (
-    <section className={wrapperStyle}>
+    <section className={wrapperStyle} ref={childRef}>
       {htmlToRender({
         stateFromService,
         errorFromService,

@@ -126,55 +126,47 @@ import PropTypes from "prop-types";
 
 import {
   DynamicForm,
-  applyCrypt2State,
   useDynamicForm,
-  DynamicFormProvider
+  withDynamicForm
 } from "dynamic-form";
 
 import { form as formConfig } from "./config.js";
 
 function Example(props) {
 
-  const stateFromService = useDynamicForm("state", "model");
-  const errorFromService = useDynamicForm("state", "error");
-  const { _globalErrors } = errorFromService;
+  const dynamicForm = useDynamicForm();
 
   const onSubmit = event => {
 
-    if (_globalErrors === 0) {
-      console.log(stateFromService);
-    }
-
     event.preventDefault();
+
+    try {
+      const { state, stateCrypted, stateFull } = dynamicForm.submit();
+      // Do something with you valid state...
+      console.log(state, stateCrypted, stateFull);
+
+    } catch ({numberOfErrors, errors}) {
+      // Do something in case of error...
+      console.log(numberOfErrors, errors);
+    }
   };
 
   // Render
   return (
-    <DynamicFormProvider>
+    <form onSubmit={onSubmit}>
+      <DynamicForm
+        config={formConfig}
+        updateModelAtBlur={true}
+        debug={true}
+      />
 
-      <section>
-
-        {_globalErrors === 0 ? <p>Form contains error.</p>}
-
-        <form onSubmit={onSubmit}>
-          <DynamicForm
-            config={formConfig}
-            ref={childRef}
-            updateModelAtBlur={true}
-            debug={true}
-          />
-
-          <button
-            type="submit"
-            onClick={onSubmit}
-          >
-            Confirm
-          </button>
-        </form>
-
-      </section>
-
-    </DynamicFormProvider>
+      <button
+        type="submit"
+        onClick={onSubmit}
+      >
+        Confirm
+      </button>
+    </form>
   );
 }
 
@@ -182,7 +174,7 @@ Example.propTypes = {
   classes: PropTypes.object.isRequired
 };
 
-export default Example;
+export default withDynamicForm()(Example);
 ```
 
 _For more examples, please refer to the [Documentation](https://dynamic-form-wavelop.firebaseapp.com/)_

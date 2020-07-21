@@ -1,18 +1,14 @@
 export const setupModel = (config, dispatchModel) => {
+  let modelObj = {};
 
-    let modelObj = {};
+  config.forEach(componentConfig => {
+    const { name, defaultValue } = componentConfig;
+    modelObj[name] =
+      defaultValue !== undefined && defaultValue !== null ? defaultValue : null;
+  });
 
-    config.forEach((componentConfig) => {
-      const {name, defaultValue} = componentConfig;
-      modelObj[name] = defaultValue !== undefined &&
-      defaultValue !== null
-        ? defaultValue
-        : null;
-    }); 
-
-    dispatchModel({ 
-      type: "UPDATE_MODEL", 
-      newState: modelObj 
-    });
-  
+  dispatchModel({
+    type: "SETUP_MODEL",
+    newState: modelObj
+  });
 };
