@@ -13,4 +13,9 @@ export {
 export { DynamicFormRefrenceFactory } from "./DynamicFormRefrenceFactory";
 export { FactoryComponentReferenceFactory } from "./FactoryComponentReferenceFactory";
 export { default as withDynamicForm } from "./WithDynamicForm";
-export { saveConfig, getConfig, getDomElement } from "./Config";
+export {
+  saveConfig,
+  saveUpdateError,
+  getConfig,
+  getUpdateError
+} from "./Config";

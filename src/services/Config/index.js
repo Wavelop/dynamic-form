@@ -1,14 +1,18 @@
 let configGlobal = {};
-let domelement = null;
-export const saveConfig = (config, ref) => {
+let updateError = null;
+
+export const saveConfig = config => {
   configGlobal = config;
-  domelement = ref;
+};
+
+export const saveUpdateError = updateErrorFn => {
+  updateError = updateErrorFn;
 };
 
 export const getConfig = () => {
   return configGlobal;
 };
 
-export const getDomElement = () => {
-  return domelement;
+export const getUpdateError = () => {
+  return updateError;
 };

@@ -9,7 +9,12 @@ import React, {
 import PropTypes from "prop-types";
 
 // Application dependencies
-import { useDynamicForm, useTheme, saveConfig } from "../../services";
+import {
+  useDynamicForm,
+  useTheme,
+  saveConfig,
+  saveUpdateError
+} from "../../services";
 import { useStyles } from "./style";
 import { handleChange } from "./utils/handleChange";
 import { htmlToRender } from "./utils/htmlToRender";
@@ -59,7 +64,9 @@ const DynamicForm = forwardRef((props, ref) => {
 
   const init = () => {
     setupModel(config, dispatchModel);
-    saveConfig(config, errorFromDynamicFormValidationOnSubmit => {
+    saveConfig(config);
+
+    saveUpdateError(errorFromDynamicFormValidationOnSubmit => {
       updateErrorOnSubmit(dispatchError)(
         errorFromDynamicFormValidationOnSubmit
       );

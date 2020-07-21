@@ -1,6 +1,6 @@
 import React, { createContext, useContext, useReducer } from "react";
 import deafultTheme from "../../theme";
-import { getConfig, updateErrors, getDomElement } from "../";
+import { getConfig, updateErrors, getUpdateError } from "../";
 
 // Contexts
 const DynamicFormModelStateContext = createContext();
@@ -28,7 +28,7 @@ const helpers = {
 
     copyOfErrorState = updateErrors(getConfig())(copyOfModelState);
 
-    getDomElement()(copyOfErrorState); // TODO: cambiare nome in qualcosa altro
+    getUpdateError()(copyOfErrorState);
 
     Object.keys(copyOfErrorState).forEach(element => {
       numberOfErrors += copyOfErrorState[element].length;
