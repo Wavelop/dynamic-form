@@ -16,7 +16,6 @@ function DatePickerComponent(props) {
   const {
     id,
     name,
-    htmlFor,
     type,
 
     inputLabel,
@@ -36,19 +35,7 @@ function DatePickerComponent(props) {
 
     debug,
   } = props;
-
-  const attributes = {
-    id,
-    name,
-    type,
-    value,
-    placeholder,
-    required,
-    disabled,
-    onBlur,
-    onChange
-  }
-
+  console.log(value);
   const printCounter = () => {
     renderCount[name] = renderCount[name] !== undefined ? renderCount[name]+1 : 1;
     console.table({
@@ -59,16 +46,21 @@ function DatePickerComponent(props) {
     });
   }
 
-  const [selectedDate, setSelectedDate] = React.useState(new Date());
+  const [selectedDate, setSelectedDate] = React.useState(value ? new Date(value) : null);
 
   const handleDateChange = (date) => {
+    onChange({
+      target: {
+        value: date
+      }
+    });
     setSelectedDate(date);
   };
 
-  const onFocusOut = (date) => {
+  const onFocusOut = () => {
     onBlur({
       target: {
-        value: date
+        value: selectedDate
       }
     });
   };
@@ -79,21 +71,22 @@ function DatePickerComponent(props) {
 
     return (
 
-      <section>
+      <section id={id}>
         <MuiPickersUtilsProvider utils={DateFnsUtils}>
             <KeyboardDatePicker
               disableToolbar
-              variant="inline"
               format="MM/dd/yyyy"
               margin="normal"
               autoOk={false}
               id={name}
-              helperText={''}
+              helperText={!!!value ? (placeholder || '') : ''}
               error={false}
-              label={inputLabel}
-              value={value || selectedDate}
+              label={`${inputLabel}${required && "*"}`}
+              value={value}
               onChange={handleDateChange}
-              onAccept={onFocusOut}
+              onClose={type !== "dialog" && onFocusOut}
+              readOnly={disabled}
+              variant={type || 'inline'}
               KeyboardButtonProps={{
                 'aria-label': 'change date',
               }}
@@ -116,13 +109,13 @@ function DatePickerComponent(props) {
     );
   };
 
-  return useMemo(renderInput, [value, error, errorMessage]);
+
+  return useMemo(renderInput, [selectedDate, value, error, errorMessage]);
 }
 
 DatePickerComponent.propTypes = {
   id: PropTypes.string,
   name: PropTypes.string,
-  htmlFor: PropTypes.string,
   type: PropTypes.string,
 
   inputLabel: PropTypes.string,

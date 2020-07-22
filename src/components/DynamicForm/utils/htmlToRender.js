@@ -12,7 +12,6 @@ export const htmlToRender = ({
   dispatchModel,
   handleChange
 }) => {
-
   return (config, { debug }) => {
     const value = config ? (
       config.map((configObj, index) => {
@@ -43,7 +42,7 @@ export const htmlToRender = ({
                   : configObj.defaultValue !== undefined &&
                     configObj.defaultValue !== null
                   ? configObj.defaultValue
-                  : ""
+                  : undefined
               }
               error={
                 errorFromService && errorFromService[configObj.name]

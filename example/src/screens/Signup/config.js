@@ -81,10 +81,45 @@ export const form = ({ t, dynamics }) => {
       ]
     },
     {
-      name: "date",
+      name: "dateInline",
       label: "Date picker Material",
       helperText: "Inserisci una data valida",
       tag: DatePicker,
+      dataManipulatorIn: (date) => {
+        return date ? new Date(date) : new Date();
+      },
+      validations: [
+        {
+          kind: "required",
+          message: t("Error.message.required")
+        }
+      ]
+    },
+    {
+      name: "dateDialog",
+      label: "Date picker Material",
+      helperText: "Inserisci una data valida",
+      tag: DatePicker,
+      type: "dialog",
+      dataManipulatorIn: (date) => {
+        return date ? new Date(date) : new Date();
+      },
+      validations: [
+        {
+          kind: "required",
+          message: t("Error.message.required")
+        }
+      ]
+    },
+    {
+      name: "dateStatic",
+      label: "Date picker Material",
+      helperText: "Inserisci una data valida",
+      tag: DatePicker,
+      type: "static",
+      dataManipulatorIn: (date) => {
+        return date ? new Date(date) : new Date();
+      },
       validations: [
         {
           kind: "required",

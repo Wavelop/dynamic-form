@@ -35,7 +35,7 @@ function CustomInputComponent(props) {
     id,
     name,
     type,
-    value,
+    value: value || "",
     placeholder,
     required,
     disabled,

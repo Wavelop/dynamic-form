@@ -1,6 +1,6 @@
 import { validate } from "../../../services";
 
-export const updateError = (config, updateModelAtBlur, dispatchError) => (
+export const updateError = (config, updateErrorAtBlur, dispatchError) => (
   stateFromService,
   errorFromService
 ) => {
@@ -33,7 +33,7 @@ export const updateError = (config, updateModelAtBlur, dispatchError) => (
 
   if (
     (lastEvent === "onChange" &&
-      (!updateModelAtBlur || updateModelAtBlur === undefined)) ||
+      (!updateErrorAtBlur || updateErrorAtBlur === undefined)) ||
     lastEvent === "onBlur"
   ) {
     dispatchError({

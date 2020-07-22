@@ -13,10 +13,11 @@ export const handleChange = (dispatch, type) => (
       newValue = checked;
       break;
     default:
-      newValue = value || null;
+      newValue = value;
       break;
   }
   newState[name] = newValue;
 
+  debugger;
   dispatch({ type, newState, metadata: { lastEvent: actionOfTheEvent } });
 };

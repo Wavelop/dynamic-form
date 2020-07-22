@@ -22,13 +22,14 @@ import {
   htmlToRender,
   updateError,
   updateErrorOnSubmit,
-  setupModel
+  setupModel,
+  dataCoverterHandler
 } from "./utils/utils";
 
 import { DebugDynamicForm } from "../";
 
 const DynamicForm = forwardRef((props, ref) => {
-  const { config, updateModelAtBlur, debug } = props;
+  const { config, updateErrorAtBlur, debug } = props;
 
   const stateFromService = useDynamicForm("state", "model");
   const errorFromService = useDynamicForm("state", "error");
@@ -53,7 +54,7 @@ const DynamicForm = forwardRef((props, ref) => {
   const updateGlobalErrors = () => {
     updateError(
       config,
-      updateModelAtBlur,
+      updateErrorAtBlur,
       dispatchError
     )(stateFromService, errorFromService);
   };
@@ -67,7 +68,7 @@ const DynamicForm = forwardRef((props, ref) => {
   }, [memoizeDispatchFunc]);
 
   const init = () => {
-    setupModel(config, dispatchModel);
+    setupModel(config, dispatchModel, dataCoverterHandler);
     saveConfig(config);
 
     saveUpdateError(errorFromDynamicFormValidationOnSubmit => {
@@ -89,7 +90,8 @@ const DynamicForm = forwardRef((props, ref) => {
         stateFromService,
         errorFromService,
         dispatchModel,
-        handleChange
+        handleChange,
+        updateErrorAtBlur
       })(config, { debug })}
       {debug && <DebugDynamicForm />}
     </section>
