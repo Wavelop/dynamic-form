@@ -9,3 +9,4 @@ export { default as PrivateRoute } from "./PrivateRoute";
 export { default as PublicRoute } from "./PublicRoute";
 export { default as Spinner } from "./Spinner";
 export { default as CustomInput } from "./CustomInput";
+export { default as DatePicker } from "./DatePicker";

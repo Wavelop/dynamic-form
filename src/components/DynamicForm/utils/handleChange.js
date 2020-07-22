@@ -2,7 +2,8 @@ export const handleChange = (dispatch, type) => (
   name,
   actionOfTheEvent
 ) => event => {
-  const { type: eventType, value, checked } = event.target;
+  const { target } = event || {};
+  const { type: eventType, value, checked } = target || {};
   let newState = {};
   let newValue = null;
 
@@ -12,7 +13,7 @@ export const handleChange = (dispatch, type) => (
       newValue = checked;
       break;
     default:
-      newValue = value;
+      newValue = value || null;
       break;
   }
   newState[name] = newValue;

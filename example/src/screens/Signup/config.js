@@ -1,4 +1,4 @@
-import { CustomInput } from "Components";
+import { CustomInput, DatePicker } from "Components";
 
 export const form = ({ t, dynamics }) => {
 
@@ -77,6 +77,18 @@ export const form = ({ t, dynamics }) => {
           kind: "equalfield",
           name: "password",
           message: t("Error.message.passwordMustBeTheSame")
+        }
+      ]
+    },
+    {
+      name: "date",
+      label: "Date picker Material",
+      helperText: "Inserisci una data valida",
+      tag: DatePicker,
+      validations: [
+        {
+          kind: "required",
+          message: t("Error.message.required")
         }
       ]
     },
