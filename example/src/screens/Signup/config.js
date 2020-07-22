@@ -1,3 +1,5 @@
+import { CustomInput } from "Components";
+
 export const form = ({ t, dynamics }) => {
 
   return [
@@ -5,7 +7,7 @@ export const form = ({ t, dynamics }) => {
       name: "email",
       label: t("Signup.form.email"),
       helperText: t("Signup.form.email.helperText"),
-      tag: "input",
+      tag: CustomInput,
       type: "email",
       validations: [
         {
