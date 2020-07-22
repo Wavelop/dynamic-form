@@ -2,7 +2,6 @@ import React, {
   useEffect,
   forwardRef,
   useRef,
-  useState,
   useImperativeHandle,
   useCallback
 } from "react";
@@ -15,12 +14,17 @@ import {
   saveConfig,
   saveUpdateError
 } from "../../services";
+
 import { useStyles } from "./style";
-import { handleChange } from "./utils/handleChange";
-import { htmlToRender } from "./utils/htmlToRender";
-import { updateError } from "./utils/updateError";
-import { updateErrorOnSubmit } from "./utils/updateErrorOnSubmit";
-import { setupModel } from "./utils/setupModel";
+
+import {
+  handleChange,
+  htmlToRender,
+  updateError,
+  updateErrorOnSubmit,
+  setupModel
+} from "./utils/utils";
+
 import { DebugDynamicForm } from "../";
 
 const DynamicForm = forwardRef((props, ref) => {

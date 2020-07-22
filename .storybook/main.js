@@ -1,12 +1,9 @@
-const path = require('path');
-
 module.exports = {
   stories: ["../src/**/*.stories.([tj]s|mdx)"],
   addons: [
     
     // First box
     "@storybook/preset-create-react-app",
-    "@storybook/addon-notes/register",
     {
       name: '@storybook/addon-docs',
       options: {

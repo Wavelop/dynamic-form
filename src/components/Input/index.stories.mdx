@@ -2,18 +2,10 @@ import { Meta, Story, Preview } from '@storybook/addon-docs/blocks';
 import { action } from '@storybook/addon-actions';
   
 import Input from "../Input";
-import componentNotes from './notes/notes.md';
-import specialNotes from './notes/typeTextWithDebug.md';
 
 <Meta 
   title="Components|Input" 
-  component={Input} 
-  parameters={{ 
-    notes: { 
-      'General notes': 
-      componentNotes 
-    }
-  }}
+  component={Input}
 />
 
 # Input component
@@ -47,7 +39,7 @@ Input component ... WIP.
 Input component ... WIP. 
 
 <Preview>
-  <Story name="Spacial view" parameters={{ jest: ['Input.test.js'], notes: { 'Specific notes': specialNotes }}}>
+  <Story name="Spacial view" parameters={{ jest: ['Input.test.js']}}>
     <Input
       id={"input-test-storybook"}
       name={"input-test-storybook"}

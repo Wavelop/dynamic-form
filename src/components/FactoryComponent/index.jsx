@@ -5,8 +5,8 @@ import PropTypes from "prop-types";
 // import from application dependency
 import { useTheme } from "../../services";
 import { useStyles } from "./style";
-import { handleChangeEvent } from "./utils/handleChangeEvent";
-import { htmlToRender } from "./utils/htmlToRender";
+
+import { handleChangeEvent, htmlToRender } from "./utils/utils";
 
 function FactoryComponent(props) {
   const { config, data, onChange, debug, error } = props;

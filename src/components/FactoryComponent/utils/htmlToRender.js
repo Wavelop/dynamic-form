@@ -22,6 +22,7 @@ export const htmlToRender = (handleChangeEvent, classes) => (
     });
 
   switch (config.tag) {
+    // Default components
     case "input":
       newValue = (
         <Input
@@ -52,34 +53,37 @@ export const htmlToRender = (handleChangeEvent, classes) => (
       );
       break;
 
+    // Custom components
     default:
-      newValue = (
-        <config.tag
-          id={config.name}
-          name={config.name}
-          htmlFor={config.name}
-          type={config.type}
-          inputLabel={config.label}
-          showErrorOnInput={true}
-          error={error}
-          errorMessage={error[0] && error[0].message}
-          required={requiredField}
-          onBlur={handleChangeEvent(config.name, handleChange, "onBlur")}
-          onChange={handleChangeEvent(config.name, handleChange, "onChange")}
-          value={dataCoverterHandler(data, config)}
-          placeholder={config.helperText}
-          disabled={
-            config.disabled === true
-              ? true
-              : config.disabled === false
-              ? false
-              : typeof config.disabled === "function"
-              ? config.disabled({ options: config.options })
-              : false
-          }
-          debug={debug}
-        />
-      );
+      if (config && config.tag && typeof config.tag === "function") {
+        newValue = (
+          <config.tag
+            id={config.name}
+            name={config.name}
+            htmlFor={config.name}
+            type={config.type}
+            inputLabel={config.label}
+            showErrorOnInput={true}
+            error={error}
+            errorMessage={error[0] && error[0].message}
+            required={requiredField}
+            onBlur={handleChangeEvent(config.name, handleChange, "onBlur")}
+            onChange={handleChangeEvent(config.name, handleChange, "onChange")}
+            value={dataCoverterHandler(data, config)}
+            placeholder={config.helperText}
+            disabled={
+              config.disabled === true
+                ? true
+                : config.disabled === false
+                ? false
+                : typeof config.disabled === "function"
+                ? config.disabled({ options: config.options })
+                : false
+            }
+            debug={debug}
+          />
+        );
+      }
       break;
   }
 
