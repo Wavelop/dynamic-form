@@ -82,7 +82,7 @@ export const form = ({ t, dynamics }) => {
     },
     {
       name: "dateInline",
-      label: "Date picker Material",
+      label: "Date picker Default",
       helperText: "Inserisci una data valida",
       tag: DatePicker,
       dataManipulatorIn: (date) => {
@@ -97,7 +97,7 @@ export const form = ({ t, dynamics }) => {
     },
     {
       name: "dateDialog",
-      label: "Date picker Material",
+      label: "Date picker Dialog",
       helperText: "Inserisci una data valida",
       tag: DatePicker,
       type: "dialog",
@@ -113,7 +113,7 @@ export const form = ({ t, dynamics }) => {
     },
     {
       name: "dateStatic",
-      label: "Date picker Material",
+      label: "Date picker Static",
       helperText: "Inserisci una data valida",
       tag: DatePicker,
       type: "static",
@@ -127,72 +127,55 @@ export const form = ({ t, dynamics }) => {
         }
       ]
     },
-    // {
-    //   name: "firstName",
-    //   label: t("Signup.form.firstName"),
-    //   helperText: t("Signup.form.firstName.helperText"),
-    //   tag: "input",
-    //   validations: [
-    //     {
-    //       kind: "required",
-    //       message: t("Error.message.required")
-    //     },
-    //     {
-    //       kind: "pattern",
-    //       reg: /[^A-Za-z0-9\-_ ]/,
-    //       message: t("Error.message.pattern")
-    //     }
-    //   ]
-    // },
-    // {
-    //   name: "lastName",
-    //   label: t("Signup.form.lastName"),
-    //   helperText: t("Signup.form.lastName.helperText"),
-    //   tag: "input",
-    //   validations: [
-    //     {
-    //       kind: "required",
-    //       message: t("Error.message.required")
-    //     },
-    //     {
-    //       kind: "pattern",
-    //       reg: /[^A-Za-z0-9\-_ ]/,
-    //       message: t("Error.message.pattern")
-    //     }
-    //   ]
-    // },
-    // {
-    //   name: "address",
-    //   label: t("Signup.form.address"),
-    //   helperText: t("Signup.form.address.helperText"),
-    //   tag: "mapboxautocomplete",
-    //   mapboxApiKey: "pk.eyJ1IjoibGFnb2Rlc2lnbiIsImEiOiJjanIxc3hpaDcwcmVtM3hydTZveTZrcTBiIn0.VnmaRvgxt_R5tHG-n8ObVg",
-    //   validations: [
-    //     {
-    //       kind: "required",
-    //       message: t("Error.message.required")
-    //     },
-    //     {
-    //       kind: "validobject",
-    //       message: t("Error.message.validAdressObject")
-    //     }
-    //   ]
-    // },
-    // {
-    //   name: "phone",
-    //   label: t("Signup.form.phone"),
-    //   helperText: t("Signup.form.phone.helperText"),
-    //   tag: "input",
-    //   defaultValue: "",
-    //   validations: [
-    //     {
-    //       kind: "pattern",
-    //       reg: /^[+]?[(]?[0-9]{3}[)]?[-\s.]?[0-9]{3}[-\s.]?[0-9]{4,6}$/im,
-    //       considerRegAs: "positive",
-    //       message: t("Error.message.validPhone")
-    //     }
-    //   ]
-    // },
+    {
+      name: "firstName",
+      label: t("Signup.form.firstName"),
+      helperText: t("Signup.form.firstName.helperText"),
+      tag: "input",
+      validations: [
+        {
+          kind: "required",
+          message: t("Error.message.required")
+        },
+        {
+          kind: "pattern",
+          reg: /[^A-Za-z0-9\-_ ]/,
+          message: t("Error.message.pattern")
+        }
+      ]
+    },
+    {
+      name: "lastName",
+      label: t("Signup.form.lastName"),
+      helperText: t("Signup.form.lastName.helperText"),
+      tag: "input",
+      validations: [
+        {
+          kind: "required",
+          message: t("Error.message.required")
+        },
+        {
+          kind: "pattern",
+          reg: /[^A-Za-z0-9\-_ ]/,
+          message: t("Error.message.pattern")
+        }
+      ]
+    },
+    {
+      name: "phone",
+      label: t("Signup.form.phone"),
+      helperText: t("Signup.form.phone.helperText"),
+      tag: "input",
+      defaultValue: "",
+      validations: [
+        {
+          kind: "pattern",
+          reg: /^[+]?[(]?[0-9]{3}[)]?[-\s.]?[0-9]{3}[-\s.]?[0-9]{4,6}$/im,
+          considerRegAs: "positive",
+          message: t("Error.message.validPhone")
+        }
+      ]
+    },
     // {
     //   name: "occupation",
     //   label: t("Signup.form.occupation"),
