@@ -4,6 +4,94 @@ export const form = ({ t, dynamics }) => {
 
   return [
     {
+      name: "row1",
+      tag: "row",
+      fields: [
+        {
+          name: "email1",
+          label: t("Signup.form.email"),
+          helperText: t("Signup.form.email.helperText"),
+          tag: CustomInput,
+          type: "email",
+          validations: [
+            {
+              kind: "required",
+              message: t("Error.message.required")
+            },
+            {
+              kind: "pattern",
+              reg: /^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$/,
+              considerRegAs: "positive",
+              message: t("Error.message.pattern.email")
+            }
+          ]
+        },
+        {
+          name: "email2",
+          label: t("Signup.form.email"),
+          helperText: t("Signup.form.email.helperText"),
+          tag: CustomInput,
+          type: "email",
+          validations: [
+            {
+              kind: "required",
+              message: t("Error.message.required")
+            },
+            {
+              kind: "pattern",
+              reg: /^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$/,
+              considerRegAs: "positive",
+              message: t("Error.message.pattern.email")
+            }
+          ]
+        },
+        {
+          name: "row2",
+          tag: "row",
+          fields: [
+            {
+              name: "email3",
+              label: t("Signup.form.email"),
+              helperText: t("Signup.form.email.helperText"),
+              tag: CustomInput,
+              type: "email",
+              validations: [
+                {
+                  kind: "required",
+                  message: t("Error.message.required")
+                },
+                {
+                  kind: "pattern",
+                  reg: /^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$/,
+                  considerRegAs: "positive",
+                  message: t("Error.message.pattern.email")
+                }
+              ]
+            },
+            {
+              name: "email4",
+              label: t("Signup.form.email"),
+              helperText: t("Signup.form.email.helperText"),
+              tag: CustomInput,
+              type: "email",
+              validations: [
+                {
+                  kind: "required",
+                  message: t("Error.message.required")
+                },
+                {
+                  kind: "pattern",
+                  reg: /^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$/,
+                  considerRegAs: "positive",
+                  message: t("Error.message.pattern.email")
+                }
+              ]
+            },
+          ]
+        },
+      ]
+    },
+    {
       name: "email",
       label: t("Signup.form.email"),
       helperText: t("Signup.form.email.helperText"),

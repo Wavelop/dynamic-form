@@ -2,6 +2,7 @@ import React from "react";
 import { Input, Select } from "../../"; // TODO: make free from materila ui
 import { printCounter } from "./printCounter";
 import { dataCoverterHandler } from "./dataCoverterHandler";
+import { DynamicForm } from "../../";
 
 export const htmlToRender = (handleChangeEvent, classes) => (
   config,
@@ -82,6 +83,10 @@ export const htmlToRender = (handleChangeEvent, classes) => (
           debug={debug}
         />
       );
+      break;
+
+    case "row":
+      newValue = <DynamicForm config={config.fields} />;
       break;
 
     // Custom components
