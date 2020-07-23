@@ -1,5 +1,5 @@
 import React from "react";
-import { Input } from "../../"; // TODO: make free from materila ui
+import { Input, Select } from "../../"; // TODO: make free from materila ui
 import { printCounter } from "./printCounter";
 import { dataCoverterHandler } from "./dataCoverterHandler";
 
@@ -53,6 +53,37 @@ export const htmlToRender = (handleChangeEvent, classes) => (
       );
       break;
 
+    case "select":
+      newValue = (
+        <Select
+          id={config.name}
+          name={config.name}
+          htmlFor={config.name}
+          type={config.type}
+          inputLabel={config.label}
+          options={config.options}
+          showErrorOnInput={true}
+          error={error}
+          errorMessage={error[0] && error[0].message}
+          required={requiredField}
+          onBlur={handleChangeEvent(config.name, handleChange, "onBlur")}
+          onChange={handleChangeEvent(config.name, handleChange, "onChange")}
+          value={dataCoverterHandler(data, config)}
+          placeholder={config.helperText}
+          disabled={
+            config.disabled === true
+              ? true
+              : config.disabled === false
+              ? false
+              : typeof config.disabled === "function"
+              ? config.disabled({ options: config.options })
+              : false
+          }
+          debug={debug}
+        />
+      );
+      break;
+
     // Custom components
     default:
       if (config && config.tag && typeof config.tag === "function") {
@@ -67,6 +98,7 @@ export const htmlToRender = (handleChangeEvent, classes) => (
             error={error}
             errorMessage={error[0] && error[0].message}
             required={requiredField}
+            options={config.options}
             onBlur={handleChangeEvent(config.name, handleChange, "onBlur")}
             onChange={handleChangeEvent(config.name, handleChange, "onChange")}
             value={dataCoverterHandler(data, config)}

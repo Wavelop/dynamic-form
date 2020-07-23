@@ -18,6 +18,5 @@ export const handleChange = (dispatch, type) => (
   }
   newState[name] = newValue;
 
-  debugger;
   dispatch({ type, newState, metadata: { lastEvent: actionOfTheEvent } });
 };

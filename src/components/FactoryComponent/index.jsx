@@ -16,7 +16,6 @@ function FactoryComponent(props) {
   const { hide: hideStyle, wrapper: wrapperStyle } = classes || {};
 
   const renderWrapper = () => {
-    console.log(data);
     return (
       <span className={config.tag === "hidden" ? hideStyle : wrapperStyle}>
         {htmlToRender(handleChangeEvent, classes)(

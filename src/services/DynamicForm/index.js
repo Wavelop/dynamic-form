@@ -133,7 +133,7 @@ const initialStateError = {
 };
 
 const initialStateModel = {
-  _metadata: false
+  _metadata: {}
 };
 
 export const DynamicFormProvider = props => {

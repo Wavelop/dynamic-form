@@ -1,0 +1,61 @@
+import { Meta, Story, Preview } from '@storybook/addon-docs/blocks';
+import { action } from '@storybook/addon-actions';
+  
+import Input from "../Input";
+
+<Meta 
+  title="Components|Input" 
+  component={Input}
+/>
+
+# Input component
+
+Input component ... WIP. 
+
+<Preview>
+  <Story name="Default view" parameters={{ jest: ['Input.test.js'], }}>
+    <form>
+    <Input
+      id={"input-test-storybook"}
+      name={"input-test-storybook"}
+      htmlFor={"input-test-storybook"}
+      type={"text"}
+      inputLabel={"Input di prova di tipo TEXT"}
+      showErrorOnInput={true}
+      error={false}
+      errorMessage={""}
+      required={true}
+      onBlur={action('onBlur')}
+      onChange={action('onChange')}
+      value={null}
+      placeholder={"Digita quello che vuoi, è una prova"}
+      disabled={false}
+      debug={false}
+    ></Input>
+    </form>
+  </Story>
+</Preview>
+
+Input component ... WIP. 
+
+<Preview>
+  <Story name="Spacial view" parameters={{ jest: ['Input.test.js']}}>
+    <Input
+      id={"input-test-storybook"}
+      name={"input-test-storybook"}
+      htmlFor={"input-test-storybook"}
+      type={"text"}
+      inputLabel={"Input di prova di tipo TEXT"}
+      showErrorOnInput={true}
+      error={false}
+      errorMessage={""}
+      required={true}
+      onBlur={action('onBlur')}
+      onChange={action('onChange')}
+      value={null}
+      placeholder={"Digita quello che vuoi, è una prova"}
+      disabled={false}
+      debug={false}
+    ></Input>
+  </Story>
+</Preview>

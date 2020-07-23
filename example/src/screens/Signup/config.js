@@ -176,60 +176,60 @@ export const form = ({ t, dynamics }) => {
         }
       ]
     },
-    // {
-    //   name: "occupation",
-    //   label: t("Signup.form.occupation"),
-    //   helperText: t("Signup.form.occupation.helperText"),
-    //   tag: "select",
-    //   disabled: ({ options }) => {
-    //     return !options || (options && options.length === 1) ? true : false;
-    //   },
-    //   validations: [
-    //     {
-    //       kind: "required",
-    //       message: t("Error.message.required")
-    //     }
-    //   ],
-    //   options: [
-    //     { value: "Imprenditore", name: t("Signup.form.occupation.Imprenditore") },
-    //     { value: "Titolare", name: t("Signup.form.occupation.Titolare") },
-    //     { value: "Associato", name: t("Signup.form.occupation.Associato") },
-    //     { value: "CEO/Director", name: t("Signup.form.occupation.CEO/Director") },
-    //     { value: "Manager", name: t("Signup.form.occupation.Manager") },
-    //     { value: "Architect", name: t("Signup.form.occupation.Architect") },
-    //     { value: "Architect Director", name: t("Signup.form.occupation.Architect Director") },
-    //     { value: "Interior Designer", name: t("Signup.form.occupation.Interior Designer") },
-    //     { value: "Senior Architect/Designer", name: t("Signup.form.occupation.Senior Architect/Designer") },
-    //     { value: "Junior Architect/Designer", name: t("Signup.form.occupation.Junior Architect/Designer") },
-    //     { value: "Progettista", name: t("Signup.form.occupation.Progettista") },
-    //     { value: "Progettista Strutturale", name: t("Signup.form.occupation.Progettista Strutturale") },
-    //     { value: "Direttore Punto Vendita", name: t("Signup.form.occupation.Direttore Punto Vendita") },
-    //     { value: "Project Manager", name: t("Signup.form.occupation.Project Manager") },
-    //     { value: "Venditore", name: t("Signup.form.occupation.Venditore") },
-    //     { value: "Freelance", name: t("Signup.form.occupation.Freelance") },
-    //     { value: "Agente", name: t("Signup.form.occupation.Agente") },
-    //     { value: "Sales Manager", name: t("Signup.form.occupation.Sales Manager") },
-    //     { value: "Sales Team", name: t("Signup.form.occupation.Sales Team") },
-    //     { value: "Marketing Manager", name: t("Signup.form.occupation.Marketing Manager") },
-    //     { value: "Marketing Team", name: t("Signup.form.occupation.Marketing Team") },
-    //     { value: "Ufficio Acquisti - Responsabile", name: t("Signup.form.occupation.Ufficio Acquisti - Responsabile") },
-    //     { value: "Ufficio Acquisti - Staff", name: t("Signup.form.occupation.Ufficio Acquisti - Staff") },
-    //     { value: "Referente tecnico", name: t("Signup.form.occupation.Referente tecnico") },
-    //     { value: "Referente Logistica", name: t("Signup.form.occupation.Referente Logistica") },
-    //     { value: "Invio Ordini", name: t("Signup.form.occupation.Invio Ordini") },
-    //     { value: "Impiegato", name: t("Signup.form.occupation.Impiegato") },
-    //     { value: "Amministrativo", name: t("Signup.form.occupation.Amministrativo") },
-    //     { value: "Stagista", name: t("Signup.form.occupation.Stagista") },
-    //     { value: "Studente", name: t("Signup.form.occupation.Studente") },
-    //     { value: "Altro", name: t("Signup.form.occupation.Altro") },
-    //     { value: "Privato", name: t("Signup.form.occupation.Privato") },
-    //     { value: "Product Designer", name: t("Signup.form.occupation.Product Designer") },
-    //     { value: "Assistant", name: t("Signup.form.occupation.Assistant") },
-    //     { value: "Chief Editor", name: t("Signup.form.occupation.Chief Editor") },
-    //     { value: "Editor", name: t("Signup.form.occupation.Editor") },
-    //     { value: "Journalist", name: t("Signup.form.occupation.Journalist") }
-    //   ]
-    // },
+    {
+      name: "occupation",
+      label: t("Signup.form.occupation"),
+      helperText: t("Signup.form.occupation.helperText"),
+      tag: "select",
+      disabled: ({ options }) => {
+        return !options || (options && options.length === 1) ? true : false;
+      },
+      validations: [
+        {
+          kind: "required",
+          message: t("Error.message.required")
+        }
+      ],
+      options: [
+        { value: "Imprenditore", name: t("Signup.form.occupation.Imprenditore") },
+        { value: "Titolare", name: t("Signup.form.occupation.Titolare") },
+        { value: "Associato", name: t("Signup.form.occupation.Associato") },
+        { value: "CEO/Director", name: t("Signup.form.occupation.CEO/Director") },
+        { value: "Manager", name: t("Signup.form.occupation.Manager") },
+        { value: "Architect", name: t("Signup.form.occupation.Architect") },
+        { value: "Architect Director", name: t("Signup.form.occupation.Architect Director") },
+        { value: "Interior Designer", name: t("Signup.form.occupation.Interior Designer") },
+        { value: "Senior Architect/Designer", name: t("Signup.form.occupation.Senior Architect/Designer") },
+        { value: "Junior Architect/Designer", name: t("Signup.form.occupation.Junior Architect/Designer") },
+        { value: "Progettista", name: t("Signup.form.occupation.Progettista") },
+        { value: "Progettista Strutturale", name: t("Signup.form.occupation.Progettista Strutturale") },
+        { value: "Direttore Punto Vendita", name: t("Signup.form.occupation.Direttore Punto Vendita") },
+        { value: "Project Manager", name: t("Signup.form.occupation.Project Manager") },
+        { value: "Venditore", name: t("Signup.form.occupation.Venditore") },
+        { value: "Freelance", name: t("Signup.form.occupation.Freelance") },
+        { value: "Agente", name: t("Signup.form.occupation.Agente") },
+        { value: "Sales Manager", name: t("Signup.form.occupation.Sales Manager") },
+        { value: "Sales Team", name: t("Signup.form.occupation.Sales Team") },
+        { value: "Marketing Manager", name: t("Signup.form.occupation.Marketing Manager") },
+        { value: "Marketing Team", name: t("Signup.form.occupation.Marketing Team") },
+        { value: "Ufficio Acquisti - Responsabile", name: t("Signup.form.occupation.Ufficio Acquisti - Responsabile") },
+        { value: "Ufficio Acquisti - Staff", name: t("Signup.form.occupation.Ufficio Acquisti - Staff") },
+        { value: "Referente tecnico", name: t("Signup.form.occupation.Referente tecnico") },
+        { value: "Referente Logistica", name: t("Signup.form.occupation.Referente Logistica") },
+        { value: "Invio Ordini", name: t("Signup.form.occupation.Invio Ordini") },
+        { value: "Impiegato", name: t("Signup.form.occupation.Impiegato") },
+        { value: "Amministrativo", name: t("Signup.form.occupation.Amministrativo") },
+        { value: "Stagista", name: t("Signup.form.occupation.Stagista") },
+        { value: "Studente", name: t("Signup.form.occupation.Studente") },
+        { value: "Altro", name: t("Signup.form.occupation.Altro") },
+        { value: "Privato", name: t("Signup.form.occupation.Privato") },
+        { value: "Product Designer", name: t("Signup.form.occupation.Product Designer") },
+        { value: "Assistant", name: t("Signup.form.occupation.Assistant") },
+        { value: "Chief Editor", name: t("Signup.form.occupation.Chief Editor") },
+        { value: "Editor", name: t("Signup.form.occupation.Editor") },
+        { value: "Journalist", name: t("Signup.form.occupation.Journalist") }
+      ]
+    },
     // {
     //   name: "interests",
     //   label: t("Signup.form.interests"),

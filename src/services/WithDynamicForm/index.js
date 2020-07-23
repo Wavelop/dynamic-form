@@ -1,8 +1,6 @@
 import React from "react";
 import { DynamicFormProvider } from "../DynamicForm";
 
-// export default withProvider(DynamicFormProvider)(withRouter()(Signup));  // avere withDynnamiForm
-
 const withProvider = attributes => WrappedComponent => {
   class WithProvider extends React.Component {
     render() {
