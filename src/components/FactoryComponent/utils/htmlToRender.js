@@ -86,7 +86,9 @@ export const htmlToRender = (handleChangeEvent, classes) => (
       break;
 
     case "row":
-      newValue = <DynamicForm config={config.fields} />;
+      newValue = (
+        <DynamicForm config={config.fields} layout={config.customRow} />
+      );
       break;
 
     // Custom components
