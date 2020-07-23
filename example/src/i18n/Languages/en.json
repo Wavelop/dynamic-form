@@ -73,5 +73,7 @@
   "Signup.form.lastName.helperText": "Insert your last name",
   "Signup.form.marketingAgreement": "I express my consent to process my personal data for Marketing purposes.",
   "Signup.form.newsletterAgreement": "I want to subscribe to Newsletter.",
+  "Signup.form.nickName": "NickName*",
+  "Signup.form.nickName.helperText": "Inserisci il tuo sopprannome",
   "zLastElementOfTranslation": ""
 }

@@ -93,6 +93,7 @@ export const htmlToRender = (handleChangeEvent, classes) => (
             name={config.name}
             htmlFor={config.name}
             type={config.type}
+            attributes={config.attributes}
             inputLabel={config.label}
             showErrorOnInput={true}
             error={error}
