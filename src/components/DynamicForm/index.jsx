@@ -73,9 +73,6 @@ const DynamicForm = forwardRef((props, ref) => {
 
   const renderWrapper = (Layout, children) => {
     let result = <section className={wrapperStyle}>{children}</section>;
-
-    console.log(Layout);
-
     if (Layout) {
       result = <Layout>{children}</Layout>;
     }
