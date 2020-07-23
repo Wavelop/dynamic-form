@@ -3,14 +3,10 @@
 import React, { useMemo } from "react";
 import PropTypes from "prop-types";
 
-// Application dependencies
-import { useTheme } from "../../services";
-import { useStyles } from "./style";
-
 // Debug
-let renderCount = {};
+let renderCount = {}; 
 
-function InputComponent(props) {
+function CustomInputComponent(props) {
   const {
     id,
     name,
@@ -18,7 +14,7 @@ function InputComponent(props) {
     type,
 
     inputLabel,
-
+    
     showErrorOnInput,
     error,
     errorMessage,
@@ -28,17 +24,12 @@ function InputComponent(props) {
 
     required,
     disabled,
-
+    
     onBlur,
     onChange,
 
-    debug
+    debug,
   } = props;
-
-  const theme = useTheme();
-  const classes = useStyles(theme)();
-  const { inputLabel: inputLabelStyle, inputError: inputErrorStyle } =
-    classes || {};
 
   const attributes = {
     id,
@@ -50,33 +41,58 @@ function InputComponent(props) {
     disabled,
     onBlur,
     onChange
-  };
+  }
 
   const printCounter = () => {
-    renderCount[name] =
-      renderCount[name] !== undefined ? renderCount[name] + 1 : 1;
+    renderCount[name] = renderCount[name] !== undefined ? renderCount[name]+1 : 1;
     console.table({
       "From file": "src/dynamicForm/components/Input/index.js",
       "Input name": name,
       "Input type": type || "text",
       "Render count": renderCount[name]
     });
-  };
+  }
 
   const renderInput = () => {
+
     debug && printCounter();
 
     return (
-      <section>
+      <section style={{    
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "flex-start"
+      }}>
         {inputLabel && (
-          <label className={inputLabelStyle} htmlFor={htmlFor}>
+          <label style={{    
+            fontFamily: "Helvetica",
+            color: "gray"
+          }}  htmlFor={htmlFor}>
             {inputLabel}
           </label>
         )}
-        <input {...attributes} />
+        <input 
+          style={{
+            border: "1px solid gray",
+            borderRadius: "5px",
+            lineHeight: "30px",
+            minWidth: "200px",
+            margin: "10px 0px 0px",
+          }}
+          {...attributes}
+        /> 
         {}
         {error && showErrorOnInput && (
-          <p className={inputErrorStyle}>{errorMessage}</p>
+          <p style={{
+            padding: "0",
+            margin: "10px 0 0 0",
+            fontSize: "14px",
+            fontFamily: "Helvatica",
+            fontWeight: "100",
+            color: "red",
+          }}>
+            {errorMessage}
+          </p>
         )}
       </section>
     );
@@ -85,14 +101,14 @@ function InputComponent(props) {
   return useMemo(renderInput, [value, error, errorMessage]);
 }
 
-InputComponent.propTypes = {
+CustomInputComponent.propTypes = {
   id: PropTypes.string,
   name: PropTypes.string,
   htmlFor: PropTypes.string,
   type: PropTypes.string,
 
   inputLabel: PropTypes.string,
-
+  
   showErrorOnInput: PropTypes.bool,
   error: PropTypes.any,
   errorMessage: PropTypes.string,
@@ -102,11 +118,11 @@ InputComponent.propTypes = {
 
   required: PropTypes.bool,
   disabled: PropTypes.bool,
-
+  
   onBlur: PropTypes.func,
   onChange: PropTypes.func,
-
-  debug: PropTypes.bool
+  
+  debug: PropTypes.bool,
 };
 
-export default InputComponent;
+export default CustomInputComponent;

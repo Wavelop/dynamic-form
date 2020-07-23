@@ -3,10 +3,10 @@ import React, { useMemo } from "react";
 import PropTypes from "prop-types";
 
 // import from application dependency
-import { useTheme } from "../../services"; 
+import { useTheme } from "../../services";
 import { useStyles } from "./style";
-import { handleChangeEvent } from "./utils/handleChangeEvent";
-import { htmlToRender } from "./utils/htmlToRender";
+
+import { handleChangeEvent, htmlToRender } from "./utils/utils";
 
 function FactoryComponent(props) {
   const { config, data, onChange, debug, error } = props;
@@ -15,12 +15,9 @@ function FactoryComponent(props) {
   const classes = useStyles(theme)();
   const { hide: hideStyle, wrapper: wrapperStyle } = classes || {};
 
-
   const renderWrapper = () => {
     return (
-      <span
-        className={config.tag === "hidden" ? hideStyle : wrapperStyle}
-      >
+      <span className={config.tag === "hidden" ? hideStyle : wrapperStyle}>
         {htmlToRender(handleChangeEvent, classes)(
           config,
           data,
@@ -40,7 +37,7 @@ FactoryComponent.propTypes = {
   data: PropTypes.any,
   onChange: PropTypes.func,
   error: PropTypes.any,
-  debug: PropTypes.bool,
+  debug: PropTypes.bool
 };
 
 export default FactoryComponent;

@@ -156,7 +156,7 @@ function Example(props) {
     <form onSubmit={onSubmit}>
       <DynamicForm
         config={formConfig}
-        updateModelAtBlur={true}
+        updateErrorAtBlur={true}
         debug={true}
       />
 

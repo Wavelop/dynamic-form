@@ -1,10 +1,11 @@
-export const setupModel = (config, dispatchModel) => {
+export const setupModel = (config, dispatchModel, dataCoverterHandler) => {
   let modelObj = {};
 
   config.forEach(componentConfig => {
     const { name, defaultValue } = componentConfig;
-    modelObj[name] =
+    const initialValue =
       defaultValue !== undefined && defaultValue !== null ? defaultValue : null;
+    modelObj[name] = dataCoverterHandler(initialValue, componentConfig);
   });
 
   dispatchModel({

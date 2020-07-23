@@ -5,5 +5,8 @@
             "jsx": true,
             "modules": true
         }
+    },
+    "rules": {
+        "no-throw-literal": "off"
     }
 }
