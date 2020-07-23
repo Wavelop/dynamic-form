@@ -11,3 +11,4 @@ export { default as Spinner } from "./Spinner";
 export { default as CustomInput } from "./CustomInput";
 export { default as DatePicker } from "./DatePicker";
 export { default as FormLayout } from "./FormLayout";
+export { default as CustomRow } from "./CustomRow";

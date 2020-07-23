@@ -1,4 +1,4 @@
-import { CustomInput, DatePicker } from "Components";
+import { CustomInput, DatePicker, CustomRow } from "Components";
 
 export const form = ({ t, dynamics }) => {
 
@@ -6,28 +6,10 @@ export const form = ({ t, dynamics }) => {
     {
       name: "row1",
       tag: "row",
+      customRow: CustomRow,
       fields: [
         {
           name: "email1",
-          label: t("Signup.form.email"),
-          helperText: t("Signup.form.email.helperText"),
-          tag: CustomInput,
-          type: "email",
-          validations: [
-            {
-              kind: "required",
-              message: t("Error.message.required")
-            },
-            {
-              kind: "pattern",
-              reg: /^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$/,
-              considerRegAs: "positive",
-              message: t("Error.message.pattern.email")
-            }
-          ]
-        },
-        {
-          name: "email2",
           label: t("Signup.form.email"),
           helperText: t("Signup.form.email.helperText"),
           tag: CustomInput,
