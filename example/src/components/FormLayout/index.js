@@ -18,7 +18,7 @@ function FormLayout(props) {
   return (
     <div style={{
       display: 'grid',
-      gridTemplateColumns: '50% 50%',
+      gridTemplateColumns: '100%',
       alignItems: 'center',
       padding: '0px 0px 50px',
     }}>

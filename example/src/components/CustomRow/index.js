@@ -18,7 +18,9 @@ function CustomRow(props) {
   return (
     <div style={{
       display: 'flex',
-      flexDirection: "row"
+      flexDirection: "row",
+      alignItems: 'center',
+      paddingRight: '20px',
     }}>
         {children}
     </div>
