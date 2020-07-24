@@ -9,7 +9,8 @@ export const htmlToRender = (handleChangeEvent, classes) => (
   data,
   handleChange,
   error,
-  debug
+  debug,
+  updateErrorAtBlur
 ) => {
   debug && printCounter(config);
 
@@ -87,7 +88,11 @@ export const htmlToRender = (handleChangeEvent, classes) => (
 
     case "row":
       newValue = (
-        <DynamicForm config={config.fields} layout={config.customRow} />
+        <DynamicForm
+          config={config.fields}
+          layout={config.customRow}
+          updateErrorAtBlur={updateErrorAtBlur}
+        />
       );
       break;
 

@@ -5,9 +5,9 @@ export const groupByRows = config => state => {
   config.forEach(configElement => {
     const { tag, name, fields } = configElement;
     if (tag === "row") {
-      stateGroupedByRows[name] = groupByRows(fields)(state);
+      stateGroupedByRows[name] = groupByRows(fields)(copyOfModelState);
     } else {
-      stateGroupedByRows[name] = state[name];
+      stateGroupedByRows[name] = copyOfModelState[name];
     }
   });
 

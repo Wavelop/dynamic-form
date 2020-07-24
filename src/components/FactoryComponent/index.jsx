@@ -9,7 +9,7 @@ import { useStyles } from "./style";
 import { handleChangeEvent, htmlToRender } from "./utils/utils";
 
 function FactoryComponent(props) {
-  const { config, data, onChange, debug, error } = props;
+  const { config, data, onChange, debug, error, updateErrorAtBlur } = props;
 
   const theme = useTheme();
   const classes = useStyles(theme)();
@@ -23,7 +23,8 @@ function FactoryComponent(props) {
           data,
           onChange,
           error,
-          debug
+          debug,
+          updateErrorAtBlur
         )}
       </span>
     );
@@ -37,7 +38,8 @@ FactoryComponent.propTypes = {
   data: PropTypes.any,
   onChange: PropTypes.func,
   error: PropTypes.any,
-  debug: PropTypes.bool
+  debug: PropTypes.bool,
+  updateErrorAtBlur: PropTypes.any
 };
 
 export default FactoryComponent;

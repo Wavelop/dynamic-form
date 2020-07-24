@@ -1,7 +1,3 @@
-export const handleChangeEvent = (
-  name,
-  handleChange,
-  eventType
-) => (e) => {  
+export const handleChangeEvent = (name, handleChange, eventType) => e => {
   handleChange(name, eventType)(e);
 };

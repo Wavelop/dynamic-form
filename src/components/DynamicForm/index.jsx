@@ -100,7 +100,8 @@ DynamicForm.propTypes = {
   config: PropTypes.array,
   validateOnFocusOut: PropTypes.bool,
   debug: PropTypes.bool,
-  layout: PropTypes.any
+  layout: PropTypes.any,
+  updateErrorAtBlur: PropTypes.any
 };
 
 export default DynamicForm;
