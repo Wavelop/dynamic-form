@@ -19,3 +19,4 @@ export {
   getConfig,
   getUpdateError
 } from "./Config";
+export { groupByRows } from "./StateModel";

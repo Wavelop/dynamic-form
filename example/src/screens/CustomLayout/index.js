@@ -34,9 +34,9 @@ function Signup() {
     event.preventDefault();
 
     try {
-      const { state, stateCrypted, stateFull } = dynamicForm.submit();
+      const { state, stateCrypted, stateFull, stateGroupedByRows } = dynamicForm.submit();
 
-      console.log(state, stateCrypted, stateFull);
+      console.log(state, stateCrypted, stateFull, stateGroupedByRows);
 
     } catch ({numberOfErrors, errors}) {
       console.log(numberOfErrors, errors);
