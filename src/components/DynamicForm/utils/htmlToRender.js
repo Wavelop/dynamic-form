@@ -10,7 +10,8 @@ export const htmlToRender = ({
   stateFromService,
   errorFromService,
   dispatchModel,
-  handleChange
+  handleChange,
+  updateErrorAtBlur
 }) => {
   return (config, { debug }) => {
     const value = config ? (
@@ -31,6 +32,7 @@ export const htmlToRender = ({
         return (
           <span key={index * index + 1}>
             <FactoryComponent
+              updateErrorAtBlur={updateErrorAtBlur}
               debug={debug}
               onChange={handleChange(dispatchModel, "UPDATE_MODEL")}
               config={configObj}

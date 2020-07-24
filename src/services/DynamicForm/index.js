@@ -1,6 +1,6 @@
 import React, { createContext, useContext, useReducer } from "react";
 import deafultTheme from "../../theme";
-import { getConfig, updateErrors, getUpdateError } from "../";
+import { getConfig, updateErrors, getUpdateError, groupByRows } from "../";
 
 // Contexts
 const DynamicFormModelStateContext = createContext();
@@ -38,7 +38,8 @@ const helpers = {
       return {
         state: copyOfModelState,
         stateCrypted: applyCrypt2State(copyOfModelState, getConfig()),
-        stateFull: modelState
+        stateFull: modelState,
+        stateGroupedByRows: groupByRows(getConfig())(copyOfModelState)
       };
     } else {
       throw {

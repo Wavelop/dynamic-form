@@ -4,18 +4,22 @@ export const updateErrors = config => stateFromService => {
   let errorsObj = {};
 
   config.forEach(componentConfig => {
-    const { name, validations } = componentConfig;
-    const data = stateFromService[name];
+    const { name, validations, tag, fields } = componentConfig;
+    const copyOfModelState = { ...stateFromService };
+    const data = copyOfModelState[name];
 
-    errorsObj[name] = [];
-
-    validations &&
-      validations.forEach(validation => {
-        let validationResult = validate(validation, data || "");
-        if (validationResult) {
-          errorsObj[name].push(validation);
-        }
-      });
+    if (tag === "row") {
+      errorsObj = { ...errorsObj, ...updateErrors(fields)(copyOfModelState) };
+    } else {
+      errorsObj[name] = [];
+      validations &&
+        validations.forEach(validation => {
+          let validationResult = validate(validation, data || "");
+          if (validationResult) {
+            errorsObj[name].push(validation);
+          }
+        });
+    }
   });
 
   return errorsObj;

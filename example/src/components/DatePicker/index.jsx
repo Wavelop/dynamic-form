@@ -35,7 +35,7 @@ function DatePickerComponent(props) {
 
     debug,
   } = props;
-  console.log(value);
+
   const printCounter = () => {
     renderCount[name] = renderCount[name] !== undefined ? renderCount[name]+1 : 1;
     console.table({

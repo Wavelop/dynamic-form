@@ -2,13 +2,15 @@ import React from "react";
 import { Input, Select } from "../../"; // TODO: make free from materila ui
 import { printCounter } from "./printCounter";
 import { dataCoverterHandler } from "./dataCoverterHandler";
+import { DynamicForm } from "../../";
 
 export const htmlToRender = (handleChangeEvent, classes) => (
   config,
   data,
   handleChange,
   error,
-  debug
+  debug,
+  updateErrorAtBlur
 ) => {
   debug && printCounter(config);
 
@@ -80,6 +82,16 @@ export const htmlToRender = (handleChangeEvent, classes) => (
               : false
           }
           debug={debug}
+        />
+      );
+      break;
+
+    case "row":
+      newValue = (
+        <DynamicForm
+          config={config.fields}
+          layout={config.customRow}
+          updateErrorAtBlur={updateErrorAtBlur}
         />
       );
       break;
