@@ -61,7 +61,8 @@ function CustomInputComponent(props) {
       <section style={{    
         display: "flex",
         flexDirection: "column",
-        alignItems: "flex-start"
+        alignItems: "flex-start",
+        paddingRight: '20px',
       }}>
         {inputLabel && (
           <label style={{    

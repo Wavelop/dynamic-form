@@ -1,7 +1,7 @@
 import React, {
   useEffect,
   forwardRef,
-  useImperativeHandle,
+  isValidElement,
   useCallback
 } from "react";
 import PropTypes from "prop-types";
@@ -28,7 +28,7 @@ import {
 import { DebugDynamicForm } from "../";
 
 const DynamicForm = forwardRef((props, ref) => {
-  const { config, updateErrorAtBlur, debug } = props;
+  const { config, updateErrorAtBlur, debug, layout } = props;
 
   const stateFromService = useDynamicForm("state", "model");
   const errorFromService = useDynamicForm("state", "error");
@@ -71,24 +71,37 @@ const DynamicForm = forwardRef((props, ref) => {
     initFunc();
   }, [initFunc]);
 
-  return (
-    <section className={wrapperStyle}>
-      {htmlToRender({
-        stateFromService,
-        errorFromService,
-        dispatchModel,
-        handleChange,
-        updateErrorAtBlur
-      })(config, { debug })}
-      {debug && <DebugDynamicForm />}
-    </section>
+  const renderWrapper = (Layout, children) => {
+    let result = <section className={wrapperStyle}>{children}</section>;
+    if (Layout) {
+      result = <Layout>{children}</Layout>;
+    }
+    return result;
+  };
+
+  const renderWrapperMemo = useCallback(renderWrapper, [
+    stateFromService,
+    errorFromService
+  ]);
+
+  return renderWrapperMemo(
+    layout,
+    htmlToRender({
+      stateFromService,
+      errorFromService,
+      dispatchModel,
+      handleChange,
+      updateErrorAtBlur
+    })(config, { debug })
   );
 });
 
 DynamicForm.propTypes = {
   config: PropTypes.array,
   validateOnFocusOut: PropTypes.bool,
-  debug: PropTypes.bool
+  debug: PropTypes.bool,
+  layout: PropTypes.any,
+  updateErrorAtBlur: PropTypes.any
 };
 
 export default DynamicForm;

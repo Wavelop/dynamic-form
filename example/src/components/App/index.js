@@ -41,6 +41,16 @@ const SignupPreloadData = Loadable({
   }
 });
 
+const CustomLayout = Loadable({
+  loader: () =>
+    import("Screens").then(screens => {
+      return screens.CustomLayout;
+    }),
+  loading() {
+    return <Spinner />;
+  }
+});
+
 function App() {
   return (
     <TranslateProvider>
@@ -56,6 +66,11 @@ function App() {
                     exact={true}
                     path="/pre"
                     component={SignupPreloadData}
+                  />
+                  <PublicRoute
+                    exact={true}
+                    path="/custom-layout"
+                    component={CustomLayout}
                   />
                 </Switch>
               </Router>
