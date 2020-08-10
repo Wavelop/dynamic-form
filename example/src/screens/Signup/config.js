@@ -1,4 +1,4 @@
-import { CustomInput, DatePicker } from "Components";
+import { CustomInput, DatePicker, TextField } from "Components";
 
 export const form = ({ t, dynamics }) => {
 
@@ -230,6 +230,23 @@ export const form = ({ t, dynamics }) => {
         { value: "Journalist", name: t("Signup.form.occupation.Journalist") }
       ]
     },
+    // {
+    //   name: "nickName",
+    //   label: t("Signup.form.nickName"),
+    //   helperText: t("Signup.form.nickName.helperText"),
+    //   tag: TextField,
+    //   type: "text",
+    //   attributes: {
+    //     multiline: true,
+    //     variant: 'standard'
+    //   },
+    //   validations: [
+    //     {
+    //       kind: "required",
+    //       message: t("Error.message.required")
+    //     }
+    //   ]
+    // },
     // {
     //   name: "interests",
     //   label: t("Signup.form.interests"),

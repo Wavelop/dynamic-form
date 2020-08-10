@@ -63,7 +63,7 @@ function Signup() {
               locale: language
             }
           })}
-          updateErrorAtBlur={true}
+          updateErrorAtBlur={false}
           debug={debug}
         />
 
