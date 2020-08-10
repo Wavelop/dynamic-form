@@ -1,18 +1,20 @@
 {
   "name": "dynamic-form-wavelop",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "Dynamic form from configuration with React",
   "author": "Wavelop",
   "license": "MIT",
   "repository": "Wavelop/dynamic-form",
   "main": "dist/index.js",
+  "types": "dist/index.d.ts",
   "module": "dist/index.modern.js",
+  "esmodule": "dist/index.modern.js",
   "source": "src/index.js",
   "engines": {
     "node": ">=10"
   },
   "scripts": {
-    "build": "microbundle-crl --no-compress --format modern,cjs",
+    "build": "rm -rf dist && microbundle-crl -no-compress --format modern,cjs",
     "deploy": "npm run deploy:documentation",
     "deploy:documentation": "firebase use default && firebase deploy",
     "predeploy": "npm run build:storybook",
@@ -30,9 +32,9 @@
     "test:watch": "react-scripts test --env=jsdom"
   },
   "peerDependencies": {
-    "react": ">=16.0.1",
-    "react-dom": ">=16.0.1",
-    "react-jss": ">=10.1.1"
+    "react": "^16.13.1",
+    "react-dom": "^16.13.1",
+    "react-jss": "^10.1.1"
   },
   "devDependencies": {
     "@babel/core": "^7.9.0",
@@ -50,7 +52,7 @@
     "@storybook/addons": "^5.3.18",
     "@storybook/preset-create-react-app": "^2.1.1",
     "@storybook/react": "^5.3.18",
-    "babel-eslint": "^10.0.3",
+    "babel-eslint": "^10.1.0",
     "babel-jest": "^25.3.0",
     "babel-loader": "^8.1.0",
     "cross-env": "^7.0.2",
@@ -67,6 +69,7 @@
     "husky": "^4.2.5",
     "jest": "^25.3.0",
     "lint-staged": "^10.2.9",
+    "microbundle": "^0.12.3",
     "microbundle-crl": "^0.13.8",
     "npm-run-all": "^4.1.5",
     "prettier": "^1.19.1",

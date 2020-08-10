@@ -1,11 +1,10 @@
-/* global CONFIG */
 // import from 3rd party
 import React, { useState } from "react";
 import PropTypes from "prop-types";
 import camelCase from "camelcase";
 
 // import from application dependency
-import { Button, ErrorMessage } from "Components";
+import { Button, ErrorMessage, FormLayout } from "Components";
 import { useTranslate, useTranslateState } from "Translate";
 import { useError, withRouter } from "Services";
 
@@ -17,9 +16,6 @@ import {
 
 import { form as formConfig } from "./config.js";
 
-const { application } = CONFIG;
-const { debug } = application;
-
 function Signup() {
 
   const { language } = useTranslateState()
@@ -30,7 +26,7 @@ function Signup() {
   const i18n = useTranslate();
   const { t } = i18n;
 
-  const [error ] = useState("");
+  const [error, setError] = useState("");
   const { getError } = useError();
 
   const onSubmit = event => {
@@ -38,17 +34,21 @@ function Signup() {
     event.preventDefault();
 
     try {
-      const { state, stateCrypted, stateFull } = dynamicForm.submit();
+      const { state, stateCrypted, stateFull, stateGroupedByRows } = dynamicForm.submit();
 
-      console.log(state, stateCrypted, stateFull);
+      console.log(state, stateCrypted, stateFull, stateGroupedByRows);
 
     } catch ({numberOfErrors, errors}) {
       console.log(numberOfErrors, errors);
+      setError("form-invalid");
     }
   };
 
   return (
-    <section>
+    <section style={{
+      maxWidth: "1024px",
+      margin: "0 auto"
+    }}>
       {error && getError(error) ? (
         <ErrorMessage> {t(`Error.message.${camelCase(error)}`)} </ErrorMessage>
       ) : (
@@ -63,8 +63,8 @@ function Signup() {
               locale: language
             }
           })}
-          updateErrorAtBlur={false}
-          debug={debug}
+          updateErrorAtBlur={true}
+          layout={FormLayout}
         />
 
         <Button

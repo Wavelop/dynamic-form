@@ -1,5 +1,6 @@
 import React, { createContext, useContext, useReducer } from "react";
 import deafultTheme from "../../theme";
+import { getConfig, updateErrors, getUpdateError, groupByRows } from "../";
 
 // Contexts
 const DynamicFormModelStateContext = createContext();
@@ -7,8 +8,47 @@ const DynamicFormModelDispatchContext = createContext();
 const DynamicFormErrorStateContext = createContext();
 const DynamicFormErrorDispatchContext = createContext();
 const DynamicFormStyleContext = createContext();
+const DynamicFormHelperContext = createContext();
+
+// TODO: creare un sistema che sia non globale in questo modo
+let modelState = {};
+let errorState = {};
 
 let encryptionLocal = value => value;
+
+const helpers = {
+  submit: () => {
+    const copyOfModelState = { ...modelState };
+    let copyOfErrorState = { ...errorState };
+
+    let numberOfErrors = 0;
+
+    delete copyOfModelState._metadata;
+    delete copyOfErrorState._metadata;
+
+    copyOfErrorState = updateErrors(getConfig())(copyOfModelState);
+
+    getUpdateError()(copyOfErrorState);
+
+    Object.keys(copyOfErrorState).forEach(element => {
+      numberOfErrors += copyOfErrorState[element].length;
+    });
+
+    if (numberOfErrors === 0) {
+      return {
+        state: copyOfModelState,
+        stateCrypted: applyCrypt2State(copyOfModelState, getConfig()),
+        stateFull: modelState,
+        stateGroupedByRows: groupByRows(getConfig())(copyOfModelState)
+      };
+    } else {
+      throw {
+        numberOfErrors,
+        errors: copyOfErrorState
+      };
+    }
+  }
+};
 
 // Reducers
 function dynamicFormModelReducer(state, action) {
@@ -16,12 +56,38 @@ function dynamicFormModelReducer(state, action) {
 
   switch (type) {
     case "UPDATE_MODEL": {
-      return {
+      const keys = Object.keys(newState || {});
+      const numberOfChanges = keys.length;
+
+      let lasteElementTouched = null;
+
+      if (numberOfChanges === 1) {
+        lasteElementTouched = keys[0];
+      }
+
+      const newStateLocal = {
+        ...state,
+        ...newState,
+        _metadata: {
+          ...metadata,
+          lasteElementTouched
+        }
+      };
+
+      modelState = newStateLocal; // TODO: creare un sistema che sia non globale in questo modo
+
+      return newStateLocal;
+    }
+    case "SETUP_MODEL": {
+      const newStateLocal = {
         ...state,
         ...newState,
         _metadata: metadata
-        // something
       };
+
+      modelState = newStateLocal; // TODO: creare un sistema che sia non globale in questo modo
+
+      return newStateLocal;
     }
     default: {
       throw new Error(`Unhandled action type: ${action.type}`);
@@ -32,35 +98,30 @@ function dynamicFormModelReducer(state, action) {
 function dynamicFormErrorReducer(state, action) {
   const { type, newState } = action;
   switch (type) {
-    case "UPDATE_ERROR": {
-      let _globalErrors = 0;
+    case "UPDATE_ERROR":
+    case "UPDATE_ERROR_ON_SUBMIT": {
+      let numberOfErrors = 0;
 
       let errorSummary = {
         ...state,
         ...newState
-        // something
       };
 
-      let showError = errorSummary._showError;
-
-      delete errorSummary._globalErrors;
-      delete errorSummary._showError;
+      delete errorSummary._metadata;
 
       Object.keys(errorSummary).forEach(element => {
-        _globalErrors += errorSummary[element].length;
+        numberOfErrors += errorSummary[element].length;
       });
 
-      errorSummary["_globalErrors"] = _globalErrors;
-      errorSummary["_showError"] = showError;
+      errorSummary._metadata = {
+        numberOfErrors
+      };
+
+      errorState = errorSummary; // TODO: creare un sistema che sia non globale in questo modo
 
       return errorSummary;
     }
-    case "SHOW_ERROR": {
-      return {
-        ...state,
-        _showError: !state._showError
-      };
-    }
+
     default: {
       throw new Error(`Unhandled action type: ${action.type}`);
     }
@@ -69,15 +130,15 @@ function dynamicFormErrorReducer(state, action) {
 
 // Initial states
 const initialStateError = {
-  _showError: false
+  _metadata: {}
 };
 
 const initialStateModel = {
-  _metadata: false
+  _metadata: {}
 };
 
 export const DynamicFormProvider = props => {
-  const { encryption, customTheme } = props || {};
+  const { encryption, customTheme, children } = props || {};
 
   if (encryption && typeof encryption === "function") {
     encryptionLocal = encryption;
@@ -92,20 +153,22 @@ export const DynamicFormProvider = props => {
     initialStateError
   );
 
-  const { children } = props;
-
   return (
-    <DynamicFormStyleContext.Provider value={{...deafultTheme, ...customTheme}}>
-      <DynamicFormModelStateContext.Provider value={stateModel}>
-        <DynamicFormModelDispatchContext.Provider value={dispatchModel}>
-          <DynamicFormErrorStateContext.Provider value={stateError}>
-            <DynamicFormErrorDispatchContext.Provider value={dispatchError}>
-              {children}
-            </DynamicFormErrorDispatchContext.Provider>
-          </DynamicFormErrorStateContext.Provider>
-        </DynamicFormModelDispatchContext.Provider>
-      </DynamicFormModelStateContext.Provider>
-    </DynamicFormStyleContext.Provider>
+    <DynamicFormHelperContext.Provider value={helpers}>
+      <DynamicFormStyleContext.Provider
+        value={{ ...deafultTheme, ...customTheme }}
+      >
+        <DynamicFormModelStateContext.Provider value={stateModel}>
+          <DynamicFormModelDispatchContext.Provider value={dispatchModel}>
+            <DynamicFormErrorStateContext.Provider value={stateError}>
+              <DynamicFormErrorDispatchContext.Provider value={dispatchError}>
+                {children}
+              </DynamicFormErrorDispatchContext.Provider>
+            </DynamicFormErrorStateContext.Provider>
+          </DynamicFormModelDispatchContext.Provider>
+        </DynamicFormModelStateContext.Provider>
+      </DynamicFormStyleContext.Provider>
+    </DynamicFormHelperContext.Provider>
   );
 };
 
@@ -132,7 +195,11 @@ export const useDynamicForm = (type, version) => {
       break;
 
     default:
-      throw new Error("Your combination of type and version is not allowed.");
+      if (!type && !version) {
+        contextDynamic = DynamicFormHelperContext;
+      } else {
+        throw new Error("Your combination of type and version is not allowed.");
+      }
   }
 
   if (contextDynamic === null) {
@@ -148,7 +215,7 @@ export const useDynamicForm = (type, version) => {
 
 export const useTheme = () => {
   const context = useContext(DynamicFormStyleContext);
-  
+
   if (context === undefined) {
     throw new Error("this function must be used within a provider");
   }
@@ -156,12 +223,14 @@ export const useTheme = () => {
 };
 
 export const applyCrypt2State = (state, config) => {
+  const copyState = { ...state };
   config &&
     Array.isArray(config) &&
     config.length > 0 &&
     config.forEach(configObj => {
       if (configObj.crypt !== undefined && configObj.crypt === true) {
-        state[configObj.name] = encryptionLocal(state[configObj.name]);
+        copyState[configObj.name] = encryptionLocal(copyState[configObj.name]);
       }
     });
+  return copyState;
 };

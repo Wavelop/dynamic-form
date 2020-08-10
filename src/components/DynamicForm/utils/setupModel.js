@@ -1,18 +1,19 @@
-export const setupModel = (config, dispatchModel) => {
+export const setupModel = (config, dispatchModel, dataCoverterHandler) => {
+  let modelObj = {};
 
-    let modelObj = {};
+  config.forEach(componentConfig => {
+    const { name, defaultValue, tag } = componentConfig;
+    if (tag !== "row") {
+      const initialValue =
+        defaultValue !== undefined && defaultValue !== null
+          ? defaultValue
+          : null;
+      modelObj[name] = dataCoverterHandler(initialValue, componentConfig);
+    }
+  });
 
-    config.forEach((componentConfig) => {
-      const {name, defaultValue} = componentConfig;
-      modelObj[name] = defaultValue !== undefined &&
-      defaultValue !== null
-        ? defaultValue
-        : null;
-    }); 
-
-    dispatchModel({ 
-      type: "UPDATE_MODEL", 
-      newState: modelObj 
-    });
-  
+  dispatchModel({
+    type: "SETUP_MODEL",
+    newState: modelObj
+  });
 };

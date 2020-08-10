@@ -2,14 +2,13 @@
 import React, { useMemo } from "react";
 
 // Application dependencies
-import { useDynamicForm, useTheme } from "../../services"; 
+import { useDynamicForm, useTheme } from "../../services";
 import { useStyles } from "./style";
 
 // Debug
-let renderCountDebugDynamicForm = 1; 
+let renderCountDebugDynamicForm = 1;
 
 function DebugDynamicForm() {
-
   const stateFromService = useDynamicForm("state", "model");
   const errorFromService = useDynamicForm("state", "error");
   const theme = useTheme();
@@ -22,13 +21,11 @@ function DebugDynamicForm() {
       "From file": "src/dynamicForm/components/DebugDynamicForm/index.js",
       "Render count": renderCountDebugDynamicForm
     });
-  }
+  };
 
   const renderComponent = () => {
-
     printCounter();
 
-    debugger;
     return (
       <span>
         <pre className={backgroundStyle}>

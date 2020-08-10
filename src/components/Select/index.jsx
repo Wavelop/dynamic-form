@@ -10,7 +10,7 @@ import { useStyles } from "./style";
 // Debug
 let renderCount = {};
 
-function InputComponent(props) {
+function SelectComponent(props) {
   const {
     id,
     name,
@@ -25,6 +25,7 @@ function InputComponent(props) {
 
     value,
     placeholder,
+    options,
 
     required,
     disabled,
@@ -44,7 +45,7 @@ function InputComponent(props) {
     id,
     name,
     type,
-    value: value || "",
+    value,
     placeholder,
     required,
     disabled,
@@ -56,7 +57,7 @@ function InputComponent(props) {
     renderCount[name] =
       renderCount[name] !== undefined ? renderCount[name] + 1 : 1;
     console.table({
-      "From file": "src/dynamicForm/components/Input/index.js",
+      "From file": "src/components/Select/index.jsx",
       "Input name": name,
       "Input type": type || "text",
       "Render count": renderCount[name]
@@ -73,8 +74,17 @@ function InputComponent(props) {
             {inputLabel}
           </label>
         )}
-        <input {...attributes} />
-        {}
+        <select {...attributes}>
+          {options.map((configObj, index) => {
+            const { name, value } = configObj || {};
+            return (
+              <option key={index} value={value}>
+                {name}
+              </option>
+            );
+          })}
+        </select>
+
         {error && showErrorOnInput && (
           <p className={inputErrorStyle}>{errorMessage}</p>
         )}
@@ -85,7 +95,7 @@ function InputComponent(props) {
   return useMemo(renderInput, [value, error, errorMessage]);
 }
 
-InputComponent.propTypes = {
+SelectComponent.propTypes = {
   id: PropTypes.string,
   name: PropTypes.string,
   htmlFor: PropTypes.string,
@@ -109,4 +119,4 @@ InputComponent.propTypes = {
   debug: PropTypes.bool
 };
 
-export default InputComponent;
+export default SelectComponent;

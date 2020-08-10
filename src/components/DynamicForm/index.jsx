@@ -1,22 +1,34 @@
 import React, {
   useEffect,
   forwardRef,
-  useImperativeHandle,
+  isValidElement,
   useCallback
 } from "react";
 import PropTypes from "prop-types";
 
 // Application dependencies
-import { useDynamicForm, useTheme } from "../../services"; 
+import {
+  useDynamicForm,
+  useTheme,
+  saveConfig,
+  saveUpdateError
+} from "../../services";
+
 import { useStyles } from "./style";
-import { handleChange } from "./utils/handleChange";
-import { htmlToRender } from "./utils/htmlToRender";
-import { updateError } from "./utils/updateError";
-import { setupModel } from "./utils/setupModel";
+
+import {
+  handleChange,
+  htmlToRender,
+  updateError,
+  updateErrorOnSubmit,
+  setupModel,
+  dataCoverterHandler
+} from "./utils/utils";
+
 import { DebugDynamicForm } from "../";
 
 const DynamicForm = forwardRef((props, ref) => {
-  const { config, updateModelAtBlur, debug } = props;
+  const { config, updateErrorAtBlur, debug, layout } = props;
 
   const stateFromService = useDynamicForm("state", "model");
   const errorFromService = useDynamicForm("state", "error");
@@ -26,14 +38,12 @@ const DynamicForm = forwardRef((props, ref) => {
   const classes = useStyles(theme)();
   const { wrapper: wrapperStyle } = classes || {};
 
-  useImperativeHandle(ref, () => ({
-    validateAll() {
-      return errorFromService;
-    }
-  }));
-
   const updateGlobalErrors = () => {
-    updateError(config, updateModelAtBlur, dispatchError)(stateFromService);
+    updateError(
+      config,
+      updateErrorAtBlur,
+      dispatchError
+    )(stateFromService, errorFromService);
   };
 
   const memoizeDispatchFunc = useCallback(updateGlobalErrors, [
@@ -45,7 +55,14 @@ const DynamicForm = forwardRef((props, ref) => {
   }, [memoizeDispatchFunc]);
 
   const init = () => {
-    setupModel(config, dispatchModel);
+    setupModel(config, dispatchModel, dataCoverterHandler);
+    saveConfig(config);
+
+    saveUpdateError(errorFromDynamicFormValidationOnSubmit => {
+      updateErrorOnSubmit(dispatchError)(
+        errorFromDynamicFormValidationOnSubmit
+      );
+    });
   };
 
   const initFunc = useCallback(init, []);
@@ -54,23 +71,37 @@ const DynamicForm = forwardRef((props, ref) => {
     initFunc();
   }, [initFunc]);
 
-  return (
-    <section className={wrapperStyle}>
-      {htmlToRender({
-        stateFromService,
-        errorFromService,
-        dispatchModel,
-        handleChange
-      })(config, { debug })}
-      {debug && <DebugDynamicForm />}
-    </section>
+  const renderWrapper = (Layout, children) => {
+    let result = <section className={wrapperStyle}>{children}</section>;
+    if (Layout) {
+      result = <Layout>{children}</Layout>;
+    }
+    return result;
+  };
+
+  const renderWrapperMemo = useCallback(renderWrapper, [
+    stateFromService,
+    errorFromService
+  ]);
+
+  return renderWrapperMemo(
+    layout,
+    htmlToRender({
+      stateFromService,
+      errorFromService,
+      dispatchModel,
+      handleChange,
+      updateErrorAtBlur
+    })(config, { debug })
   );
 });
 
 DynamicForm.propTypes = {
   config: PropTypes.array,
   validateOnFocusOut: PropTypes.bool,
-  debug: PropTypes.bool
+  debug: PropTypes.bool,
+  layout: PropTypes.any,
+  updateErrorAtBlur: PropTypes.any
 };
 
 export default DynamicForm;

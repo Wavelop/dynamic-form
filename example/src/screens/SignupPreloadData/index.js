@@ -1,19 +1,18 @@
 /* global CONFIG */
 // import from 3rd party
-import React, { useState, useRef, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import PropTypes from "prop-types";
 import camelCase from "camelcase";
 
 // import from application dependency
 import { Button, ErrorMessage } from "Components";
 import { useTranslate, useTranslateState } from "Translate";
-import { withProvider, useError, withRouter, encryption } from "Services";
+import { useError, withRouter, encryption } from "Services";
 
 import {
   DynamicForm,
-  applyCrypt2State,
   useDynamicForm,
-  DynamicFormProvider,
+  withDynamicForm
 } from "dynamic-form";
 
 import { form as formConfig } from "./config.js";
@@ -24,10 +23,8 @@ const { debug } = application;
 function Signup() {
 
   const { language } = useTranslateState();
-  const stateFromService = useDynamicForm("state", "model");
-  const errorFromService = useDynamicForm("state", "error");
+  const dynamicForm = useDynamicForm();
   const dispatchModel = useDynamicForm("dispatch", "model");
-  const dispatchError = useDynamicForm("dispatch", "error");
 
   // Custom Hooks
   const i18n = useTranslate();
@@ -37,37 +34,19 @@ function Signup() {
   const { getError } = useError();
 
   const onSubmit = (event) => {
-    const { _globalErrors } = errorFromService;
-
-    if (_globalErrors > 0) {
-      childRef.current.validateAll();
-      setError("form-invalid");
-      dispatchError({
-        type: "SHOW_ERROR",
-      });
-    } else {
-      // TODO: locale: language is a workaround
-      let userObject = { ...stateFromService, locale: language };
-
-      applyCrypt2State(
-        userObject,
-        formConfig({
-          t,
-          dynamics: {
-            locale: language,
-          },
-        })
-      );
-
-      delete userObject._showError; // utils variable
-
-      console.log(userObject);
-    }
 
     event.preventDefault();
-  };
 
-  const childRef = useRef();
+    try {
+      const { state, stateCrypted, stateFull } = dynamicForm.submit();
+
+      console.log(state, stateCrypted, stateFull);
+
+    } catch ({numberOfErrors, errors}) {
+      console.log(numberOfErrors, errors);
+      setError("form-invalid");
+    }
+  };
 
   // ---------------------------
   // Way to prepopolate the form
@@ -83,7 +62,6 @@ function Signup() {
   }, [dispatchModel]);
   // ---------------------------
 
-  // Render
   return (
     <section>
       {error && getError(error) ? (
@@ -100,8 +78,7 @@ function Signup() {
               locale: language,
             },
           })}
-          ref={childRef}
-          updateModelAtBlur={true}
+          updateErrorAtBlur={true}
           debug={debug}
         />
 
@@ -123,6 +100,4 @@ Signup.propTypes = {
   classes: PropTypes.object
 };
 
-export default withProvider(DynamicFormProvider, { encryption, customTheme: {colorPrimary: "red"} })(
-  withRouter()((Signup))
-);
+export default withDynamicForm ({ encryption, customTheme: {colorPrimary: "red"} }) ( withRouter()((Signup)) );
