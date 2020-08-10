@@ -6,7 +6,7 @@ const withProvider = attributes => WrappedComponent => {
     render() {
       return (
         <DynamicFormProvider {...attributes}>
-          <WrappedComponent />
+          <WrappedComponent {...this.props} />
         </DynamicFormProvider>
       );
     }

@@ -14,12 +14,12 @@
     "node": ">=10"
   },
   "scripts": {
-    "build": "rm -rf dist && microbundle -no-compress --format modern,cjs --external none",
+    "build": "rm -rf dist && microbundle-crl -no-compress --format modern,cjs",
     "deploy": "npm run deploy:documentation",
     "deploy:documentation": "firebase use default && firebase deploy",
     "predeploy": "npm run build:storybook",
     "prepublish": "run-s build",
-    "start": "microbundle-crl watch --no-compress --format modern,cjs --external none",
+    "start": "microbundle-crl watch --no-compress --format modern,cjs",
     "storybook": "npm run prebuild:storybook && start-storybook",
     "test": "run-s test:unit test:lint test:build",
     "test:jest": "jest",
@@ -32,9 +32,9 @@
     "test:watch": "react-scripts test --env=jsdom"
   },
   "peerDependencies": {
-    "react": ">=16.0.1",
-    "react-dom": ">=16.0.1",
-    "react-jss": ">=10.1.1"
+    "react": "^16.13.1",
+    "react-dom": "^16.13.1",
+    "react-jss": "^10.1.1"
   },
   "devDependencies": {
     "@babel/core": "^7.9.0",
