@@ -13,7 +13,7 @@ import {
   DynamicForm,
   useDynamicForm,
   withDynamicForm
-} from "dynamic-form";
+} from "@dynamic-form/core";
 
 import { form as formConfig } from "./config.js";
 
@@ -100,4 +100,4 @@ Signup.propTypes = {
   classes: PropTypes.object
 };
 
-export default withDynamicForm ({ encryption, customTheme: {colorPrimary: "red"} }) ( withRouter()((Signup)) );
+export default withDynamicForm ({ encryption }) ( withRouter()((Signup)) );

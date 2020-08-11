@@ -12,7 +12,7 @@ import {
   DynamicForm,
   useDynamicForm,
   withDynamicForm,
-} from "dynamic-form";
+} from "@dynamic-form/core";
 
 import { form as formConfig } from "./config.js";
 
