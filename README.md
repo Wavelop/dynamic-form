@@ -55,6 +55,7 @@
     - [📝 Commit message by default](#-commit-message-by-default)
     - [📝 Examples of good commit message](#-examples-of-good-commit-message)
     - [📝 Why a structured commit message](#-why-a-structured-commit-message)
+  - [Create a release](#create-a-release)
 - [💰 License](#-license)
 - [📞 Contact](#-contact)
 
@@ -62,7 +63,7 @@
 <!-- ABOUT THE PROJECT -->
 ## 🔍 About The Project
 
-This project implements a form generator with React. Using mainly React Hooks. 
+This project implements a form generator with React Hooks. 
 
 ### 🔧 Built With
 
@@ -80,7 +81,7 @@ To start to use the library, follow these simple steps.
 This is an example of how to list things you need to use the software and how to install them.
 
 ```bash
-npm i react react-dom react-jss
+npm i react react-dom
 ```
 
 ### 💻 Installation
@@ -396,6 +397,20 @@ fix(#35): resolve button props problem of rendering
 - Communicating the nature of changes to teammates, the public, and other stakeholders.
 - Triggering build and publish processes.
 - Making it easier for people to contribute to your projects, by allowing them to explore a more structured commit history.
+
+### Create a release
+
+Execute the following command: 
+
+```
+npm publish
+```
+
+To test the package generation execute: 
+
+```
+npm pack
+```
 
 <!-- LICENSE -->
 ## 💰 License
