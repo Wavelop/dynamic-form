@@ -1,4 +1,7 @@
 import { CustomInput, DatePicker } from "Components";
+import { Input, Select } from "@wavelop/dynamic-form-base-components";
+
+console.log(Input, Select);
 
 export const form = ({ t, dynamics }) => {
 
@@ -26,7 +29,7 @@ export const form = ({ t, dynamics }) => {
       name: "password",
       label: t("Signup.form.password"),
       helperText: t("Signup.form.password.helperText"),
-      tag: "input",
+      tag: Input,
       type: "password",
       crypt: true,
       validations: [
@@ -55,7 +58,7 @@ export const form = ({ t, dynamics }) => {
       name: "confirmPassword",
       label: t("Signup.form.confirmPassword"),
       helperText: t("Signup.form.confirmPassword.helperText"),
-      tag: "input",
+      tag: Input,
       type: "password",
       crypt: true,
       validations: [
@@ -131,7 +134,7 @@ export const form = ({ t, dynamics }) => {
       name: "firstName",
       label: t("Signup.form.firstName"),
       helperText: t("Signup.form.firstName.helperText"),
-      tag: "input",
+      tag: Input,
       validations: [
         {
           kind: "required",
@@ -148,7 +151,7 @@ export const form = ({ t, dynamics }) => {
       name: "lastName",
       label: t("Signup.form.lastName"),
       helperText: t("Signup.form.lastName.helperText"),
-      tag: "input",
+      tag: Input,
       validations: [
         {
           kind: "required",
@@ -165,7 +168,7 @@ export const form = ({ t, dynamics }) => {
       name: "phone",
       label: t("Signup.form.phone"),
       helperText: t("Signup.form.phone.helperText"),
-      tag: "input",
+      tag: Input,
       defaultValue: "",
       validations: [
         {
@@ -180,7 +183,7 @@ export const form = ({ t, dynamics }) => {
       name: "occupation",
       label: t("Signup.form.occupation"),
       helperText: t("Signup.form.occupation.helperText"),
-      tag: "select",
+      tag: Select,
       disabled: ({ options }) => {
         return !options || (options && options.length === 1) ? true : false;
       },

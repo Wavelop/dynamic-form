@@ -1,11 +1,6 @@
 // NPM dependencies
-// import React, {useState} from "react";
 import React, { useMemo } from "react";
 import PropTypes from "prop-types";
-
-// Application dependencies
-import { useTheme } from "../../services";
-import { useStyles } from "./style";
 
 // Debug
 let renderCount = {};
@@ -36,11 +31,6 @@ function SelectComponent(props) {
     debug
   } = props;
 
-  const theme = useTheme();
-  const classes = useStyles(theme)();
-  const { inputLabel: inputLabelStyle, inputError: inputErrorStyle } =
-    classes || {};
-
   const attributes = {
     id,
     name,
@@ -70,7 +60,7 @@ function SelectComponent(props) {
     return (
       <section>
         {inputLabel && (
-          <label className={inputLabelStyle} htmlFor={htmlFor}>
+          <label htmlFor={htmlFor}>
             {inputLabel}
           </label>
         )}
@@ -86,7 +76,7 @@ function SelectComponent(props) {
         </select>
 
         {error && showErrorOnInput && (
-          <p className={inputErrorStyle}>{errorMessage}</p>
+          <p>{errorMessage}</p>
         )}
       </section>
     );

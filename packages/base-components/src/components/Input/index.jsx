@@ -3,10 +3,6 @@
 import React, { useMemo } from "react";
 import PropTypes from "prop-types";
 
-// Application dependencies
-import { useTheme } from "../../services";
-import { useStyles } from "./style";
-
 // Debug
 let renderCount = {};
 
@@ -34,11 +30,6 @@ function InputComponent(props) {
 
     debug
   } = props;
-
-  const theme = useTheme();
-  const classes = useStyles(theme)();
-  const { inputLabel: inputLabelStyle, inputError: inputErrorStyle } =
-    classes || {};
 
   const attributes = {
     id,
@@ -69,14 +60,14 @@ function InputComponent(props) {
     return (
       <section>
         {inputLabel && (
-          <label className={inputLabelStyle} htmlFor={htmlFor}>
+          <label htmlFor={htmlFor}>
             {inputLabel}
           </label>
         )}
         <input {...attributes} />
         {}
         {error && showErrorOnInput && (
-          <p className={inputErrorStyle}>{errorMessage}</p>
+          <p>{errorMessage}</p>
         )}
       </section>
     );

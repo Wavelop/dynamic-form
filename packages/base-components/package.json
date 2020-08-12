@@ -1,7 +1,7 @@
 {
-  "name": "@wavelop/dynamic-form",
-  "version": "0.1.0",
-  "description": "Dynamic Form: core functionalities",
+  "name": "@wavelop/dynamic-form-base-components",
+  "version": "0.0.1",
+  "description": "Dynamic Form: basic components",
   "author": "Wavelop",
   "license": "MIT",
   "repository": "Wavelop/dynamic-form",

@@ -12,7 +12,7 @@ import {
   DynamicForm,
   useDynamicForm,
   withDynamicForm,
-} from "@dynamic-form/core";
+} from "@wavelop/dynamic-form";
 
 import { form as formConfig } from "./config.js";
 
