@@ -49,6 +49,8 @@
   - [👶 Prerequisites](#-prerequisites)
   - [💻 Installation](#-installation)
 - [🚲 Usage](#-usage)
+- [🏘 Using existing components](#-using-existing-components)
+  - [🧱Build your custom components](#build-your-custom-components)
 - [✈️ Roadmap](#️-roadmap)
 - [🚑 Contributing](#-contributing)
   - [📝 Commit messages](#-commit-messages)
@@ -87,7 +89,7 @@ npm i react react-dom
 ### 💻 Installation
  
 ```bash
-npm i dynamic-form-wavelop
+npm install @wavelop/dynamic-form @wavelop/dynamic-form-base-components
 ```
 
 
@@ -98,12 +100,15 @@ Create a configuration file:
 
 ```js
 // config.js
+
+import { Input } from "@wavelop/dynamic-form-base-components";
+
 export default     
 {
   name: "email",
   label: "Email",
   helperText: "Write your email",
-  tag: "input",
+  tag: Input,
   type: "email",
   validations: [
     {
@@ -179,6 +184,14 @@ export default withDynamicForm()(Example);
 ```
 
 _For more examples, please refer to the [Documentation](https://dynamic-form-wavelop.firebaseapp.com/)_
+
+## 🏘 Using existing components
+
+Core functionalities can be used with exinsing components, as with the one of the package `@wavelop/dynamic-form-base-components` or you can create your custom components to inject inside the configuration. 
+
+### 🧱Build your custom components
+
+WIP.
 
 <!-- ROADMAP -->
 ## ✈️ Roadmap
@@ -428,8 +441,8 @@ Project Link: [https://github.com/Wavelop/dynamic-form](https://github.com/Wavel
 
 <!-- MARKDOWN LINKS & IMAGES -->
 <!-- https://www.markdownguide.org/basic-syntax/#reference-style-links -->
-[node-package-shield]: https://img.shields.io/npm/v/dynamic-form-wavelop.svg
-[node-package-url]: https://www.npmjs.com/package/dynamic-form-wavelop
+[node-package-shield]: https://img.shields.io/npm/v/@wavelop/dynamic-form.svg
+[node-package-url]: https://www.npmjs.com/package/@wavelop/dynamic-form
 [contributors-shield]: https://img.shields.io/github/contributors/Wavelop/dynamic-form.svg?style=flat-square
 [contributors-url]: https://github.com/Wavelop/dynamic-form/graphs/contributors
 [forks-shield]: https://img.shields.io/github/forks/Wavelop/dynamic-form.svg?style=flat-square
