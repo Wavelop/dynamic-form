@@ -400,7 +400,7 @@ fix(#35): resolve button props problem of rendering
 
 ### Create a release
 
-Execute the following command: 
+Execute the following command inside a package folder (I.E. core): 
 
 ```
 npm publish
