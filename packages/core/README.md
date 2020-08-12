@@ -1,4 +1,4 @@
-# @material-ui/core
+# @wavelop/dynamic-form
 
 Core functionalities.
 
