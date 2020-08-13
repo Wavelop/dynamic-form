@@ -1,11 +1,13 @@
-export const form = ({ t, dynamics }) => {
+import { Input } from "@wavelop/dynamic-form-base-components";
+
+export const form = ({ t }) => {
 
   return [
     {
       name: "email",
       label: t("Signup.form.email"),
       helperText: t("Signup.form.email.helperText"),
-      tag: "input",
+      tag: Input,
       type: "email",
       validations: [
         {
@@ -24,7 +26,7 @@ export const form = ({ t, dynamics }) => {
       name: "password",
       label: t("Signup.form.password"),
       helperText: t("Signup.form.password.helperText"),
-      tag: "input",
+      tag: Input,
       type: "password",
       crypt: true,
       validations: [
@@ -53,7 +55,7 @@ export const form = ({ t, dynamics }) => {
       name: "confirmPassword",
       label: t("Signup.form.confirmPassword"),
       helperText: t("Signup.form.confirmPassword.helperText"),
-      tag: "input",
+      tag: Input,
       type: "password",
       crypt: true,
       validations: [
@@ -82,7 +84,7 @@ export const form = ({ t, dynamics }) => {
     //   name: "firstName",
     //   label: t("Signup.form.firstName"),
     //   helperText: t("Signup.form.firstName.helperText"),
-    //   tag: "input",
+    //   tag: Input,
     //   validations: [
     //     {
     //       kind: "required",
@@ -99,7 +101,7 @@ export const form = ({ t, dynamics }) => {
     //   name: "lastName",
     //   label: t("Signup.form.lastName"),
     //   helperText: t("Signup.form.lastName.helperText"),
-    //   tag: "input",
+    //   tag: Input,
     //   validations: [
     //     {
     //       kind: "required",
@@ -133,7 +135,7 @@ export const form = ({ t, dynamics }) => {
     //   name: "phone",
     //   label: t("Signup.form.phone"),
     //   helperText: t("Signup.form.phone.helperText"),
-    //   tag: "input",
+    //   tag: Input,
     //   defaultValue: "",
     //   validations: [
     //     {

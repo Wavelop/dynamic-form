@@ -1,11 +1,9 @@
 import React from "react";
 import { addDecorator } from "@storybook/react";
-import { withTests } from "@storybook/addon-jest";
 import { addParameters } from "@storybook/react";
 import { INITIAL_VIEWPORTS } from "@storybook/addon-viewport";
 
-import { DynamicFormProvider } from "../src/services/index";
-import results from "../src/.jest-test-results.json";
+import { DynamicFormProvider } from "../packages/core/src/services/index.js";
 
 const headers = ["Getting Started", "Components"];
 
@@ -30,12 +28,6 @@ const storySort = (a, b) => {
 addDecorator(storyFn => (
   <DynamicFormProvider> {storyFn()} </DynamicFormProvider>
 ));
-
-addDecorator(
-  withTests({
-    results
-  })
-);
 
 // PARAMETERS
 
