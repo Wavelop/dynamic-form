@@ -1,6 +1,5 @@
 // NPM dependencies
-// import React, {useState} from "react";
-import React, { useMemo, useState } from "react";
+import React, { useMemo } from "react";
 import PropTypes from "prop-types";
 import TextField from '@material-ui/core/TextField';
 
@@ -28,8 +27,6 @@ function TextFieldComponent(props) {
 
         debug,
     } = props;
-
-    //const [value, setValue] = useState(value);
 
 
     const renderInput = () => 

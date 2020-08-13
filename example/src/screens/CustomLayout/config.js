@@ -1,6 +1,6 @@
-import { CustomInput, CustomRow } from "Components";
+import { CustomInput, CustomRow, DatePicker } from "Components";
 
-export const form = ({ t, dynamics }) => {
+export const form = ({ t }) => {
 
   return [
     {
@@ -75,6 +75,21 @@ export const form = ({ t, dynamics }) => {
           label: "Link di riferimento",
           helperText: "Inserisci un link di riferimenti",
           tag: CustomInput,
+          validations: [
+            {
+              kind: "required",
+              message: t("Error.message.required")
+            }
+          ]
+        },
+        {
+          name: "dateInline",
+          label: "Date picker Default",
+          helperText: "Inserisci una data valida",
+          tag: DatePicker,
+          dataManipulatorIn: (date) => {
+            return date ? new Date(date) : new Date();
+          },
           validations: [
             {
               kind: "required",
