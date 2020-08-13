@@ -1,5 +1,9 @@
 module.exports = {
-  stories: ["../packages/**/src/**/*.stories.([tj]s|mdx)"],
+  stories: ["../packages/**/src/**/*.stories.@([tj]s|mdx)"],
+  webpackFinal: async config => {
+    config.performance = { hints: false };
+    return config;
+  },
   addons: [
     
     // First box
