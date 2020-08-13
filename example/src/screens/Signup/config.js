@@ -1,9 +1,7 @@
 import { CustomInput, DatePicker } from "Components";
 import { Input, Select } from "@wavelop/dynamic-form-base-components";
 
-console.log(Input, Select);
-
-export const form = ({ t, dynamics }) => {
+export const form = ({ t }) => {
 
   return [
     {

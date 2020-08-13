@@ -61,7 +61,12 @@ function App() {
             <Layout>
               <Router>
                 <Switch>
-                  <PublicRoute exact={true} path="/" component={Signup} />
+                  <PublicRoute exact={true} path="/" component={CustomLayout} />
+                  <PublicRoute
+                    exact={true}
+                    path="/signup"
+                    component={Signup}
+                  />
                   <PublicRoute
                     exact={true}
                     path="/pre"
