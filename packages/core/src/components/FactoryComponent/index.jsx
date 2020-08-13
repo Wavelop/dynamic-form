@@ -9,17 +9,13 @@ function FactoryComponent(props) {
   const { config, data, onChange, debug, error, updateErrorAtBlur } = props;
 
   const renderWrapper = () => {
-    return (
-      <span>
-        {htmlToRender(handleChangeEvent)(
-          config,
-          data,
-          onChange,
-          error,
-          debug,
-          updateErrorAtBlur
-        )}
-      </span>
+    return htmlToRender(handleChangeEvent)(
+      config,
+      data,
+      onChange,
+      error,
+      debug,
+      updateErrorAtBlur
     );
   };
 

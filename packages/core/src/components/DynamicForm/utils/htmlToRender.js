@@ -1,5 +1,5 @@
 import React from "react";
-import { FactoryComponent, DebugFactoryComponent } from "../../";
+import { FactoryComponent } from "../../";
 
 const noModelTags = ["label"];
 
@@ -30,8 +30,8 @@ export const htmlToRender = ({
         }
 
         return (
-          <span key={index * index + 1}>
             <FactoryComponent
+              key={index * index + 1}
               updateErrorAtBlur={updateErrorAtBlur}
               debug={debug}
               onChange={handleChange(dispatchModel, "UPDATE_MODEL")}
@@ -54,23 +54,6 @@ export const htmlToRender = ({
                   : false
               }
             />
-            {debug && (
-              <DebugFactoryComponent
-                model={model[configObj.name]}
-                state={
-                  stateFromService && stateFromService[configObj.name]
-                    ? tag === "hidden"
-                      ? model[name]
-                      : stateFromService[configObj.name]
-                    : configObj.defaultValue !== undefined &&
-                      configObj.defaultValue !== null
-                    ? configObj.defaultValue
-                    : ""
-                }
-                error={errorFromService[configObj.name]}
-              />
-            )}
-          </span>
         );
       })
     ) : (

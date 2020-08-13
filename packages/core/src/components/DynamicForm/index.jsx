@@ -55,7 +55,7 @@ const DynamicForm = forwardRef((props, ref) => {
   }, [initFunc]);
 
   const renderWrapper = (Layout, children) => {
-    let result = <section>{children}</section>;
+    let result = children;
     if (Layout) {
       result = <Layout>{children}</Layout>;
     }
