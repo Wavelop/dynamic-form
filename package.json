@@ -17,7 +17,7 @@
     "deploy": "npm run deploy:documentation",
     "deploy:documentation": "firebase use default && firebase deploy",
     "predeploy": "npm run build:storybook",
-    "storybook": "start-storybook -p 9009",
+    "storybook": "start-storybook -p 6006",
     "build:storybook": "build-storybook -c .storybook -o build/"
   },
   "devDependencies": {
@@ -26,15 +26,12 @@
     "@babel/preset-react": "^7.9.4",
     "@commitlint/cli": "^8.3.5",
     "@commitlint/config-conventional": "^8.3.4",
-    "@storybook/addon-actions": "^6.0.5",
-    "@storybook/addon-docs": "^6.0.5",
-    "@storybook/addon-jest": "^6.0.5",
-    "@storybook/addon-knobs": "^6.0.5",
-    "@storybook/addon-notes": "^5.3.19",
-    "@storybook/addon-storysource": "^6.0.5",
-    "@storybook/addon-viewport": "^6.0.5",
-    "@storybook/addons": "^6.0.5",
-    "@storybook/react": "^6.0.5",
+    "@storybook/addon-actions": "^6.0.6",
+    "@storybook/addon-essentials": "^6.0.6",
+    "@storybook/addon-links": "^6.0.6",
+    "@storybook/node-logger": "^6.0.6",
+    "@storybook/preset-create-react-app": "^3.1.4",
+    "@storybook/react": "^6.0.6",
     "babel-eslint": "^10.1.0",
     "babel-jest": "^25.3.0",
     "babel-loader": "^8.1.0",
@@ -60,6 +57,7 @@
     "prettier-eslint-cli": "^5.0.0",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
+    "react-is": "^16.13.1",
     "react-jss": ">=10.1.1",
     "react-scripts": "^3.4.1",
     "react-test-renderer": "^16.13.1"
@@ -80,5 +78,8 @@
       "prettier-eslint —eslint-config-path $PWD/client/.eslintrc.js --write",
       "eslint"
     ]
+  },
+  "dependencies": {
+    "@storybook/addon-docs": "^6.0.6"
   }
 }
