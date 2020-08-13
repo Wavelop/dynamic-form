@@ -23,7 +23,7 @@ function FactoryComponent(props) {
     );
   };
 
-  return useMemo(renderWrapper, [data, error]);
+  return useMemo(renderWrapper, [data, error, config]);
 }
 
 FactoryComponent.propTypes = {

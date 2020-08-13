@@ -63,6 +63,7 @@ const DynamicForm = forwardRef((props, ref) => {
   };
 
   const renderWrapperMemo = useCallback(renderWrapper, [
+    config,
     stateFromService,
     errorFromService
   ]);
