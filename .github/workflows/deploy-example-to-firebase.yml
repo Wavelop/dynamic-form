@@ -27,7 +27,7 @@ jobs:
           cd example     
           npm run build
 
-      - name: Archive Storybook Artifact
+      - name: Archive Example Artifact
         uses: actions/upload-artifact@master
         with:
           name: build
