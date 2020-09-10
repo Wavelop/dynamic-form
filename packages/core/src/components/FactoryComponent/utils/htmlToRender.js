@@ -67,6 +67,7 @@ export const htmlToRender = handleChangeEvent => (
                 ? config.disabled({ options: config.options })
                 : false
             }
+            readOnly={!!config.readOnly}
             debug={debug}
           />
         );
