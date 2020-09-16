@@ -1,14 +1,14 @@
 export { validate } from "./Validations";
 export {
+  fatherValidationFounder,
+  isFatherValidation
+} from "./Validations/utils/fatherValidation";
+export { updateErrors } from "./Validations/utils/updateErrors";
+export {
   DynamicFormProvider,
   useDynamicForm,
   applyCrypt2State
 } from "./DynamicForm";
-export { updateErrors } from "./Validations/utils/updateErrors";
-export {
-  fatherValidationFounder,
-  isFatherValidation
-} from "./Validations/utils/fatherValidation";
 export { DynamicFormRefrenceFactory } from "./DynamicFormRefrenceFactory";
 export { FactoryComponentReferenceFactory } from "./FactoryComponentReferenceFactory";
 export { default as withDynamicForm } from "./WithDynamicForm";

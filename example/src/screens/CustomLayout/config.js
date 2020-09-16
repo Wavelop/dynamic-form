@@ -79,6 +79,12 @@ export const form = ({ t }) => {
             {
               kind: "required",
               message: t("Error.message.required")
+            },
+            {
+              kind: "pattern",
+              reg: /^(?:http(s)?:\/\/)?[\w.-]+(?:\.[\w.-]+)+[\w\-._~:/?#[\]@!$&'()*+,;=.]+$/,
+              negate: true,
+              message: t("Wavelop.error.message.link.pattern")
             }
           ]
         },
