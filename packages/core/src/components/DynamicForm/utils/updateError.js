@@ -25,13 +25,13 @@ export const updateError = (config, updateErrorAtBlur, dispatchError) => (
 
     if (tag !== "row") {
       if (
-        (lasteElementTouched === name || lasteElementTouched === null) &&
+        (lasteElementTouched === name || lasteElementTouched === null || errorFromService[name]) &&
         (data || data === "")
       ) {
         errorsObj[name] = [];
       }
 
-      (lasteElementTouched === name || lasteElementTouched === null) &&
+      (lasteElementTouched === name || lasteElementTouched === null || errorFromService[name]) &&
         (data || data === "") &&
         validations &&
         validations.forEach(validation => {

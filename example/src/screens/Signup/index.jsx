@@ -59,7 +59,7 @@ function Signup() {
               locale: language
             }
           })}
-          updateErrorAtBlur={false}
+          updateErrorAtBlur={true}
         />
 
         <Button
