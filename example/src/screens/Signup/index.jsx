@@ -1,4 +1,3 @@
-/* global CONFIG */
 // import from 3rd party
 import React, { useState } from "react";
 import PropTypes from "prop-types";
@@ -16,9 +15,6 @@ import {
 } from "@wavelop/dynamic-form";
 
 import { form as formConfig } from "./config.js";
-
-const { application } = CONFIG;
-const { debug } = application;
 
 function Signup() {
 
@@ -64,7 +60,6 @@ function Signup() {
             }
           })}
           updateErrorAtBlur={false}
-          debug={debug}
         />
 
         <Button

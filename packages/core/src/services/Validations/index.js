@@ -4,6 +4,7 @@ import { maxLength } from "./maxLength";
 import { minLength } from "./minLength";
 import { pattern } from "./pattern";
 import { validAObject } from "./validAObject"; 
+import { equalTo } from "./equalTo";
 
 export const validations = {
   required,
@@ -11,7 +12,8 @@ export const validations = {
   maxLength,
   minLength,
   pattern,
-  validAObject
+  validAObject,
+  equalTo
 };
 
 /**
