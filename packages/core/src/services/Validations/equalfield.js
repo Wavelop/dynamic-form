@@ -1,4 +1,4 @@
-export default equalfield = (data, valueToCompare) => {
+export const equalfield = (data, valueToCompare) => {
   let error = false;
   // null is the initial state
   if (data !== null && valueToCompare !== null && data !== valueToCompare) {

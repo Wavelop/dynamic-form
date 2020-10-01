@@ -1,4 +1,4 @@
-export default required = data => {
+export const required = data => {
   let error = false;
   if (
     data === "" ||

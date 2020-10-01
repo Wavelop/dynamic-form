@@ -1,15 +1,15 @@
-import required from "./required";
-import equalfield from "./equalfield";
-import maxLength from "./maxLength";
-import minLenght from "./minLength";
-import pattern from "./pattern";
-import validAObject from "./validAObject"; 
+import { required } from "./required";
+import { equalfield } from "./equalfield";
+import { maxLength } from "./maxLength";
+import { minLength } from "./minLength";
+import { pattern } from "./pattern";
+import { validAObject } from "./validAObject"; 
 
-const defaultValidation = {
+export const validations = {
   required,
   equalfield,
   maxLength,
-  minLenght,
+  minLength,
   pattern,
   validAObject
 };
@@ -22,13 +22,13 @@ const defaultValidation = {
  * @param {*} state the entire model state
  * @returns
  */
-const validate = (validation, data, state) => {
+export const validate = (validation, data, state) => {
 
   const { kind: validationFunction } = validation;
   let error = false;
 
-  if (typeof validationFunction === "string" && !!defaultValidation[validationFunction]) {
-    error = defaultValidation[validationFunction](data, { ...validation}, state);
+  if (typeof validationFunction === "string" && !!validations[validationFunction]) {
+    error = validations[validationFunction](data, { ...validation}, state);
   } else if(typeof validationFunction === "function") {
     error = validationFunction(data, { ...validation}, state);
   } else {

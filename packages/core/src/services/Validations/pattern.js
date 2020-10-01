@@ -1,4 +1,4 @@
-export default pattern = (data, { reg, negate }) => {
+export const pattern = (data, { reg, negate }) => {
   let error = false;
 
   if (data && data !== "") {

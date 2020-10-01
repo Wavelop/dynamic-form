@@ -1,4 +1,7 @@
 import { CustomInput, CustomRow, DatePicker } from "Components";
+import { validations } from "@wavelop/dynamic-form";
+
+const { required, pattern } = validations;
 
 export const form = ({ t }) => {
 
@@ -15,7 +18,7 @@ export const form = ({ t }) => {
           tag: CustomInput,
           validations: [
             {
-              kind: "required",
+              kind: required,
               message: t("Error.message.required")
             }
           ]
@@ -32,7 +35,7 @@ export const form = ({ t }) => {
               tag: CustomInput,
               validations: [
                 {
-                  kind: "required",
+                  kind: required,
                   message: t("Error.message.required")
                 }
               ]
@@ -44,7 +47,7 @@ export const form = ({ t }) => {
               tag: CustomInput,
               validations: [
                 {
-                  kind: "required",
+                  kind: required,
                   message: t("Error.message.required")
                 }
               ]
@@ -65,7 +68,7 @@ export const form = ({ t }) => {
           tag: CustomInput,
           validations: [
             {
-              kind: "required",
+              kind: required,
               message: t("Error.message.required")
             }
           ]
@@ -77,11 +80,11 @@ export const form = ({ t }) => {
           tag: CustomInput,
           validations: [
             {
-              kind: "required",
+              kind: required,
               message: t("Error.message.required")
             },
             {
-              kind: "pattern",
+              kind: pattern,
               reg: /^(?:http(s)?:\/\/)?[\w.-]+(?:\.[\w.-]+)+[\w\-._~:/?#[\]@!$&'()*+,;=.]+$/,
               negate: true,
               message: t("Wavelop.error.message.link.pattern")
@@ -98,7 +101,7 @@ export const form = ({ t }) => {
           },
           validations: [
             {
-              kind: "required",
+              kind: required,
               message: t("Error.message.required")
             }
           ]

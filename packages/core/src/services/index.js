@@ -1,8 +1,4 @@
-export { validate } from "./Validations";
-export {
-  fatherValidationFounder,
-  isFatherValidation
-} from "./Validations/utils/fatherValidation";
+export { validate, validations } from "./Validations";
 export { updateErrors } from "./Validations/utils/updateErrors";
 export {
   DynamicFormProvider,
