@@ -1,96 +1,41 @@
-export const fatherValdiations = ["equalfield"];
+import { required } from "./required";
+import { equalfield } from "./equalfield";
+import { maxLength } from "./maxLength";
+import { minLength } from "./minLength";
+import { pattern } from "./pattern";
+import { validAObject } from "./validAObject"; 
+import { equalTo } from "./equalTo";
 
-export const validate = (validation, data) => {
-  let error = false;
-  switch (validation.kind) {
-    case "required":
-      error = requiredValidation(data);
-      break;
-    case "pattern":
-      error = patternValidation(data, validation.reg, validation.considerRegAs);
-      break;
-    case "minlength":
-      error = minLengthValidation(data, validation.value);
-      break;
-    case "maxlength":
-      error = maxLengthValidation(data, validation.value);
-      break;
-    case "validobject":
-      error = validAObjectValidation(data, validation.value);
-      break;
-    case "equalfield":
-      error = fatherValidation();
-      break;
-    case "equalfield:father":
-      error = equalfieldValidation(data, validation.valueToCompare);
-      break;
-    default:
-      error = false;
-      break;
-  }
-
-  return error;
+export const validations = {
+  required,
+  equalfield,
+  maxLength,
+  minLength,
+  pattern,
+  validAObject,
+  equalTo
 };
 
-const fatherValidation = () => {
-  return null;
-};
+/**
+ * Facade method for validation
+ *
+ * @param {*} validation validation configuration
+ * @param {*} data the current value to check
+ * @param {*} state the entire model state
+ * @returns
+ */
+export const validate = (validation, data, state) => {
 
-const requiredValidation = data => {
-  let error = false;
-  if (
-    data === "" ||
-    data === false ||
-    (Array.isArray(data) && data.length === 0)
-  ) {
-    error = true;
-  }
-  return error;
-};
-
-const minLengthValidation = (data, value) => {
-  let error = false;
-  if (data.length < value) {
-    error = true;
-  }
-  return error;
-};
-
-const maxLengthValidation = (data, value) => {
-  let error = false;
-  if (data.length > value) {
-    error = true;
-  }
-  return error;
-};
-
-const validAObjectValidation = data => {
-  let error = false;
-  if (typeof data !== "object") {
-    error = true;
-  }
-  return error;
-};
-
-const patternValidation = (data, reg, considerRegAs) => {
+  const { kind: validationFunction } = validation;
   let error = false;
 
-  if (data && data !== "") {
-    let check = data.match(reg);
-    error = check && check.length > 0 ? true : false;
-    if (considerRegAs === "positive") {
-      error = !error;
-    }
+  if (typeof validationFunction === "string" && !!validations[validationFunction]) {
+    error = validations[validationFunction](data, { ...validation}, state);
+  } else if(typeof validationFunction === "function") {
+    error = validationFunction(data, { ...validation}, state);
+  } else {
+    error = false;
   }
 
-  return error;
-};
-
-const equalfieldValidation = (data, valueToCompare) => {
-  let error = false;
-  // null is the initial state
-  if (data !== null && valueToCompare !== null && data !== valueToCompare) {
-    error = true;
-  }
   return error;
 };

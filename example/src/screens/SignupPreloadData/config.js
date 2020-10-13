@@ -17,7 +17,7 @@ export const form = ({ t }) => {
         {
           kind: "pattern",
           reg: /^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$/,
-          considerRegAs: "positive",
+          negate: true,
           message: t("Error.message.pattern.email")
         }
       ]
@@ -141,7 +141,7 @@ export const form = ({ t }) => {
     //     {
     //       kind: "pattern",
     //       reg: /^[+]?[(]?[0-9]{3}[)]?[-\s.]?[0-9]{3}[-\s.]?[0-9]{4,6}$/im,
-    //       considerRegAs: "positive",
+    //       negate: true,
     //       message: t("Error.message.validPhone")
     //     }
     //   ]

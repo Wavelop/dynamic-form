@@ -20,21 +20,22 @@ export const updateError = (config, updateErrorAtBlur, dispatchError) => (
 
   config.forEach(componentConfig => {
     const { name, validations, tag } = componentConfig;
+    const copyOfModelState = { ...stateFromService };
     const data = stateFromService[name];
 
     if (tag !== "row") {
       if (
-        (lasteElementTouched === name || lasteElementTouched === null) &&
+        (lasteElementTouched === name || lasteElementTouched === null || errorFromService[name]) &&
         (data || data === "")
       ) {
         errorsObj[name] = [];
       }
 
-      (lasteElementTouched === name || lasteElementTouched === null) &&
+      (lasteElementTouched === name || lasteElementTouched === null || errorFromService[name]) &&
         (data || data === "") &&
         validations &&
         validations.forEach(validation => {
-          let validationResult = validate(validation, data);
+          let validationResult = validate(validation, data, copyOfModelState);
           if (validationResult) {
             errorsObj[name].push(validation);
           }

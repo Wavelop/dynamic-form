@@ -14,7 +14,7 @@ export const updateErrors = config => stateFromService => {
       errorsObj[name] = [];
       validations &&
         validations.forEach(validation => {
-          let validationResult = validate(validation, data || "");
+          let validationResult = validate(validation, data || "", copyOfModelState);
           if (validationResult) {
             errorsObj[name].push(validation);
           }

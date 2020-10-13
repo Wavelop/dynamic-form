@@ -18,7 +18,7 @@ export const form = ({ t }) => {
         {
           kind: "pattern",
           reg: /^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$/,
-          considerRegAs: "positive",
+          negate: true,
           message: t("Error.message.pattern.email")
         }
       ]
@@ -49,6 +49,11 @@ export const form = ({ t }) => {
           kind: "pattern",
           reg: /[^A-Za-z0-9\-_ ]/,
           message: t("Error.message.pattern")
+        },
+        {
+          kind: "equalTo",
+          to: "confirmPassword",
+          message: t("Error.message.passwordMustBeTheSame")
         }
       ]
     },
@@ -75,8 +80,8 @@ export const form = ({ t }) => {
           message: t("Error.message.pattern")
         },
         {
-          kind: "equalfield",
-          name: "password",
+          kind: "equalTo",
+          to: "password",
           message: t("Error.message.passwordMustBeTheSame")
         }
       ]
@@ -172,7 +177,7 @@ export const form = ({ t }) => {
         {
           kind: "pattern",
           reg: /^[+]?[(]?[0-9]{3}[)]?[-\s.]?[0-9]{3}[-\s.]?[0-9]{4,6}$/im,
-          considerRegAs: "positive",
+          negate: true,
           message: t("Error.message.validPhone")
         }
       ]
