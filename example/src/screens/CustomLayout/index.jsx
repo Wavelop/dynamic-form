@@ -7,7 +7,6 @@ import camelCase from "camelcase";
 import { Button, ErrorMessage, FormLayout } from "Components";
 import { useTranslate, useTranslateState } from "Translate";
 import { useError, withRouter } from "Services";
-
 import {
   DynamicForm,
   useDynamicForm,

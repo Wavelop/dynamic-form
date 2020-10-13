@@ -98,6 +98,9 @@ Create a configuration file:
 // config.js
 
 import { Input } from "@wavelop/dynamic-form-base-components";
+import { validations } from "@wavelop/dynamic-form";
+
+const { required, pattern } = validations;
 
 export default     
 {
@@ -108,13 +111,13 @@ export default
   type: "email",
   validations: [
     {
-      kind: "required",
+      kind: required,
       message: "Email is required"
     },
     {
-      kind: "pattern",
+      kind: pattern,
       reg: /^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$/,
-      considerRegAs: "positive",
+      negate: true,
       message: "You must type an email i.e. test@test.com"
     }
   ]
@@ -130,7 +133,7 @@ import {
   DynamicForm,
   useDynamicForm,
   withDynamicForm
-} from "dynamic-form";
+} from "@wavelop/dynamic-form";
 
 import { form as formConfig } from "./config.js";
 
