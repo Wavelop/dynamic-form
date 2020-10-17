@@ -1,7 +1,9 @@
 export { validate, validations } from "./Validations";
 export { updateErrors } from "./Validations/utils/updateErrors";
 export {
-  dynamicForm
+  DynamicFormProvider,
+  useDynamicForm,
+  applyCrypt2State
 } from "./DynamicForm";
 export { default as withDynamicForm } from "./WithDynamicForm";
 export {
