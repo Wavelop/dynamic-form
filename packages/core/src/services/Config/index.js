@@ -14,6 +14,5 @@ export const getConfig = () => {
 };
 
 export const getUpdateError = (id) => {
-  console.log(id);
   return id && updateError[id] ? updateError[id] : () => {};
 };

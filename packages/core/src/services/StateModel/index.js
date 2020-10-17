@@ -1,3 +1,5 @@
+import { uuid4 } from "../../utils";
+
 export const groupByRows = config => state => {
   const copyOfModelState = { ...state };
   const stateGroupedByRows = {};
@@ -36,7 +38,7 @@ export const stateModel = () => {
           };
       };
 
-      const id = uuidv4();
+      const id = uuid4();
       const serviceClosure = service();
 
       instances[id] = serviceClosure;
@@ -73,13 +75,6 @@ export const stateModel = () => {
       throw new Error(`id (${id}) doesn't exist`);
   }
 
-  function uuidv4() {
-    return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
-      var r = Math.random() * 16 | 0, v = c == 'x' ? r : (r & 0x3 | 0x8);
-      return v.toString(16);
-    });
-  }
-  
   return {
       init,
       get, 

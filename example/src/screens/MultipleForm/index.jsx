@@ -1,12 +1,11 @@
 // import from 3rd party
-import React, { useState } from "react";
+import React from "react";
 import PropTypes from "prop-types";
-import camelCase from "camelcase";
 
 // import from application dependency
-import { Button, ErrorMessage, FormLayout } from "Components";
+import { Button, FormLayout } from "Components";
 import { useTranslate, useTranslateState } from "Translate";
-import { useError, withRouter } from "Services";
+import { withRouter } from "Services";
 import {
   DynamicForm,
   useDynamicForm,
@@ -36,10 +35,8 @@ function MultipleForm1(props) {
 
       props.update({state});
 
-    } catch (error) {
-      console.log(error);
-      // console.log(kind, numberOfErrors, errors);
-      // props.update({errors});
+    } catch ({errors}) {
+      props.update({errors});
     }
   };
 
@@ -103,8 +100,7 @@ function MultipleForm2(props) {
 
       props.update({state});
 
-    } catch ({numberOfErrors, errors}) {
-      console.log(kind, numberOfErrors, errors);
+    } catch ({errors}) {
       props.update({errors});
     }
   };
