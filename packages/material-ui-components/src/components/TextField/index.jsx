@@ -9,12 +9,10 @@ function InputComponent(props) {
   const {
     id,
     name,
-    htmlFor,
     type,
 
     inputLabel,
 
-    showErrorOnInput,
     error,
     errorMessage,
 
@@ -40,14 +38,16 @@ function InputComponent(props) {
     disabled,
     onBlur,
     onChange,
-    error
+    error: !!(error && error.length > 0),
+    label: inputLabel,
+    helperText: !!(error && error.length > 0) ? errorMessage : ""
   };
 
   const printCounter = () => {
     renderCount[name] =
       renderCount[name] !== undefined ? renderCount[name] + 1 : 1;
     console.table({
-      "From file": "src/dynamicForm/components/Input/index.js",
+      "From file": "packages/material-ui-components/src/components/TextField/index.jsx",
       "Input name": name,
       "Input type": type || "text",
       "Render count": renderCount[name]
@@ -61,7 +61,6 @@ function InputComponent(props) {
       <section>
         <TextField
           {...attributes}          
-          label={inputLabel}
         />
       </section>
     );

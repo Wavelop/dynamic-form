@@ -18,13 +18,11 @@
     "prepack": "mv README.md core.README.md && cp ../../README.md . && run-s build",
     "postpack": "rm README.md && mv core.README.md README.md",
     "start": "microbundle-crl watch --no-compress --format modern,cjs",
-    "test": "run-s test:unit test:lint test:build",
+    "test": "run-s test:lint test:build",
     "test:jest": "jest",
     "test:build": "run-s build",
     "test:generate-output": "jest --json --outputFile=./src/.jest-test-results.json || true",
-    "test:lint": "eslint .",
-    "test:unit": "cross-env CI=1 react-scripts test --env=jsdom",
-    "test:watch": "react-scripts test --env=jsdom"
+    "test:lint": "eslint ."
   },
   "peerDependencies": {
     "react": "^16.13.1",
