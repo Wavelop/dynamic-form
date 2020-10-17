@@ -1,221 +1,313 @@
-import React, { createContext, useContext, useReducer } from "react";
-import { getConfig, updateErrors, getUpdateError, groupByRows } from "../";
+import React, {
+  createContext,
+  useContext,
+  useReducer,
+  useEffect, useState
+} from "react";
+import {
+  getConfig,
+  updateErrors,
+  getUpdateError,
+  groupByRows,
+  stateModel as stateModelService,
+  stateError as stateErrorService
+} from "../";
 
-// Contexts
-const DynamicFormModelStateContext = createContext();
-const DynamicFormModelDispatchContext = createContext();
-const DynamicFormErrorStateContext = createContext();
-const DynamicFormErrorDispatchContext = createContext();
-const DynamicFormHelperContext = createContext();
+export const dynamicForm = () => {
 
-// TODO: creare un sistema che sia non globale in questo modo
-let modelState = {};
-let errorState = {};
+  const instances = {};
 
-let encryptionLocal = value => value;
+  function init() {
+    const service = () => {
 
-const helpers = {
-  submit: () => {
-    const copyOfModelState = { ...modelState };
-    let copyOfErrorState = { ...errorState };
+      // Contexts
+      const DynamicFormModelStateContext = createContext();
+      const DynamicFormModelDispatchContext = createContext();
+      const DynamicFormErrorStateContext = createContext();
+      const DynamicFormErrorDispatchContext = createContext();
+      const DynamicFormHelperContext = createContext();
 
-    let numberOfErrors = 0;
+      let encryptionLocal = value => value;
 
-    delete copyOfModelState._metadata;
-    delete copyOfErrorState._metadata;
+      const helpers = () => {
+        return {
+          submit: () => {
+            const copyOfModelState = { ... (this && this.stateModelService.get() || {}) };
+            let copyOfErrorState = { ...(this && this.stateErrorService.get() || {}) };
 
-    copyOfErrorState = updateErrors(getConfig())(copyOfModelState);
+            let numberOfErrors = 0;
 
-    getUpdateError()(copyOfErrorState);
+            delete copyOfModelState._metadata;
+            delete copyOfErrorState._metadata;
 
-    Object.keys(copyOfErrorState).forEach(element => {
-      numberOfErrors += copyOfErrorState[element].length;
-    });
+            copyOfErrorState = updateErrors(getConfig())(copyOfModelState);
 
-    if (numberOfErrors === 0) {
-      return {
-        state: copyOfModelState,
-        stateCrypted: applyCrypt2State(copyOfModelState, getConfig()),
-        stateFull: modelState,
-        stateGroupedByRows: groupByRows(getConfig())(copyOfModelState)
-      };
-    } else {
-      throw {
-        numberOfErrors,
-        errors: copyOfErrorState
-      };
-    }
-  }
-};
+            // Execute the action UPDATE_ERROR_ON_SUBMIT directily from the service
+            getUpdateError()(copyOfErrorState);
 
-// Reducers
-function dynamicFormModelReducer(state, action) {
-  const { type, newState, metadata } = action;
+            Object.keys(copyOfErrorState).forEach(element => {
+              numberOfErrors += copyOfErrorState[element].length;
+            });
 
-  switch (type) {
-    case "UPDATE_MODEL": {
-      const keys = Object.keys(newState || {});
-      const numberOfChanges = keys.length;
-
-      let lasteElementTouched = null;
-
-      if (numberOfChanges === 1) {
-        lasteElementTouched = keys[0];
-      }
-
-      const newStateLocal = {
-        ...state,
-        ...newState,
-        _metadata: {
-          ...metadata,
-          lasteElementTouched
+            if (numberOfErrors === 0) {
+              return {
+                state: copyOfModelState,
+                stateCrypted: applyCrypt2State(copyOfModelState, getConfig()),
+                stateFull: this && this.stateModelService.get(),
+                stateGroupedByRows: groupByRows(getConfig())(copyOfModelState)
+              };
+            } else {
+              throw {
+                numberOfErrors,
+                errors: copyOfErrorState
+              };
+            }
+          }
         }
       };
 
-      modelState = newStateLocal; // TODO: creare un sistema che sia non globale in questo modo
+      // Reducers
+      const dynamicFormModelReducer = (hel, id) => (state, action) => {
 
-      return newStateLocal;
-    }
-    case "SETUP_MODEL": {
-      const newStateLocal = {
-        ...state,
-        ...newState,
-        _metadata: metadata
+        const { type, newState, metadata } = action;
+
+        switch (type) {
+          case "UPDATE_MODEL": {
+            const keys = Object.keys(newState || {});
+            const numberOfChanges = keys.length;
+
+            let lasteElementTouched = null;
+
+            if (numberOfChanges === 1) {
+              lasteElementTouched = keys[0];
+            }
+
+            const newStateLocal = {
+              ...state,
+              ...newState,
+              _metadata: {
+                ...metadata,
+                lasteElementTouched
+              }
+            };
+
+            hel && hel.stateModelService && hel.stateModelService.set(newStateLocal);
+
+            return newStateLocal;
+          }
+          case "SETUP_MODEL": {
+            const newStateLocal = {
+              ...state,
+              ...newState,
+              _metadata: metadata
+            };
+
+            hel && hel.stateModelService && hel.stateModelService.set(newStateLocal);
+
+            return newStateLocal;
+          }
+          default: {
+            throw new Error(`Unhandled action type: ${action.type}`);
+          }
+        }
+      }
+
+      const dynamicFormErrorReducer = (hel, id) => (state, action) => {
+        const { type, newState } = action;
+        switch (type) {
+          case "UPDATE_ERROR":
+          case "UPDATE_ERROR_ON_SUBMIT": {
+            let numberOfErrors = 0;
+
+            let errorSummary = {
+              ...state,
+              ...newState
+            };
+
+            delete errorSummary._metadata;
+
+            Object.keys(errorSummary).forEach(element => {
+              numberOfErrors += errorSummary[element].length;
+            });
+
+            errorSummary._metadata = {
+              numberOfErrors
+            };
+
+            hel && hel.stateErrorService && hel.stateErrorService.set(errorSummary);
+
+            return errorSummary;
+          }
+
+          default: {
+            throw new Error(`Unhandled action type: ${action.type}`);
+          }
+        }
+      }
+
+      // Initial states
+      const initialStateError = {
+        _metadata: {}
       };
 
-      modelState = newStateLocal; // TODO: creare un sistema che sia non globale in questo modo
-
-      return newStateLocal;
-    }
-    default: {
-      throw new Error(`Unhandled action type: ${action.type}`);
-    }
-  }
-}
-
-function dynamicFormErrorReducer(state, action) {
-  const { type, newState } = action;
-  switch (type) {
-    case "UPDATE_ERROR":
-    case "UPDATE_ERROR_ON_SUBMIT": {
-      let numberOfErrors = 0;
-
-      let errorSummary = {
-        ...state,
-        ...newState
+      const initialStateModel = {
+        _metadata: {}
       };
 
-      delete errorSummary._metadata;
+      const DynamicFormProvider = props => {
+        const { encryption, children } = props || {};
+        const [hel, setHelper] = useState(helpers());
 
-      Object.keys(errorSummary).forEach(element => {
-        numberOfErrors += errorSummary[element].length;
-      });
+        if (encryption && typeof encryption === "function") {
+          encryptionLocal = encryption;
+        }
 
-      errorSummary._metadata = {
-        numberOfErrors
+        const [stateModel, dispatchModel] = useReducer(
+          dynamicFormModelReducer(hel, id),
+          initialStateModel
+        );
+        const [stateError, dispatchError] = useReducer(
+          dynamicFormErrorReducer(hel, id),
+          initialStateError
+        );
+
+        useEffect(() => {
+          const { service: sm, id: idStateModel } = stateModelService().init();
+          const { service: se, id: idStateError } = stateErrorService().init();
+          setHelper({
+            ...hel,
+            stateModelService: sm,
+            stateErrorService: se,
+            idStateError,
+            idStateModel
+          })
+        }, []);
+
+
+        return (
+          <DynamicFormHelperContext.Provider value={hel}>
+            <DynamicFormModelStateContext.Provider value={stateModel}>
+              <DynamicFormModelDispatchContext.Provider value={dispatchModel}>
+                <DynamicFormErrorStateContext.Provider value={stateError}>
+                  <DynamicFormErrorDispatchContext.Provider value={dispatchError}>
+                    {children}
+                  </DynamicFormErrorDispatchContext.Provider>
+                </DynamicFormErrorStateContext.Provider>
+              </DynamicFormModelDispatchContext.Provider>
+            </DynamicFormModelStateContext.Provider>
+          </DynamicFormHelperContext.Provider>
+        );
       };
 
-      errorState = errorSummary; // TODO: creare un sistema che sia non globale in questo modo
+      const useDynamicForm = (type, version) => {
+        let contextDynamic = null;
 
-      return errorSummary;
+        switch (version) {
+          case "error":
+            if (type === "state") {
+              contextDynamic = DynamicFormErrorStateContext;
+            } else if (type === "dispatch") {
+              contextDynamic = DynamicFormErrorDispatchContext;
+            }
+
+            break;
+
+          case "model":
+            if (type === "state") {
+              contextDynamic = DynamicFormModelStateContext;
+            } else if (type === "dispatch") {
+              contextDynamic = DynamicFormModelDispatchContext;
+            }
+
+            break;
+
+          default:
+            if (!type && !version) {
+              contextDynamic = DynamicFormHelperContext;
+            } else {
+              throw new Error("Your combination of type and version is not allowed.");
+            }
+        }
+
+        if (contextDynamic === null) {
+          throw new Error("Your combination of type and version is not allowed.");
+        }
+
+        const context = useContext(contextDynamic);
+        if (context === undefined) {
+          throw new Error("this function must be used within a provider");
+        }
+        return context;
+      };
+
+      const applyCrypt2State = (state, config) => {
+        const copyState = { ...state };
+        config &&
+          Array.isArray(config) &&
+          config.length > 0 &&
+          config.forEach(configObj => {
+            if (configObj.crypt !== undefined && configObj.crypt === true) {
+              copyState[configObj.name] = encryptionLocal(copyState[configObj.name]);
+            }
+          });
+        return copyState;
+      };
+
+      return {
+        useDynamicForm,
+        applyCrypt2State,
+        DynamicFormProvider
+      }
+
+    };
+
+    const id = uuidv4();
+    const serviceClosure = service();
+
+    instances[id] = serviceClosure;
+
+    return {
+      id,
+      service: serviceClosure
+    };
+  }
+
+  function get(id) {
+    if (id && instances[id]) {
+      return instances[id];
     }
 
-    default: {
-      throw new Error(`Unhandled action type: ${action.type}`);
+    if (!id) {
+      throw new Error("id is mandatory");
     }
-  }
-}
 
-// Initial states
-const initialStateError = {
-  _metadata: {}
-};
-
-const initialStateModel = {
-  _metadata: {}
-};
-
-export const DynamicFormProvider = props => {
-  const { encryption, children } = props || {};
-
-  if (encryption && typeof encryption === "function") {
-    encryptionLocal = encryption;
+    throw new Error(`id (${id}) doesn't exist`);
   }
 
-  const [stateModel, dispatchModel] = useReducer(
-    dynamicFormModelReducer,
-    initialStateModel
-  );
-  const [stateError, dispatchError] = useReducer(
-    dynamicFormErrorReducer,
-    initialStateError
-  );
+  function remove(id) {
+    if (id && instances[id]) {
+      delete instances[id];
 
-  return (
-    <DynamicFormHelperContext.Provider value={helpers}>
-      <DynamicFormModelStateContext.Provider value={stateModel}>
-        <DynamicFormModelDispatchContext.Provider value={dispatchModel}>
-          <DynamicFormErrorStateContext.Provider value={stateError}>
-            <DynamicFormErrorDispatchContext.Provider value={dispatchError}>
-              {children}
-            </DynamicFormErrorDispatchContext.Provider>
-          </DynamicFormErrorStateContext.Provider>
-        </DynamicFormModelDispatchContext.Provider>
-      </DynamicFormModelStateContext.Provider>
-    </DynamicFormHelperContext.Provider>
-  );
-};
+      return;
+    }
 
-export const useDynamicForm = (type, version) => {
-  let contextDynamic = null;
+    if (!id) {
+      throw new Error("id is mandatory");
+    }
 
-  switch (version) {
-    case "error":
-      if (type === "state") {
-        contextDynamic = DynamicFormErrorStateContext;
-      } else if (type === "dispatch") {
-        contextDynamic = DynamicFormErrorDispatchContext;
-      }
-
-      break;
-
-    case "model":
-      if (type === "state") {
-        contextDynamic = DynamicFormModelStateContext;
-      } else if (type === "dispatch") {
-        contextDynamic = DynamicFormModelDispatchContext;
-      }
-
-      break;
-
-    default:
-      if (!type && !version) {
-        contextDynamic = DynamicFormHelperContext;
-      } else {
-        throw new Error("Your combination of type and version is not allowed.");
-      }
+    throw new Error(`id (${id}) doesn't exist`);
   }
 
-  if (contextDynamic === null) {
-    throw new Error("Your combination of type and version is not allowed.");
-  }
-
-  const context = useContext(contextDynamic);
-  if (context === undefined) {
-    throw new Error("this function must be used within a provider");
-  }
-  return context;
-};
-
-export const applyCrypt2State = (state, config) => {
-  const copyState = { ...state };
-  config &&
-    Array.isArray(config) &&
-    config.length > 0 &&
-    config.forEach(configObj => {
-      if (configObj.crypt !== undefined && configObj.crypt === true) {
-        copyState[configObj.name] = encryptionLocal(copyState[configObj.name]);
-      }
+  function uuidv4() {
+    return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
+      var r = Math.random() * 16 | 0, v = c == 'x' ? r : (r & 0x3 | 0x8);
+      return v.toString(16);
     });
-  return copyState;
+  }
+
+  return {
+    init,
+    get,
+    remove,
+  };
 };
