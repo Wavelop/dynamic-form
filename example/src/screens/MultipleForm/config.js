@@ -1,6 +1,5 @@
 import { CustomInput, CustomRow, DatePicker } from "Components";
 import { validations } from "@wavelop/dynamic-form";
-import { TextField } from "@wavelop/dynamic-form-material-ui-components";
 
 const { required, pattern } = validations;
 
@@ -16,7 +15,7 @@ export const form = ({ t }) => {
           name: "progetto",
           label: "Progetto",
           helperText: "Seleziona il progetto",
-          tag: TextField,
+          tag: CustomInput,
           validations: [
             {
               kind: required,

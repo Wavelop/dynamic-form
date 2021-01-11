@@ -1,6 +1,6 @@
 {
   "name": "@dynamic-form/wavelop",
-  "version": "0.2.0",
+  "version": "0.3.1",
   "description": "Dynamic form from configuration with React",
   "author": "Wavelop",
   "license": "MIT",

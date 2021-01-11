@@ -51,6 +51,16 @@ const CustomLayout = Loadable({
   }
 });
 
+const MultipleForm = Loadable({
+  loader: () =>
+    import("Screens").then(screens => {
+      return screens.MultipleForm;
+    }),
+  loading() {
+    return <Spinner />;
+  }
+});
+
 function App() {
   return (
     <TranslateProvider>
@@ -76,6 +86,11 @@ function App() {
                     exact={true}
                     path="/custom-layout"
                     component={CustomLayout}
+                  />
+                  <PublicRoute
+                    exact={true}
+                    path="/multiple"
+                    component={MultipleForm}
                   />
                 </Switch>
               </Router>

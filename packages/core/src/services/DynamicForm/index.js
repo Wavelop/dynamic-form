@@ -1,5 +1,17 @@
-import React, { createContext, useContext, useReducer } from "react";
-import { getConfig, updateErrors, getUpdateError, groupByRows } from "../";
+import React, { 
+  createContext, 
+  useContext, 
+  useReducer, 
+  useEffect, useState 
+} from "react";
+import { 
+  getConfig, 
+  updateErrors, 
+  getUpdateError, 
+  groupByRows, 
+  stateModel as stateModelService, 
+  stateError as stateErrorService 
+} from "../";
 
 // Contexts
 const DynamicFormModelStateContext = createContext();
@@ -8,48 +20,52 @@ const DynamicFormErrorStateContext = createContext();
 const DynamicFormErrorDispatchContext = createContext();
 const DynamicFormHelperContext = createContext();
 
-// TODO: creare un sistema che sia non globale in questo modo
-let modelState = {};
-let errorState = {};
-
 let encryptionLocal = value => value;
 
-const helpers = {
-  submit: () => {
-    const copyOfModelState = { ...modelState };
-    let copyOfErrorState = { ...errorState };
+const helpers = ({
+  stateModelService,
+  stateErrorService,
+  idStateError
+}) => {
+  return {
+    submit: () => {
+      const copyOfModelState = { ...stateModelService.get() };
+      let copyOfErrorState = { ...stateErrorService.get() };
 
-    let numberOfErrors = 0;
+      let numberOfErrors = 0;
 
-    delete copyOfModelState._metadata;
-    delete copyOfErrorState._metadata;
+      delete copyOfModelState._metadata;
+      delete copyOfErrorState._metadata;
 
-    copyOfErrorState = updateErrors(getConfig())(copyOfModelState);
+      copyOfErrorState = updateErrors(getConfig())(copyOfModelState);
 
-    getUpdateError()(copyOfErrorState);
+      // Execute the action UPDATE_ERROR_ON_SUBMIT directily from the service
+      getUpdateError(idStateError)(copyOfErrorState);
 
-    Object.keys(copyOfErrorState).forEach(element => {
-      numberOfErrors += copyOfErrorState[element].length;
-    });
+      Object.keys(copyOfErrorState).forEach(element => {
+        numberOfErrors += copyOfErrorState[element].length;
+      });
 
-    if (numberOfErrors === 0) {
-      return {
-        state: copyOfModelState,
-        stateCrypted: applyCrypt2State(copyOfModelState, getConfig()),
-        stateFull: modelState,
-        stateGroupedByRows: groupByRows(getConfig())(copyOfModelState)
-      };
-    } else {
-      throw {
-        numberOfErrors,
-        errors: copyOfErrorState
-      };
+      if (numberOfErrors === 0) {
+        return {
+          state: copyOfModelState,
+          stateCrypted: applyCrypt2State(copyOfModelState, getConfig()),
+          stateFull: this && this.stateModelService.get(),
+          stateGroupedByRows: groupByRows(getConfig())(copyOfModelState)
+        };
+      } else {
+        throw {
+          numberOfErrors,
+          errors: copyOfErrorState
+        };
+      }
     }
   }
 };
 
 // Reducers
-function dynamicFormModelReducer(state, action) {
+const dynamicFormModelReducer = (hel) => (state, action) => {
+
   const { type, newState, metadata } = action;
 
   switch (type) {
@@ -72,7 +88,7 @@ function dynamicFormModelReducer(state, action) {
         }
       };
 
-      modelState = newStateLocal; // TODO: creare un sistema che sia non globale in questo modo
+      hel && hel.stateModelService && hel.stateModelService.set(newStateLocal);
 
       return newStateLocal;
     }
@@ -83,7 +99,7 @@ function dynamicFormModelReducer(state, action) {
         _metadata: metadata
       };
 
-      modelState = newStateLocal; // TODO: creare un sistema che sia non globale in questo modo
+      hel && hel.stateModelService && hel.stateModelService.set(newStateLocal);
 
       return newStateLocal;
     }
@@ -93,7 +109,7 @@ function dynamicFormModelReducer(state, action) {
   }
 }
 
-function dynamicFormErrorReducer(state, action) {
+const dynamicFormErrorReducer = (hel) => (state, action) => {
   const { type, newState } = action;
   switch (type) {
     case "UPDATE_ERROR":
@@ -115,7 +131,7 @@ function dynamicFormErrorReducer(state, action) {
         numberOfErrors
       };
 
-      errorState = errorSummary; // TODO: creare un sistema che sia non globale in questo modo
+      hel && hel.stateErrorService && hel.stateErrorService.set(errorSummary);
 
       return errorSummary;
     }
@@ -137,22 +153,41 @@ const initialStateModel = {
 
 export const DynamicFormProvider = props => {
   const { encryption, children } = props || {};
+  const [hel, setHelper] = useState();
+
 
   if (encryption && typeof encryption === "function") {
     encryptionLocal = encryption;
   }
 
   const [stateModel, dispatchModel] = useReducer(
-    dynamicFormModelReducer,
+    dynamicFormModelReducer(hel),
     initialStateModel
   );
   const [stateError, dispatchError] = useReducer(
-    dynamicFormErrorReducer,
+    dynamicFormErrorReducer(hel),
     initialStateError
   );
 
+  useEffect(() => {
+    const { service: sm } = stateModelService().init();
+    const { service: se, id: idStateError } = stateErrorService().init();
+    setHelper({ 
+      submit: helpers({
+        stateModelService: sm,
+        stateErrorService: se,
+        idStateError
+      }).submit, 
+      stateModelService: sm,
+      stateErrorService: se,
+      idStateError
+    })
+  }, []);
+
+
   return (
-    <DynamicFormHelperContext.Provider value={helpers}>
+    hel ? 
+    (<DynamicFormHelperContext.Provider value={hel}>
       <DynamicFormModelStateContext.Provider value={stateModel}>
         <DynamicFormModelDispatchContext.Provider value={dispatchModel}>
           <DynamicFormErrorStateContext.Provider value={stateError}>
@@ -162,7 +197,8 @@ export const DynamicFormProvider = props => {
           </DynamicFormErrorStateContext.Provider>
         </DynamicFormModelDispatchContext.Provider>
       </DynamicFormModelStateContext.Provider>
-    </DynamicFormHelperContext.Provider>
+    </DynamicFormHelperContext.Provider>) :
+    (<span /> )
   );
 };
 
