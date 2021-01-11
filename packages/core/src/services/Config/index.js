@@ -1,18 +1,18 @@
 let configGlobal = {};
-let updateError = null;
+let updateError = [];
 
 export const saveConfig = config => {
   configGlobal = config;
 };
 
-export const saveUpdateError = updateErrorFn => {
-  updateError = updateErrorFn;
+export const saveUpdateError = (id, updateErrorFn) => {
+  updateError[id] = updateErrorFn;
 };
 
 export const getConfig = () => {
   return configGlobal;
 };
 
-export const getUpdateError = () => {
-  return updateError;
+export const getUpdateError = (id) => {
+  return id && updateError[id] ? updateError[id] : () => {};
 };

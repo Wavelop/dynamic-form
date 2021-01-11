@@ -1,7 +1,7 @@
 {
-  "name": "@wavelop/dynamic-form",
+  "name": "@wavelop/dynamic-form-material-ui-components",
   "version": "0.2.0",
-  "description": "Dynamic Form: core functionalities",
+  "description": "Dynamic Form: Material Ui components integration",
   "author": "Wavelop",
   "license": "MIT",
   "repository": "Wavelop/dynamic-form",
@@ -15,16 +15,19 @@
   },
   "scripts": {
     "build": "rm -rf dist && microbundle-crl -no-compress --format modern,cjs",
-    "prepack": "mv README.md core.README.md && cp ../../README.md . && run-s build",
-    "postpack": "rm README.md && mv core.README.md README.md",
+    "prepack": "mv README.md materialUiComponents.README.md && cp ../../README.md . && run-s build",
+    "postpack": "rm README.md && mv materialUiComponents.README.md README.md",
     "start": "microbundle-crl watch --no-compress --format modern,cjs",
-    "test": "run-s test:lint test:build",
+    "test": "run-s test:unit test:lint test:build",
     "test:jest": "jest",
     "test:build": "run-s build",
     "test:generate-output": "jest --json --outputFile=./src/.jest-test-results.json || true",
-    "test:lint": "eslint ."
+    "test:lint": "eslint .",
+    "test:unit": "cross-env CI=1 react-scripts test --env=jsdom",
+    "test:watch": "react-scripts test --env=jsdom"
   },
   "peerDependencies": {
+    "@material-ui/core": "^4.11.0",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
     "prop-types": "^15.7.2"

@@ -1,5 +1,3 @@
-// TODO: remove this file
-
 /* global CONFIG */
 import { JSEncrypt } from "jsencrypt";
 import * as sha1 from "sha1";

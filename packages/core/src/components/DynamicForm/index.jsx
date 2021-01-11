@@ -20,6 +20,8 @@ const DynamicForm = forwardRef((props, ref) => {
   const errorFromService = useDynamicForm("state", "error");
   const dispatchModel = useDynamicForm("dispatch", "model");
   const dispatchError = useDynamicForm("dispatch", "error");
+  const helpers = useDynamicForm();
+  const { idStateError } = helpers;
 
   const updateGlobalErrors = () => {
     updateError(
@@ -41,7 +43,7 @@ const DynamicForm = forwardRef((props, ref) => {
     setupModel(config, dispatchModel, dataCoverterHandler);
     saveConfig(config);
 
-    saveUpdateError(errorFromDynamicFormValidationOnSubmit => {
+    saveUpdateError(idStateError, errorFromDynamicFormValidationOnSubmit => {
       updateErrorOnSubmit(dispatchError)(
         errorFromDynamicFormValidationOnSubmit
       );
