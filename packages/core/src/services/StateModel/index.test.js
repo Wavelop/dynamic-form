@@ -553,6 +553,223 @@ describe("Services", () => {
           },
         });
       });
+
+      it("given a config with fields grouped with a lot of nesting, it should return an object grouped by the same rows - state is completed", () => {
+        const config = [
+          {
+            name: "row1",
+            tag: "row",
+            fields: [
+              {
+                name: "field1_row1",
+                label: "field1_row1",
+                helperText: "field1_row1",
+                tag: "notRow",
+                rowOptions: { // As test, I wrongly leave this option to the object -> it will not be considered 
+                  alternativeName: "field1",
+                }
+              },
+              {
+                name: "field2_row1",
+                label: "field2_row1",
+                helperText: "field2_row1",
+                tag: "notRow",
+                rowOptions: { // As test, I wrongly leave this option to the object -> it will not be considered 
+                  alternativeName: "field2",
+                }
+              },
+              {
+                name: "row2",
+                tag: "row",
+                rowOptions: {
+                  groupIn: "rowsToGroupAsArray"
+                },
+                fields: [
+                  {
+                    name: "field1_row2",
+                    label: "field1_row2",
+                    helperText: "field1_row2",
+                    tag: "notRow",
+                    rowOptions: {
+                      alternativeName: "field1",
+                    }
+                  },
+                  {
+                    name: "field2_row2",
+                    label: "field2_row2",
+                    helperText: "field2_row2",
+                    tag: "notRow",
+                    rowOptions: {
+                      alternativeName: "field2",
+                    }
+                  },
+                  {
+                    name: "row3",
+                    tag: "row",
+                    rowOptions: {
+                      groupIn: "rowsToGroupAsArray"
+                    },
+                    fields: [
+                      {
+                        name: "field1_row3",
+                        label: "field1_row3",
+                        helperText: "field1_row3",
+                        tag: "notRow",
+                        rowOptions: {
+                          alternativeName: "field1",
+                        }
+                      },
+                      {
+                        name: "field2_row3",
+                        label: "field2_row3",
+                        helperText: "field2_row3",
+                        tag: "notRow",
+                        rowOptions: {
+                          alternativeName: "field2",
+                        }
+                      },
+                    ]
+                  },
+                ]
+              },
+            ]
+          },
+          {
+            name: "row4",
+            tag: "row",
+            fields: [
+              {
+                name: "field1_row4",
+                label: "field1_row4",
+                helperText: "field1_row4",
+                tag: "notRow",
+                rowOptions: { // As test, I wrongly leave this option to the object -> it will not be considered 
+                  alternativeName: "field1",
+                }
+              },
+              {
+                name: "field2_row4",
+                label: "field2_row4",
+                helperText: "field2_row4",
+                tag: "notRow",
+                rowOptions: { // As test, I wrongly leave this option to the object -> it will not be considered 
+                  alternativeName: "field2",
+                }
+              },
+              {
+                name: "field3_row4",
+                label: "field3_row4",
+                helperText: "field2_row4",
+                tag: "notRow",
+                rowOptions: { // As test, I wrongly leave this option to the object -> it will not be considered 
+                  alternativeName: "field3",
+                }
+              },
+              {
+                name: "row5",
+                tag: "row",
+                rowOptions: {
+                  groupIn: "rowsToGroupAsArray2"
+                },
+                fields: [
+                  {
+                    name: "field1_row5",
+                    label: "field1_row5",
+                    helperText: "field1_row5",
+                    tag: "notRow",
+                    rowOptions: {
+                      alternativeName: "field1",
+                    }
+                  },
+                  {
+                    name: "field2_row5",
+                    label: "field2_row5",
+                    helperText: "field2_row2",
+                    tag: "notRow",
+                    rowOptions: {
+                      alternativeName: "field2",
+                    }
+                  },
+                  {
+                    name: "row6",
+                    tag: "row",
+                    rowOptions: {
+                      groupIn: "rowsToGroupAsArray2"
+                    },
+                    fields: [
+                      {
+                        name: "field1_row6",
+                        label: "field1_row6",
+                        helperText: "field1_row6",
+                        tag: "notRow",
+                        rowOptions: {
+                          alternativeName: "field1",
+                        }
+                      },
+                      {
+                        name: "field2_row6",
+                        label: "field2_row6",
+                        helperText: "field2_row6",
+                        tag: "notRow",
+                        rowOptions: {
+                          alternativeName: "field2",
+                        }
+                      },
+                    ]
+                  }
+                ]
+              },
+            ]
+          },
+        ];
+
+        const state = {
+          "field1_row1": "1a",
+          "field2_row1": "1b",
+          "field1_row2": "2a",
+          "field2_row2": "2b",
+          "field1_row3": "3a",
+          "field2_row3": "3b",
+          "field1_row4": "4a",
+          "field2_row4": "4b",
+          "field3_row4": "4c",
+          "field1_row5": "5a",
+          "field2_row5": "5b",
+          "field1_row6": "6a",
+          "field2_row6": "6b"
+        };
+
+        const result = groupByRows(config)(state);
+
+        expect(Object.keys(result).length).toBe(2);
+
+        expect(result.row1).toEqual({
+            "field1_row1": "1a",
+            "field2_row1": "1b",
+            "row2": {
+              "field1_row2": "2a",
+              "field2_row2": "2b",
+              "row3": {
+                "field1_row3": "3a",
+                "field2_row3": "3b"
+              }
+            }
+        });
+        expect(result.row4).toEqual({
+            "field1_row4": "4a",
+            "field2_row4": "4b",
+            "field3_row4": "4c",
+            "row5": {
+              "field1_row5": "5a",
+              "field2_row5": "5b",
+              "row6": {
+                "field1_row6": "6a",
+                "field2_row6": "6b"
+              }
+            }
+          });
+
+      });
     });
 
 
@@ -1079,6 +1296,517 @@ describe("Services", () => {
             }
           ]
         });
+      });
+
+      it("given a config with fields grouped with a lot of nesting, it should return an object grouped by groupIn - state is completed", () => {
+        const config = [
+          {
+            name: "row1",
+            tag: "row",
+            fields: [
+              {
+                name: "field1_row1",
+                label: "field1_row1",
+                helperText: "field1_row1",
+                tag: "notRow",
+                rowOptions: {
+                  alternativeName: "field1",
+                }
+              },
+              {
+                name: "field2_row1",
+                label: "field2_row1",
+                helperText: "field2_row1",
+                tag: "notRow",
+                rowOptions: {
+                  alternativeName: "field2",
+                }
+              },
+              {
+                name: "row2",
+                tag: "row",
+                rowOptions: {
+                  groupIn: "rowsToGroupAsArray"
+                },
+                fields: [
+                  {
+                    name: "field1_row2",
+                    label: "field1_row2",
+                    helperText: "field1_row2",
+                    tag: "notRow",
+                    rowOptions: {
+                      alternativeName: "field1",
+                    }
+                  },
+                  {
+                    name: "field2_row2",
+                    label: "field2_row2",
+                    helperText: "field2_row2",
+                    tag: "notRow",
+                    rowOptions: {
+                      alternativeName: "field2",
+                    }
+                  },
+                  {
+                    name: "row3",
+                    tag: "row",
+                    rowOptions: {
+                      groupIn: "rowsToGroupAsArray"
+                    },
+                    fields: [
+                      {
+                        name: "field1_row3",
+                        label: "field1_row3",
+                        helperText: "field1_row3",
+                        tag: "notRow",
+                        rowOptions: {
+                          alternativeName: "field1",
+                        }
+                      },
+                      {
+                        name: "field2_row3",
+                        label: "field2_row3",
+                        helperText: "field2_row3",
+                        tag: "notRow",
+                        rowOptions: {
+                          alternativeName: "field2",
+                        }
+                      },
+                    ]
+                  },
+                ]
+              },
+            ]
+          },
+          {
+            name: "row4",
+            tag: "row",
+            fields: [
+              {
+                name: "field1_row4",
+                label: "field1_row4",
+                helperText: "field1_row4",
+                tag: "notRow",
+                rowOptions: {
+                  alternativeName: "field1",
+                }
+              },
+              {
+                name: "field2_row4",
+                label: "field2_row4",
+                helperText: "field2_row4",
+                tag: "notRow",
+                rowOptions: {
+                  alternativeName: "field2",
+                }
+              },
+              {
+                name: "field3_row4",
+                label: "field3_row4",
+                helperText: "field2_row4",
+                tag: "notRow",
+                rowOptions: {
+                  alternativeName: "field3",
+                }
+              },
+              {
+                name: "row5",
+                tag: "row",
+                rowOptions: {
+                  groupIn: "rowsToGroupAsArray2"
+                },
+                fields: [
+                  {
+                    name: "field1_row5",
+                    label: "field1_row5",
+                    helperText: "field1_row5",
+                    tag: "notRow",
+                    rowOptions: {
+                      alternativeName: "field1",
+                    }
+                  },
+                  {
+                    name: "field2_row5",
+                    label: "field2_row5",
+                    helperText: "field2_row2",
+                    tag: "notRow",
+                    rowOptions: {
+                      alternativeName: "field2",
+                    }
+                  },
+                  {
+                    name: "row6",
+                    tag: "row",
+                    rowOptions: {
+                      groupIn: "rowsToGroupAsArray2"
+                    },
+                    fields: [
+                      {
+                        name: "field1_row6",
+                        label: "field1_row6",
+                        helperText: "field1_row6",
+                        tag: "notRow",
+                        rowOptions: {
+                          alternativeName: "field1",
+                        }
+                      },
+                      {
+                        name: "field2_row6",
+                        label: "field2_row6",
+                        helperText: "field2_row6",
+                        tag: "notRow",
+                        rowOptions: {
+                          alternativeName: "field2",
+                        }
+                      },
+                    ]
+                  }
+                ]
+              },
+            ]
+          },
+        ];
+
+        const state = {
+          "field1_row1": "1a",
+          "field2_row1": "1b",
+          "field1_row2": "2a",
+          "field2_row2": "2b",
+          "field1_row3": "3a",
+          "field2_row3": "3b",
+          "field1_row4": "4a",
+          "field2_row4": "4b",
+          "field3_row4": "4c",
+          "field1_row5": "5a",
+          "field2_row5": "5b",
+          "field1_row6": "6a",
+          "field2_row6": "6b"
+        };
+
+        const result = groupByRowsGroupIn(config)(state);
+
+
+
+        expect(Object.keys(result).length).toBe(2);
+
+        expect(result).toEqual({
+          "row1": {
+              "field1_row1":"1a",
+              "field2_row1":"1b",
+              "rowsToGroupAsArray":[
+                  {
+                      "field1":"2a",
+                      "field2":"2b",
+                      "rowsToGroupAsArray": [
+                          {
+                              "field1":"3a",
+                              "field2":"3b"
+                          }
+                      ]
+                  }
+              ]
+          },
+          "row4": {
+              "field1_row4":"4a",
+              "field2_row4":"4b",
+              "field3_row4":"4c",
+              "rowsToGroupAsArray2": [
+                  {
+                      "field1":"5a",
+                      "field2":"5b",
+                      "rowsToGroupAsArray2": [
+                          {
+                              "field1": "6a",
+                              "field2": "6b"
+                          }
+                      ]
+                  }
+              ]
+          }
+        });
+
+      });
+
+      it.only("given a config with fields grouped with a lot of nesting, it should return an object grouped by groupIn - state is completed", () => {
+        const config = [
+          {
+            name: "row1",
+            tag: "row",
+            fields: [
+              {
+                name: "field1_row1",
+                label: "field1_row1",
+                helperText: "field1_row1",
+                tag: "notRow",
+                rowOptions: {
+                  alternativeName: "field1",
+                }
+              },
+              {
+                name: "field2_row1",
+                label: "field2_row1",
+                helperText: "field2_row1",
+                tag: "notRow",
+                rowOptions: {
+                  alternativeName: "field2",
+                }
+              },
+              {
+                name: "row2",
+                tag: "row",
+                rowOptions: {
+                  groupIn: "rowsToGroupAsArray"
+                },
+                fields: [
+                  {
+                    name: "field1_row2",
+                    label: "field1_row2",
+                    helperText: "field1_row2",
+                    tag: "notRow",
+                    rowOptions: {
+                      alternativeName: "field1",
+                    }
+                  },
+                  {
+                    name: "field2_row2",
+                    label: "field2_row2",
+                    helperText: "field2_row2",
+                    tag: "notRow",
+                    rowOptions: {
+                      alternativeName: "field2",
+                    }
+                  },
+                  {
+                    name: "row3",
+                    tag: "row",
+                    rowOptions: {
+                      groupIn: "rowsToGroupAsArray"
+                    },
+                    fields: [
+                      {
+                        name: "field1_row3",
+                        label: "field1_row3",
+                        helperText: "field1_row3",
+                        tag: "notRow",
+                        rowOptions: {
+                          alternativeName: "field1",
+                        }
+                      },
+                      {
+                        name: "field2_row3",
+                        label: "field2_row3",
+                        helperText: "field2_row3",
+                        tag: "notRow",
+                        rowOptions: {
+                          alternativeName: "field2",
+                        }
+                      },
+                    ]
+                  },
+                ]
+              },
+            ]
+          },
+          {
+            name: "row4",
+            tag: "row",
+            fields: [
+              {
+                name: "field1_row4",
+                label: "field1_row4",
+                helperText: "field1_row4",
+                tag: "notRow",
+                rowOptions: {
+                  alternativeName: "field1",
+                }
+              },
+              {
+                name: "field2_row4",
+                label: "field2_row4",
+                helperText: "field2_row4",
+                tag: "notRow",
+                rowOptions: {
+                  alternativeName: "field2",
+                }
+              },
+              {
+                name: "field3_row4",
+                label: "field3_row4",
+                helperText: "field2_row4",
+                tag: "notRow",
+                rowOptions: {
+                  alternativeName: "field3",
+                }
+              },
+              {
+                name: "row5",
+                tag: "row",
+                rowOptions: {
+                  groupIn: "rowsToGroupAsArray2"
+                },
+                fields: [
+                  {
+                    name: "field1_row5",
+                    label: "field1_row5",
+                    helperText: "field1_row5",
+                    tag: "notRow",
+                    rowOptions: {
+                      alternativeName: "field1",
+                    }
+                  },
+                  {
+                    name: "field2_row5",
+                    label: "field2_row5",
+                    helperText: "field2_row2",
+                    tag: "notRow",
+                    rowOptions: {
+                      alternativeName: "field2",
+                    }
+                  },
+                  {
+                    name: "row6",
+                    tag: "row",
+                    rowOptions: {
+                      groupIn: "rowsToGroupAsArray2"
+                    },
+                    fields: [
+                      {
+                        name: "field1_row6",
+                        label: "field1_row6",
+                        helperText: "field1_row6",
+                        tag: "notRow",
+                        rowOptions: {
+                          alternativeName: "field1",
+                        }
+                      },
+                      {
+                        name: "field2_row6",
+                        label: "field2_row6",
+                        helperText: "field2_row6",
+                        tag: "notRow",
+                        rowOptions: {
+                          alternativeName: "field2",
+                        }
+                      },
+                    ]
+                  },
+                  {
+                    name: "row7",
+                    tag: "row",
+                    rowOptions: {
+                      groupIn: "rowsToGroupAsArray2"
+                    },
+                    fields: [
+                      {
+                        name: "field1_row7",
+                        label: "field1_row7",
+                        helperText: "field1_row7",
+                        tag: "notRow",
+                        rowOptions: {
+                          alternativeName: "field1",
+                        }
+                      },
+                      {
+                        name: "field2_row7",
+                        label: "field2_row7",
+                        helperText: "field2_row7",
+                        tag: "notRow",
+                        rowOptions: {
+                          alternativeName: "field2",
+                        }
+                      },
+                    ]
+                  }
+                ]
+              },
+              {
+                name: "field4_row8",
+                label: "field4_row8",
+                helperText: "field4_row8",
+                tag: "notRow",
+                rowOptions: {
+                  alternativeName: "field4",
+                }
+              },
+              {
+                name: "field5_row9",
+                label: "field5_row9",
+                helperText: "field5_row9",
+                tag: "notRow",
+                rowOptions: {
+                  alternativeName: "field5",
+                }
+              },
+            ]
+          },
+        ];
+
+        const state = {
+          "field1_row1": "1a",
+          "field2_row1": "1b",
+          "field1_row2": "2a",
+          "field2_row2": "2b",
+          "field1_row3": "3a",
+          "field2_row3": "3b",
+          "field1_row4": "4a",
+          "field2_row4": "4b",
+          "field3_row4": "4c",
+          "field1_row5": "5a",
+          "field2_row5": "5b",
+          "field1_row6": "6a",
+          "field2_row6": "6b",
+          "field1_row7": "7a",
+          "field2_row7": "7b",
+          "field4_row8": "8a",
+          "field5_row9": "9a"
+        };
+
+        const result = groupByRowsGroupIn(config)(state);
+
+        expect(Object.keys(result).length).toBe(2);
+
+        expect(result).toEqual({
+          "row1": {
+              "field1_row1":"1a",
+              "field2_row1":"1b",
+              "rowsToGroupAsArray":[
+                  {
+                      "field1":"2a",
+                      "field2":"2b",
+                      "rowsToGroupAsArray": [
+                          {
+                              "field1":"3a",
+                              "field2":"3b"
+                          }
+                      ]
+                  }
+              ]
+          },
+          "row4": {
+              "field1_row4":"4a",
+              "field2_row4":"4b",
+              "field3_row4":"4c",
+              "rowsToGroupAsArray2": [
+                  {
+                      "field1":"5a",
+                      "field2":"5b",
+                      "rowsToGroupAsArray2": [
+                          {
+                              "field1": "6a",
+                              "field2": "6b"
+                          },
+                          {
+                            "field1": "7a",
+                            "field2": "7b"
+                          }
+                      ]
+                  }
+              ],
+              "field4_row8":"8a",
+              "field5_row9":"9a",
+          }
+        });
+
       });
 
     });
