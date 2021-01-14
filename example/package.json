@@ -79,6 +79,7 @@
     "detect-browser-language": "0.0.2",
     "@wavelop/dynamic-form": "latest",
     "@wavelop/dynamic-form-base-components": "latest",
+    "@wavelop/dynamic-form-material-ui-components": "latest",
     "emoji-flags": "1.2.0",
     "history": "4.10.1",
     "jsencrypt": "3.0.0-rc.1",
