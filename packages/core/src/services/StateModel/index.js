@@ -16,6 +16,30 @@ export const groupByRows = config => state => {
   return stateGroupedByRows;
 };
 
+export const groupByRowsGroupIn = (config, options ) => state => {
+    const copyOfModelState = { ...state };
+    const stateGroupedByRows = {};
+    const { groupIn: fatherAskToGroupIn } = options || {};
+  
+    config.forEach(configElement => {
+      const { tag, name, fields, rowOptions } = configElement;
+      const { groupIn, alternativeName } = rowOptions || {};
+
+      if (tag === "row" && !groupIn) {
+        stateGroupedByRows[name] = groupByRowsGroupIn(fields, rowOptions)(copyOfModelState);
+      } else if (tag === "row" && groupIn) {
+        if((stateGroupedByRows[groupIn] && !Array.isArray(stateGroupedByRows[groupIn]) || !stateGroupedByRows[groupIn] )) {
+            stateGroupedByRows[groupIn] = [];
+        }
+        stateGroupedByRows[groupIn].push(groupByRowsGroupIn(fields, rowOptions)(copyOfModelState));
+      } else {
+        stateGroupedByRows[(fatherAskToGroupIn && alternativeName) || name] = copyOfModelState[name];
+      }
+    });
+  
+    return stateGroupedByRows;
+  };
+
 export const stateModel = () => {
 
   const instances = {};

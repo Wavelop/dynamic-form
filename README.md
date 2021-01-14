@@ -51,7 +51,8 @@
 - [🚲 Usage](#-usage)
 - [📚Documentation](#documentation)
 - [🏘 Using existing components](#-using-existing-components)
-  - [🧱Build your custom components](#build-your-custom-components)
+  - [🧱 Build your custom components](#-build-your-custom-components)
+  - [🧱 Repeater components](#-repeater-components)
 - [✈️ Roadmap](#️-roadmap)
 - [🚑 Contributing](#-contributing)
 - [💰 License](#-license)
@@ -102,26 +103,27 @@ import { validations } from "@wavelop/dynamic-form";
 
 const { required, pattern } = validations;
 
-export default     
-{
-  name: "email",
-  label: "Email",
-  helperText: "Write your email",
-  tag: Input,
-  type: "email",
-  validations: [
-    {
-      kind: required,
-      message: "Email is required"
-    },
-    {
-      kind: pattern,
-      reg: /^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$/,
-      negate: true,
-      message: "You must type an email i.e. test@test.com"
-    }
-  ]
-};
+export default [
+  {
+    name: "email",
+    label: "Email",
+    helperText: "Write your email",
+    tag: Input,
+    type: "email",
+    validations: [
+      {
+        kind: required,
+        message: "Email is required"
+      },
+      {
+        kind: pattern,
+        reg: /^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$/,
+        negate: true,
+        message: "You must type an email i.e. test@test.com"
+      }
+    ]
+  }
+];
 ```
 
 ```jsx
@@ -146,9 +148,9 @@ function Example(props) {
     event.preventDefault();
 
     try {
-      const { state, stateCrypted, stateFull } = dynamicForm.submit();
+      const { state, stateCrypted } = dynamicForm.submit();
       // Do something with you valid state...
-      console.log(state, stateCrypted, stateFull);
+      console.log(state, stateCrypted);
 
     } catch ({numberOfErrors, errors}) {
       // Do something in case of error...
@@ -192,9 +194,286 @@ Check out our [documentation website](https://dynamic-form-wavelop.firebaseapp.c
 
 Core functionalities can be used with exinsing components, as with the one of the package `@wavelop/dynamic-form-base-components` or you can create your custom components to inject inside the configuration. 
 
-### 🧱Build your custom components
+### 🧱 Build your custom components
 
 WIP.
+
+### 🧱 Repeater components
+
+There are more way to create repeater components:
+
+1. Update your configuration dinamically adding new piece of configuration. To group state results you should use `rowOptions`, both on row container and field. 
+
+Example: 
+
+In the configuration create the initial configuration:
+```js
+// config.js
+
+// import and other stuff..
+
+export default [ 
+  {
+    name: "row1",
+    tag: "row",
+    fields: [
+      {
+        name: "field1_row1",
+        label: "field1_row1",
+        helperText: "field1_row1",
+        tag: "notRow"
+      }
+    ]
+  },
+  {
+    name: "row2",
+    tag: "row",
+    rowOptions: { // <--- Add rowOptions to the row container and use the property groupIn
+      groupIn: "rowsToGroupAsArray"
+    },
+    fields: [
+      {
+        name: "field1_row2",
+        label: "field1_row2",
+        helperText: "field1_row2",
+        tag: "notRow",
+        rowOptions: { // <--- Add rowOptions to the child and use the property alternativeName
+          alternativeName: "field1",
+        }
+      }
+    ]
+  },
+  {
+    name: "row3",
+    tag: "row",
+    rowOptions: { // <--- Add rowOptions to the row container and use the property groupIn
+      groupIn: "rowsToGroupAsArray"
+    },
+    fields: [
+      {
+        name: "field1_row3",
+        label: "field1_row3",
+        helperText: "field1_row3",
+        tag: Input,
+        rowOptions: { // <--- Add rowOptions to the child and use the property alternativeName
+          alternativeName: "field1",
+        }
+      }
+    ]
+  },
+  {
+    name: "row4",
+    tag: "row",
+    rowOptions: { // <--- Add rowOptions to the row container and use the property groupIn
+      groupIn: "rowsToGroupAsArray2"
+    },
+    fields: [
+      {
+        name: "field2_row4",
+        label: "field2_row4",
+        helperText: "field2_row4",
+        tag: "notRow",
+        rowOptions: { // <--- Add rowOptions to the child and use the property alternativeName
+          alternativeName: "field2",
+        }
+      },
+    ]
+  },
+  {
+    name: "row5",
+    tag: "row",
+    rowOptions: { // <--- Add rowOptions to the row container and use the property groupIn
+      groupIn: "rowsToGroupAsArray2"
+    },
+    fields: [
+      {
+        name: "field2_row5",
+        label: "field2_row5",
+        helperText: "field2_row5",
+        tag: "notRow",
+        rowOptions: { // <--- Add rowOptions to the child and use the property alternativeName
+          alternativeName: "field2",
+        }
+      },
+    ]
+  }
+];
+```
+
+Where you use DynamicForm and execute submit having this current state: 
+
+```javascript
+{
+  "field1_row1": "1a",
+  "field1_row2": "2a",
+  "field1_row3": "3a",
+  "field2_row4": "4b",
+  "field2_row5": "5b",
+}
+```
+
+```javascript
+// Other stuff...
+
+const { state, stateGroupedByRows, stateGroupedByRowsGroupIn } = dynamicForm.submit();
+
+console.log(state);
+/**
+{
+  "field1_row1": "1a",
+  "field1_row2": "2a",
+  "field1_row3": "3a",
+  "field2_row4": "4b",
+  "field2_row5": "5b",
+}
+**/ 
+
+console.log(groupByRows);
+/**
+{
+  "row1": {
+    "field1_row1": "1a",
+  },
+  "row2": {
+    "field1_row2": "2a",
+  },
+  "row3": {
+    "field1_row3": "3a",
+  },
+  "row4": {
+    "field2_row4": "4b",
+  },
+  "row5": {
+    "field2_row5": "5b"
+  }
+}
+**/ 
+
+console.log(groupByRowsGroupIn);
+/**
+{
+  "row1": {
+    "field1_row1": "1a",
+    "field2_row1": "1b"
+  },
+  "rowsToGroupAsArray": [
+    {
+      "field1": "2a",
+    },
+    {
+      "field1": "3a",
+    }
+  ],
+  "rowsToGroupAsArray2": [
+    {
+      "field2": "4b"
+    },
+    {
+      "field2": "5b"
+    }
+  ]
+}
+**/ 
+```
+
+Think now to add to the above configuration a new row: 
+
+```javascript
+
+configuration.push({
+  name: "row6",
+  tag: "row",
+  rowOptions: { // <--- Add rowOptions to the row container and use the property groupIn
+    groupIn: "rowsToGroupAsArray"
+  },
+  fields: [
+    {
+      name: "field1_row6",
+      label: "field1_row6",
+      helperText: "field1_row6",
+      tag: "notRow",
+      rowOptions: { // <--- Add rowOptions to the child and use the property alternativeName
+        alternativeName: "field1",
+      }
+    },
+  ]
+});
+```
+
+At the submit we will have (considering to have written `6a` inside the new input): 
+
+```javascript
+// Other stuff...
+
+const { state, stateGroupedByRows, stateGroupedByRowsGroupIn } = dynamicForm.submit();
+
+console.log(state);
+/**
+{
+  "field1_row1": "1a",
+  "field1_row2": "2a",
+  "field1_row3": "3a",
+  "field2_row4": "4b",
+  "field2_row5": "5b",
+  "field1_row6": "6a",
+}
+**/ 
+
+console.log(groupByRows);
+/**
+{
+  "row1": {
+    "field1_row1": "1a",
+  },
+  "row2": {
+    "field1_row2": "2a",
+  },
+  "row3": {
+    "field1_row3": "3a",
+  },
+  "row4": {
+    "field2_row4": "4b",
+  },
+  "row5": {
+    "field2_row5": "5b"
+  },
+  "row6": {
+    "field1_row6": "6a"
+  }
+}
+**/ 
+
+console.log(groupByRowsGroupIn);
+/**
+{
+  "row1": {
+    "field1_row1": "1a",
+    "field2_row1": "1b"
+  },
+  "rowsToGroupAsArray": [
+    {
+      "field1": "2a",
+    },
+    {
+      "field1": "3a",
+    },
+    {
+      "field1": "6a",
+    }
+  ],
+  "rowsToGroupAsArray2": [
+    {
+      "field2": "4b"
+    },
+    {
+      "field2": "5b"
+    }
+  ]
+}
+**/
+```
+
+2. (WIP) Create a custom component that implement the repeater logic and it update the form values.
 
 <!-- ROADMAP -->
 ## ✈️ Roadmap
