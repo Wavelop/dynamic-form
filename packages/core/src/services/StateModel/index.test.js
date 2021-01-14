@@ -339,6 +339,220 @@ describe("Services", () => {
           "phone": "1234567890"
         });
       });
+
+      it("given a config with fields grouped, it should return an object grouped by the same rows - state is completed", () => {
+        const config = [
+          {
+            name: "row1",
+            tag: "row",
+            fields: [
+              {
+                name: "field1_row1",
+                label: "field1_row1",
+                helperText: "field1_row1",
+                tag: "notRow",
+                rowOptions: { // As test, I wrongly leave this option to the object -> it will not be considered 
+                  alternativeName: "field1",
+                }
+              },
+              {
+                name: "field2_row1",
+                label: "field2_row1",
+                helperText: "field2_row1",
+                tag: "notRow",
+                rowOptions: { // As test, I wrongly leave this option to the object -> it will not be considered 
+                  alternativeName: "field2",
+                }
+              },
+            ]
+          },
+          {
+            name: "row2",
+            tag: "row",
+            rowOptions: {
+              groupIn: "rowsToGroupAsArray"
+            },
+            fields: [
+              {
+                name: "field1_row2",
+                label: "field1_row2",
+                helperText: "field1_row2",
+                tag: "notRow",
+                rowOptions: {
+                  alternativeName: "field1",
+                }
+              },
+              {
+                name: "field2_row2",
+                label: "field2_row2",
+                helperText: "field2_row2",
+                tag: "notRow",
+                rowOptions: {
+                  alternativeName: "field2",
+                }
+              },
+            ]
+          },
+          {
+            name: "row3",
+            tag: "row",
+            rowOptions: {
+              groupIn: "rowsToGroupAsArray"
+            },
+            fields: [
+              {
+                name: "field1_row3",
+                label: "field1_row3",
+                helperText: "field1_row3",
+                tag: "notRow",
+                rowOptions: {
+                  alternativeName: "field1",
+                }
+              },
+              {
+                name: "field2_row3",
+                label: "field2_row3",
+                helperText: "field2_row3",
+                tag: "notRow",
+                rowOptions: {
+                  alternativeName: "field2",
+                }
+              },
+            ]
+          },
+          {
+            name: "row4",
+            tag: "row",
+            fields: [
+              {
+                name: "field1_row4",
+                label: "field1_row4",
+                helperText: "field1_row4",
+                tag: "notRow",
+                rowOptions: { // As test, I wrongly leave this option to the object -> it will not be considered 
+                  alternativeName: "field1",
+                }
+              },
+              {
+                name: "field2_row4",
+                label: "field2_row4",
+                helperText: "field2_row4",
+                tag: "notRow",
+                rowOptions: { // As test, I wrongly leave this option to the object -> it will not be considered 
+                  alternativeName: "field2",
+                }
+              },
+              {
+                name: "field3_row4",
+                label: "field3_row4",
+                helperText: "field2_row4",
+                tag: "notRow",
+                rowOptions: { // As test, I wrongly leave this option to the object -> it will not be considered 
+                  alternativeName: "field3",
+                }
+              },
+            ]
+          },
+          {
+            name: "row5",
+            tag: "row",
+            rowOptions: {
+              groupIn: "rowsToGroupAsArray2"
+            },
+            fields: [
+              {
+                name: "field1_row5",
+                label: "field1_row5",
+                helperText: "field1_row5",
+                tag: "notRow",
+                rowOptions: {
+                  alternativeName: "field1",
+                }
+              },
+              {
+                name: "field2_row5",
+                label: "field2_row5",
+                helperText: "field2_row2",
+                tag: "notRow",
+                rowOptions: {
+                  alternativeName: "field2",
+                }
+              },
+            ]
+          },
+          {
+            name: "row6",
+            tag: "row",
+            rowOptions: {
+              groupIn: "rowsToGroupAsArray2"
+            },
+            fields: [
+              {
+                name: "field1_row6",
+                label: "field1_row6",
+                helperText: "field1_row6",
+                tag: "notRow",
+                rowOptions: {
+                  alternativeName: "field1",
+                }
+              },
+              {
+                name: "field2_row6",
+                label: "field2_row6",
+                helperText: "field2_row6",
+                tag: "notRow",
+                rowOptions: {
+                  alternativeName: "field2",
+                }
+              },
+            ]
+          }
+        ];
+
+        const state = {
+          "field1_row1": "1a",
+          "field2_row1": "1b",
+          "field1_row2": "2a",
+          "field2_row2": "2b",
+          "field1_row3": "3a",
+          "field2_row3": "3b",
+          "field1_row4": "4a",
+          "field2_row4": "4b",
+          "field3_row4": "4c",
+          "field1_row5": "5a",
+          "field2_row5": "5b",
+          "field1_row6": "6a",
+          "field2_row6": "6b"
+        };
+
+        expect(groupByRows(config)(state)).toEqual({
+          "row1": {
+            "field1_row1": "1a",
+            "field2_row1": "1b"
+          },
+          "row2": {
+            "field1_row2": "2a",
+            "field2_row2": "2b"
+          },
+          "row3": {
+            "field1_row3": "3a",
+            "field2_row3": "3b"
+          },
+          "row4": {
+            "field1_row4": "4a",
+            "field2_row4": "4b",
+            "field3_row4": "4c"
+          },
+          "row5": {
+            "field1_row5": "5a",
+            "field2_row5": "5b"
+          },
+          "row6": {
+            "field1_row6": "6a",
+            "field2_row6": "6b"
+          },
+        });
+      });
     });
 
 
