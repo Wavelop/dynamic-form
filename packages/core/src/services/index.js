@@ -13,5 +13,5 @@ export {
   getConfigDetail,
   getUpdateError
 } from "./Config";
-export { groupByRows, stateModel } from "./StateModel";
+export { groupByRows, groupByRowsGroupIn, stateModel } from "./StateModel";
 export { stateError } from "./StateError";
