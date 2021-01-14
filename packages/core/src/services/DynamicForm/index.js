@@ -9,7 +9,7 @@ import {
   updateErrors, 
   getUpdateError, 
   groupByRows, 
-  groupByRows2,
+  groupByRowsGroupIn,
   stateModel as stateModelService, 
   stateError as stateErrorService 
 } from "../";
@@ -53,7 +53,7 @@ const helpers = ({
           state: copyOfModelState,
           stateCrypted: applyCrypt2State(copyOfModelState, getConfig(idStateModel)),
           stateGroupedByRows: groupByRows(getConfig(idStateModel))(copyOfModelState),
-          groupByRowsGroupIn: groupByRowsGroupIn(getConfig(idStateModel))(copyOfModelState)
+          stateGroupedByRowsGroupIn: groupByRowsGroupIn(getConfig(idStateModel))(copyOfModelState)
         };
       } else {
         throw {

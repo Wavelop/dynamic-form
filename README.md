@@ -315,7 +315,7 @@ Where you use DynamicForm and execute submit having this current state:
 ```javascript
 // Other stuff...
 
-const { state, groupByRows, groupByRowsGroupIn } = dynamicForm.submit();
+const { state, stateGroupedByRows, stateGroupedByRowsGroupIn } = dynamicForm.submit();
 
 console.log(state);
 /**
@@ -405,7 +405,7 @@ At the submit we will have (considering to have written `6a` inside the new inpu
 ```javascript
 // Other stuff...
 
-const { state, groupByRows, groupByRowsGroupIn } = dynamicForm.submit();
+const { state, stateGroupedByRows, stateGroupedByRowsGroupIn } = dynamicForm.submit();
 
 console.log(state);
 /**
