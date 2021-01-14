@@ -9,6 +9,7 @@ import {
   updateErrors, 
   getUpdateError, 
   groupByRows, 
+  groupByRowsGroupIn,
   stateModel as stateModelService, 
   stateError as stateErrorService 
 } from "../";
@@ -24,6 +25,7 @@ let encryptionLocal = value => value;
 
 const helpers = ({
   stateModelService,
+  idStateModel,
   stateErrorService,
   idStateError
 }) => {
@@ -37,7 +39,7 @@ const helpers = ({
       delete copyOfModelState._metadata;
       delete copyOfErrorState._metadata;
 
-      copyOfErrorState = updateErrors(getConfig())(copyOfModelState);
+      copyOfErrorState = updateErrors(getConfig(idStateModel))(copyOfModelState);
 
       // Execute the action UPDATE_ERROR_ON_SUBMIT directily from the service
       getUpdateError(idStateError)(copyOfErrorState);
@@ -49,9 +51,9 @@ const helpers = ({
       if (numberOfErrors === 0) {
         return {
           state: copyOfModelState,
-          stateCrypted: applyCrypt2State(copyOfModelState, getConfig()),
-          stateFull: this && this.stateModelService.get(),
-          stateGroupedByRows: groupByRows(getConfig())(copyOfModelState)
+          stateCrypted: applyCrypt2State(copyOfModelState, getConfig(idStateModel)),
+          stateGroupedByRows: groupByRows(getConfig(idStateModel))(copyOfModelState),
+          stateGroupedByRowsGroupIn: groupByRowsGroupIn(getConfig(idStateModel))(copyOfModelState)
         };
       } else {
         throw {
@@ -170,15 +172,17 @@ export const DynamicFormProvider = props => {
   );
 
   useEffect(() => {
-    const { service: sm } = stateModelService().init();
+    const { service: sm, id: idStateModel } = stateModelService().init();
     const { service: se, id: idStateError } = stateErrorService().init();
     setHelper({ 
       submit: helpers({
         stateModelService: sm,
+        idStateModel,
         stateErrorService: se,
         idStateError
       }).submit, 
       stateModelService: sm,
+      idStateModel,
       stateErrorService: se,
       idStateError
     })

@@ -19,13 +19,6 @@ export const htmlToRender = handleChangeEvent => (
 
   let newValue = <span />;
 
-  const requiredField =
-    config &&
-    config.validations &&
-    !!config.validations.find(validation => {
-      return validation.kind === "required";
-    });
-
   switch (config.tag) {
     // Default components
     case "row":
@@ -34,6 +27,7 @@ export const htmlToRender = handleChangeEvent => (
           config={config.fields}
           layout={config.customRow}
           updateErrorAtBlur={updateErrorAtBlur}
+          internal={true}
         />
       );
       break;
@@ -52,7 +46,6 @@ export const htmlToRender = handleChangeEvent => (
             showErrorOnInput={true}
             error={error}
             errorMessage={error[0] && error[0].message}
-            required={requiredField}
             options={config.options}
             onBlur={handleChangeEvent(config.name, handleChange, "onBlur")}
             onChange={handleChangeEvent(config.name, handleChange, "onChange")}
