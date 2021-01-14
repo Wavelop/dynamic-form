@@ -1,8 +1,9 @@
-import React, { useEffect, forwardRef, useCallback } from "react";
+import React, { useState, useEffect, forwardRef, useCallback, useMemo } from "react";
 import PropTypes from "prop-types";
 
 // Application dependencies
 import { useDynamicForm, saveConfig, saveUpdateError } from "../../services";
+import { uuid4 } from "../../utils";
 
 import {
   handleChange,
@@ -14,14 +15,20 @@ import {
 } from "./utils/utils";
 
 const DynamicForm = forwardRef((props, ref) => {
-  const { config, updateErrorAtBlur, debug, layout } = props;
-
+  const { config, updateErrorAtBlur, debug, layout, internal } = props;
+  
+  const [id] = useState(uuid4());
+  
   const stateFromService = useDynamicForm("state", "model");
   const errorFromService = useDynamicForm("state", "error");
   const dispatchModel = useDynamicForm("dispatch", "model");
   const dispatchError = useDynamicForm("dispatch", "error");
   const helpers = useDynamicForm();
-  const { idStateError } = helpers;
+  const { idStateModel, idStateError } = helpers;
+  
+  useMemo(() => {
+    !internal && saveConfig(idStateModel, id, config, internal);
+  }, [config, internal]);
 
   const updateGlobalErrors = () => {
     updateError(
@@ -41,7 +48,6 @@ const DynamicForm = forwardRef((props, ref) => {
 
   const init = () => {
     setupModel(config, dispatchModel, dataCoverterHandler);
-    saveConfig(config);
 
     saveUpdateError(idStateError, errorFromDynamicFormValidationOnSubmit => {
       updateErrorOnSubmit(dispatchError)(
@@ -87,7 +93,8 @@ DynamicForm.propTypes = {
   validateOnFocusOut: PropTypes.bool,
   debug: PropTypes.bool,
   layout: PropTypes.any,
-  updateErrorAtBlur: PropTypes.any
+  updateErrorAtBlur: PropTypes.any,
+  internal: PropTypes.bool,
 };
 
 export default DynamicForm;

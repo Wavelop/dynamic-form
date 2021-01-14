@@ -34,6 +34,7 @@ export const htmlToRender = handleChangeEvent => (
           config={config.fields}
           layout={config.customRow}
           updateErrorAtBlur={updateErrorAtBlur}
+          internal={true}
         />
       );
       break;

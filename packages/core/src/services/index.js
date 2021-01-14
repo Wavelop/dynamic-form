@@ -10,6 +10,7 @@ export {
   saveConfig,
   saveUpdateError,
   getConfig,
+  getConfigDetail,
   getUpdateError
 } from "./Config";
 export { groupByRows, stateModel } from "./StateModel";
