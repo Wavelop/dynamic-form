@@ -49,10 +49,11 @@
   - [👶 Prerequisites](#-prerequisites)
   - [💻 Installation](#-installation)
 - [🚲 Usage](#-usage)
-- [📚Documentation](#documentation)
+- [📚 Documentation](#-documentation)
+- [🥇 Add your values](#-add-your-values)
 - [🏘 Using existing components](#-using-existing-components)
   - [🧱 Build your custom components](#-build-your-custom-components)
-  - [🧱 Repeater components](#-repeater-components)
+  - [💫 Repeater components](#-repeater-components)
 - [✈️ Roadmap](#️-roadmap)
 - [🚑 Contributing](#-contributing)
 - [💰 License](#-license)
@@ -110,6 +111,7 @@ export default [
     helperText: "Write your email",
     tag: Input,
     type: "email",
+    defaultValue: "info@wavelop.com",
     validations: [
       {
         kind: required,
@@ -186,9 +188,28 @@ export default withDynamicForm()(Example);
 
 _For more examples, please refer to the [Example folder](https://github.com/Wavelop/dynamic-form/tree/master/example)_.
 
-## 📚Documentation
+## 📚 Documentation
 
 Check out our [documentation website](https://dynamic-form-wavelop.firebaseapp.com/).
+
+## 🥇 Add your values
+
+Use the `deafultValue` option to add an initial value to a field. 
+
+```javascript
+// config.js
+...
+fields: [
+  {
+    name: "field1_row2",
+    label: "field1_row2",
+    helperText: "field1_row2",
+    tag: "notRow",
+    defaultValue: "hello",
+  }
+]
+...
+```
 
 ## 🏘 Using existing components
 
@@ -198,13 +219,14 @@ Core functionalities can be used with exinsing components, as with the one of th
 
 WIP.
 
-### 🧱 Repeater components
+### 💫 Repeater components
 
 There are more way to create repeater components:
 
 1. Update your configuration dinamically adding new piece of configuration. To group state results you should use `rowOptions`, both on row container and field. 
 
-Example: 
+<details>
+ <summary>Example point 1</summary>
 
 In the configuration create the initial configuration:
 ```js
@@ -473,7 +495,11 @@ console.log(groupByRowsGroupIn);
 **/
 ```
 
-2. (WIP) Create a custom component that implement the repeater logic and it update the form values.
+</details>
+
+
+<br/>
+1. (WIP) Create a custom component that implement the repeater logic and it update the form values.
 
 <!-- ROADMAP -->
 ## ✈️ Roadmap
