@@ -26,6 +26,7 @@ const DynamicForm = forwardRef((props, ref) => {
   const helpers = useDynamicForm();
   const { idStateModel, idStateError } = helpers;
   
+  // Save config only at the beniginning
   useMemo(() => {
     !internal && saveConfig(idStateModel, id, config, internal);
   }, [config, internal]);

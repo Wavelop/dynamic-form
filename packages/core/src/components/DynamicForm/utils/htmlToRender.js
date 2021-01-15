@@ -37,10 +37,8 @@ export const htmlToRender = ({
               onChange={handleChange(dispatchModel, "UPDATE_MODEL")}
               config={configObj}
               data={
-                stateFromService && stateFromService[configObj.name]
-                  ? tag === "hidden"
-                    ? model[name]
-                    : stateFromService[configObj.name]
+                stateFromService !== undefined && stateFromService[configObj.name] !== null
+                  ? stateFromService[configObj.name]
                   : configObj.defaultValue !== undefined &&
                     configObj.defaultValue !== null
                   ? configObj.defaultValue
