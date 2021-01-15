@@ -1,12 +1,12 @@
-export const dataCoverterHandler = (data, config) => {
+export const dataCoverterHandler = (data, {dataManipulatorIn} = {}) => {
   let dataConverted = data;
 
   if (
-    config.dataManipulatorIn &&
-    typeof config.dataManipulatorIn === "function" &&
+    dataManipulatorIn &&
+    typeof dataManipulatorIn === "function" &&
     data !== ""
   ) {
-    dataConverted = config.dataManipulatorIn(data);
+    dataConverted = dataManipulatorIn(data);
   }
   return dataConverted;
 };
