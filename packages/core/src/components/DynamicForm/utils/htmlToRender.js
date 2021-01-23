@@ -37,7 +37,7 @@ export const htmlToRender = ({
               onChange={handleChange(dispatchModel, "UPDATE_MODEL")}
               config={configObj}
               data={
-                stateFromService !== undefined && stateFromService[configObj.name] !== null
+                stateFromService !== undefined && stateFromService[configObj.name] !== null && stateFromService[configObj.name] !== undefined
                   ? stateFromService[configObj.name]
                   : configObj.defaultValue !== undefined &&
                     configObj.defaultValue !== null
