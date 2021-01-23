@@ -86,7 +86,8 @@ const dynamicFormModelReducer = (hel) => (state, action) => {
         ...newState,
         _metadata: {
           ...metadata,
-          lasteElementTouched
+          lasteElementTouched,
+          setupModelCompleted: true
         }
       };
 
@@ -95,15 +96,26 @@ const dynamicFormModelReducer = (hel) => (state, action) => {
       return newStateLocal;
     }
     case "SETUP_MODEL": {
-      const newStateLocal = {
-        ...state,
-        ...newState,
-        _metadata: metadata
-      };
+      const { _metadata } = state || {};
+      const { setupModelCompleted } = _metadata || {};
 
-      hel && hel.stateModelService && hel.stateModelService.set(newStateLocal);
-
-      return newStateLocal;
+      if(!setupModelCompleted) { 
+        
+        const newStateLocal = {
+          ...state,
+          ...newState,
+          _metadata: {
+            ...metadata,
+            setupModelCompleted: false
+          }
+        };
+        
+        hel && hel.stateModelService && hel.stateModelService.set(newStateLocal);
+        
+        return newStateLocal;
+      } else {
+        return state;
+      }
     }
     default: {
       throw new Error(`Unhandled action type: ${action.type}`);
